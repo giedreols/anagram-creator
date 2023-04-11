@@ -1,4 +1,4 @@
-﻿namespace Contracts.Data
+﻿namespace Cli.Data
 {
     public class WordRejectionReasons
     {

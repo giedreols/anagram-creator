@@ -11,12 +11,14 @@ AnagramSolver anagramSolver = new AnagramSolver();
 while (repeat)
 {
     // ask for word
-    InputWord inputWord = new InputWord();
-    inputWord.MainForm = renderer.GetWord();
+    var word = renderer.GetWord();
+    InputWord inputWord = new(word);
 
-    if (!inputWord.IsValid())
+    inputWord.Validate();
+
+    if (inputWord.InvalidityReason!= null)
     {
-        renderer.RejectWord(inputWord.InvalidReason);
+        renderer.RejectWord(inputWord.InvalidityReason);
         continue;
     }
 

@@ -4,10 +4,15 @@
 {
     public class InputWord
     {
-        public string MainForm;
+        public string MainForm { get; set; }
 
-        public string InvalidReason;
+        public string? InvalidityReason { get; set; }
 
-        public HashSet<string> Permutations;
+        public HashSet<string>? Permutations { get; set; }
+
+        public InputWord(string mainForm)
+        {
+            MainForm = mainForm;
+        }
     }
 }

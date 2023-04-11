@@ -4,10 +4,17 @@
 {
     public class DictWord
     {
-        public string MainForm;
+        public string MainForm { get; set; }
 
-        public string Type;
+        public string Type { get; set; }
 
-        public string AnotherForm;
+        public string AnotherForm { get; set; }
+
+        public DictWord(string mainForm, string type, string anotherForm)
+        {
+            MainForm = mainForm;
+            Type = type;    
+            AnotherForm = anotherForm;
+        }
     }
 }

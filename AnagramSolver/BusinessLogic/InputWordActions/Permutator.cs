@@ -5,7 +5,7 @@ namespace BusinessLogic.InputWordActions
 {
     public class Permutator : IPermutator
     {
-        private HashSet<string> allPermutations;
+        private HashSet<string> allPermutations { get; set; }
 
         public Permutator()
         {

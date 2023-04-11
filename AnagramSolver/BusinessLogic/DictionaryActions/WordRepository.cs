@@ -5,17 +5,16 @@ namespace BusinessLogic.DictionaryActions
 {
     internal class WordRepository : IWordRepository
     {
-        private string path;
+        private static string path;
 
         public WordRepository()
         {
             path = Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).FullName, "net7.0\\Files\\zodynas.txt");
-
         }
 
         public IList<DictWord> GetWords()
         {
-            List<DictWord> words = new List<DictWord>(200000);
+            List<DictWord> words = new(200000);
 
             try
             {
@@ -24,13 +23,7 @@ namespace BusinessLogic.DictionaryActions
                 while ((line = sr.ReadLine()) != null)
                 {
                     string[] fields = line.Split('\t');
-
-                    DictWord word = new DictWord()
-                    {
-                        MainForm = fields[0],
-                        Type = fields[1],
-                        AnotherForm = fields[2]
-                    };
+                    DictWord word = new DictWord(fields[0], fields[1], fields[2]);
                     words.Add(word);
                 }
             }
