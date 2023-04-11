@@ -14,11 +14,15 @@ namespace BusinessLogic.AnagramActions
             wordList = new WordRepository().GetWords().Select(word => word.MainForm).ToHashSet();
         }
 
-        public List<string> GetAnagrams(InputWord myWord)
+        public List<string> GetAnagrams(InputWord inputWord)
         {
             Permutator permutator = new Permutator();
-            myWord = permutator.GeneratePermutations(myWord);
-            return wordList.Intersect(myWord.Permutations).ToList();
+            permutator.GeneratePermutations(inputWord);
+
+            if (inputWord == null)
+                return new List<string>();
+
+            return wordList.Intersect(inputWord.Permutations).ToList();
         }
     }
 }

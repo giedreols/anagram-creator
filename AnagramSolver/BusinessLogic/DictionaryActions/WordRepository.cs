@@ -1,15 +1,32 @@
-﻿using Contracts.Interfaces;
+﻿using Cli;
+using Contracts.Interfaces;
 using Contracts.Models;
 
 namespace BusinessLogic.DictionaryActions
 {
     internal class WordRepository : IWordRepository
     {
-        private static string path;
+        private static string path { get; set; }
+        private Renderer renderer = new Renderer();
+
 
         public WordRepository()
         {
-            path = Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).FullName, "net7.0\\Files\\zodynas.txt");
+            var dir = Directory.GetCurrentDirectory();
+            if (dir == null)
+            {
+                renderer.ShowError("Can't find dictionary.");
+            }
+
+            try
+            {
+                path = Path.Combine(Directory.GetParent(dir).FullName, "net7.0\\Files\\zodynas.txt");
+            }
+            catch (Exception ex)
+            {
+                renderer.ShowError(ex.Message);
+                throw;
+            }
         }
 
         public IList<DictWord> GetWords()
@@ -27,10 +44,10 @@ namespace BusinessLogic.DictionaryActions
                     words.Add(word);
                 }
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                Console.WriteLine("The file could not be read:");
-                Console.WriteLine(e.Message);
+                renderer.ShowError(ex.Message);
+                throw;
             }
 
             return words;

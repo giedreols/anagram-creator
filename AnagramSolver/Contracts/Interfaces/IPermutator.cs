@@ -4,6 +4,6 @@ namespace Contracts.Interfaces
 {
     public interface IPermutator
     {
-        InputWord GeneratePermutations(InputWord inputWord);
+        void GeneratePermutations(InputWord inputWord);
     }
 }

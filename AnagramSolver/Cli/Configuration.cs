@@ -15,8 +15,16 @@ namespace Cli
 
             IConfigurationRoot config = builder.Build();
 
-            TotalAmount = int.Parse(config["AnagramSettings:TotalAmount"]);
-            MinLength = int.Parse(config["AnagramSettings:MinLength"]);
+            try
+            {
+                TotalAmount = int.Parse(config["AnagramSettings:TotalAmount"]);
+                MinLength = int.Parse(config["AnagramSettings:MinLength"]);
+            }
+            catch (Exception)
+            {
+                TotalAmount = 1000;
+                MinLength = 1;
+            }
         }
 
     }

@@ -4,7 +4,7 @@ namespace Cli
 {
     public class Renderer : IRenderer
     {
-        public Renderer()
+        public void ShowHeader()
         {
             Console.WriteLine("**************");
             Console.WriteLine("ANAGRAM GENERATOR");
@@ -43,6 +43,7 @@ namespace Cli
             Console.WriteLine("**************");
         }
 
+        // TODO: exception handling
         public bool DoRepeat()
         {
             Console.WriteLine("Repeat? Y/N");
@@ -58,6 +59,11 @@ namespace Cli
                     break;
             }
             return repeatValue;
+        }
+
+        public void ShowError(string message)
+        {
+            Console.WriteLine("Something is wrong. Message: " + message);
         }
     }
 }

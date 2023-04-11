@@ -6,23 +6,19 @@ namespace BusinessLogic.InputWordActions
 {
     public static class Validator
     {
-        public static bool Validate(this InputWord word)
+        public static void Validate(this InputWord word)
         {
             int minLength = new Configuration().MinLength;
-            bool isValid = true;
 
             if (!IsValidChars(word.MainForm))
             {
                 word.InvalidityReason = WordRejectionReasons.InvalidCharacters;
-                isValid = false;
             }
 
             if (!IsValidLength(word.MainForm, minLength))
             {
                 word.InvalidityReason = WordRejectionReasons.TooShort;
-                isValid = false;
             }
-            return isValid;
         }
 
 

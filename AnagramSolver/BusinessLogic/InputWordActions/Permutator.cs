@@ -12,12 +12,11 @@ namespace BusinessLogic.InputWordActions
             allPermutations = new HashSet<string>();
         }
 
-        public InputWord GeneratePermutations(InputWord word)
+        public void GeneratePermutations(InputWord word)
         {
             Permute(word.MainForm.ToCharArray(), word.MainForm.Length);
             allPermutations.Remove(word.MainForm);
             word.Permutations = allPermutations;
-            return word;
         }
 
         private void Permute(char[] arr, int size)
