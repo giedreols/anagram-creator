@@ -1,17 +1,17 @@
 ﻿// See https://aka.ms/new-console-template for more information
-using BusinessLogic;
 using BusinessLogic.AnagramActions;
 using BusinessLogic.InputWordActions;
 using Cli;
+using Contracts.Models;
 
 bool repeat = true;
-var renderer = new Renderer();
-var anagramSolver = new AnagramSolver();
+Renderer renderer = new Renderer();
+AnagramSolver anagramSolver = new AnagramSolver();
 
 while (repeat)
 {
     // ask for word
-    var inputWord = new InputWord();
+    InputWord inputWord = new InputWord();
     inputWord.MainForm = renderer.GetWord();
 
     if (!inputWord.IsValid())
@@ -21,7 +21,7 @@ while (repeat)
     }
 
     // generate anagrams
-    var anagrams = anagramSolver.GetAnagrams(inputWord);
+    List<string> anagrams = anagramSolver.GetAnagrams(inputWord);
 
     // show anagrams
     renderer.ShowAnagrams(anagrams.ValidateAmount());

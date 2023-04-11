@@ -1,8 +1,8 @@
-﻿using Cli;
+﻿using Contracts.Models;
 
 namespace BusinessLogic.DictionaryActions
 {
-    interface IWordRepository
+    internal interface IWordRepository
     {
         IList<DictWord> GetWords();
     }
@@ -19,25 +19,23 @@ namespace BusinessLogic.DictionaryActions
 
         public IList<DictWord> GetWords()
         {
-            var words = new List<DictWord>(200000);
+            List<DictWord> words = new List<DictWord>(200000);
 
             try
             {
-                using (StreamReader sr = new StreamReader(path))
+                using StreamReader sr = new StreamReader(path);
+                string line;
+                while ((line = sr.ReadLine()) != null)
                 {
-                    string line;
-                    while ((line = sr.ReadLine()) != null)
-                    {
-                        string[] fields = line.Split('\t');
+                    string[] fields = line.Split('\t');
 
-                        var word = new DictWord()
-                        {
-                            MainForm = fields[0],
-                            Type = fields[1],
-                            AnotherForm = fields[2]
-                        };
-                        words.Add(word);
-                    }
+                    DictWord word = new DictWord()
+                    {
+                        MainForm = fields[0],
+                        Type = fields[1],
+                        AnotherForm = fields[2]
+                    };
+                    words.Add(word);
                 }
             }
             catch (Exception e)

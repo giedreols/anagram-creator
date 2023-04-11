@@ -1,4 +1,4 @@
-﻿namespace Cli
+﻿namespace Contracts.Models
 
 
 {

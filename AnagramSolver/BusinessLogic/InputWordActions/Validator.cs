@@ -1,5 +1,6 @@
 ﻿using Cli;
 using Contracts.Data;
+using Contracts.Models;
 
 namespace BusinessLogic.InputWordActions
 {
@@ -7,7 +8,7 @@ namespace BusinessLogic.InputWordActions
     {
         public static bool IsValid(this InputWord word)
         {
-            var minLength = new Configuration().MinLength;
+            int minLength = new Configuration().MinLength;
             bool isValid = true;
 
             if (!IsValidChars(word.MainForm))

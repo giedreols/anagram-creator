@@ -1,6 +1,4 @@
 ﻿using Cli;
-using Contracts.Data;
-using System.Transactions;
 
 namespace BusinessLogic.AnagramActions
 {
@@ -8,8 +6,13 @@ namespace BusinessLogic.AnagramActions
     {
         public static List<string> ValidateAmount(this List<string> list)
         {
-            var totalAmount = new Configuration().TotalAmount;
-            return list.GetRange(0, totalAmount);
+            int totalAmount = new Configuration().TotalAmount;
+
+            if (list.Count > totalAmount)
+            {
+                return list.GetRange(0, totalAmount);
+            }
+            return list;
         }
     }
 }

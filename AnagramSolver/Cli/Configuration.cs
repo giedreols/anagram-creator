@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 
-namespace BusinessLogic
+namespace Cli
 {
     public class Configuration
     {
@@ -9,11 +9,11 @@ namespace BusinessLogic
 
         public Configuration()
         {
-            var builder = new ConfigurationBuilder();
+            ConfigurationBuilder builder = new();
             builder.SetBasePath(Directory.GetCurrentDirectory())
                    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
 
-            var config = builder.Build();
+            IConfigurationRoot config = builder.Build();
 
             TotalAmount = int.Parse(config["AnagramSettings:TotalAmount"]);
             MinLength = int.Parse(config["AnagramSettings:MinLength"]);

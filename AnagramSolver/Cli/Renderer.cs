@@ -1,6 +1,6 @@
 ﻿namespace Cli
 {
-    interface IRenderer
+    internal interface IRenderer
     {
         string GetWord();
 
@@ -40,7 +40,7 @@
             {
                 Console.WriteLine("Anagrams:");
 
-                foreach (var anagram in anagrams)
+                foreach (string anagram in anagrams)
                 {
                     Console.WriteLine(anagram);
                 }
@@ -56,7 +56,7 @@
         public bool DoRepeat()
         {
             Console.WriteLine("Repeat? Y/N");
-            var repeatText = Console.ReadLine().ToLower();
+            string repeatText = Console.ReadLine().ToLower();
             bool repeatValue;
 
             switch (repeatText)
