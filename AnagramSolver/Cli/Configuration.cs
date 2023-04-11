@@ -7,7 +7,7 @@ namespace BusinessLogic
         public int TotalAmount { get; private set; }
         public int MinLength { get; private set; }
 
-        public void ReadSettings()
+        public Configuration()
         {
             var builder = new ConfigurationBuilder();
             builder.SetBasePath(Directory.GetCurrentDirectory())

@@ -18,23 +18,25 @@ namespace Cli
     {
         public string GetWord()
         {
+            string word;
+
             var config = new Configuration();
             var minLength = config.MinLength;
 
             Console.WriteLine("**************");
             Console.WriteLine("Enter word: ");
-            var word = Console.ReadLine();
+            word = Console.ReadLine();
 
             if (!IsValidChars(word))
             {
                 Console.WriteLine("Word contains invalid characters. Try again.");
-                GetWord();
+                word = GetWord();
             }
 
             if (!IsValidLength(word, minLength))
             {
                 Console.WriteLine("Word is too short. Min. length = " + minLength);
-                GetWord();
+                word = GetWord();
             }
 
             return word;
