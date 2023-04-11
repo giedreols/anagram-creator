@@ -1,17 +1,7 @@
-﻿namespace Cli
+﻿using Contracts.Interfaces;
+
+namespace Cli
 {
-    internal interface IRenderer
-    {
-        string GetWord();
-
-        void RejectWord(string reason);
-
-        void ShowAnagrams(IList<string> anagrams);
-
-        bool DoRepeat();
-
-    }
-
     public class Renderer : IRenderer
     {
         public Renderer()

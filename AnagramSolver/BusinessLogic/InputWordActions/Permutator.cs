@@ -1,8 +1,9 @@
-﻿using Contracts.Models;
+﻿using Contracts.Interfaces;
+using Contracts.Models;
 
 namespace BusinessLogic.InputWordActions
 {
-    public class Permutator
+    public class Permutator : IPermutator
     {
         private HashSet<string> allPermutations;
 

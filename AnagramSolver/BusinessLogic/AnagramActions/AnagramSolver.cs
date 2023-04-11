@@ -1,14 +1,10 @@
 ﻿using BusinessLogic.DictionaryActions;
 using BusinessLogic.InputWordActions;
+using Contracts.Interfaces;
 using Contracts.Models;
 
 namespace BusinessLogic.AnagramActions
 {
-    internal interface IAnagramSolver
-    {
-        List<string> GetAnagrams(InputWord myWords);
-    }
-
     public class AnagramSolver : IAnagramSolver
     {
         private HashSet<string> wordList { get; set; }

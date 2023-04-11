@@ -1,12 +1,8 @@
-﻿using Contracts.Models;
+﻿using Contracts.Interfaces;
+using Contracts.Models;
 
 namespace BusinessLogic.DictionaryActions
 {
-    internal interface IWordRepository
-    {
-        IList<DictWord> GetWords();
-    }
-
     internal class WordRepository : IWordRepository
     {
         private string path;
