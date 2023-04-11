@@ -20,6 +20,6 @@ while (repeat)
     // show anagrams
     renderer.ShowAnagrams(anagrams);
 
-    // ask for repeating
+    // ask about repeating
     repeat = renderer.Repeat();
 }

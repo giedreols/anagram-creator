@@ -29,7 +29,7 @@ namespace BusinessLogic
                         {
                             MainForm = fields[0],
                             Type = fields[1],
-                            OtherForm = fields[2]
+                            AnotherForm = fields[2]
                         };
                         words.Add(word);
                     }

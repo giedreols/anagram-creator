@@ -18,6 +18,9 @@ namespace Cli
     {
         public string GetWord()
         {
+            var config = new Configuration();
+            var minLength = config.MinLength;
+
             Console.WriteLine("**************");
             Console.WriteLine("Enter word: ");
             var word = Console.ReadLine();
@@ -28,9 +31,9 @@ namespace Cli
                 GetWord();
             }
 
-            if (!IsValidLength(word))
+            if (!IsValidLength(word, minLength))
             {
-                Console.WriteLine("Word is too short. Min. length = " + Settings.MinLength);
+                Console.WriteLine("Word is too short. Min. length = " + minLength);
                 GetWord();
             }
 
@@ -93,9 +96,9 @@ namespace Cli
             return isValid;
         }
 
-        private static bool IsValidLength(string word)
+        private static bool IsValidLength(string word, int minLength)
         {
-            return word.Length >= Settings.MinLength;
+            return word.Length >= minLength;
         }
     }
 }

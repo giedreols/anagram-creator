@@ -8,6 +8,6 @@
 
         public string Type;
 
-        public string OtherForm;
+        public string AnotherForm;
     }
 }
