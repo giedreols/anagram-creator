@@ -5,6 +5,7 @@ using Cli;
 
 bool repeat = true;
 var renderer = new Renderer();
+var anagramSolver = new AnagramSolver();
 
 while (repeat)
 {
@@ -19,7 +20,6 @@ while (repeat)
     }
    
     // generate anagrams
-    var anagramSolver = new AnagramSolver();
     var anagrams = anagramSolver.GetAnagrams(inputWord.MainForm);
 
     // show anagrams

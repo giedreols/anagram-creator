@@ -16,22 +16,18 @@ namespace BusinessLogic
 
     public class AnagramSolver : IAnagramSolver
     {
-        private static HashSet<string> WordList = (new WordRepository().GetWords()).Select(word => word.MainForm).ToHashSet<string>();
-        private IList<string> recurrentWords { get; set; }
-
         private Permutator permutator { get; set; }
+        private HashSet<string> wordList { get; set; }
 
         public AnagramSolver()
         {
             permutator = new Permutator();
+            wordList = (new WordRepository().GetWords()).Select(word => word.MainForm).ToHashSet<string>();
         }
 
         public IList<string> GetAnagrams(string myWord)
         {
-            var allPermutations = permutator.GetPermutations(myWord);            
-
-            var wordList = (new WordRepository().GetWords()).Select(word => word.MainForm).ToHashSet<string>();
-
+            var allPermutations = permutator.GetPermutations(myWord);       
             return (wordList.Intersect(allPermutations)).ToList<string>();
         }
     }

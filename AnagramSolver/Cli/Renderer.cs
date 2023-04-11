@@ -67,7 +67,7 @@
                 case "y": repeatValue = true; break;
                 case "n": repeatValue = false; break;
                 default:
-                    DoRepeat();
+                    repeatValue = DoRepeat();
                     break;
             }
             return repeatValue;
