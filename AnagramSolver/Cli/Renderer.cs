@@ -60,7 +60,7 @@
         {
             Console.WriteLine("Repeat? Y/N");
             var repeatText = Console.ReadLine().ToLower();
-            bool repeatValue = false;
+            bool repeatValue;
 
             switch (repeatText)
             {

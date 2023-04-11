@@ -1,5 +1,4 @@
-﻿using Cli;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -10,13 +9,16 @@ namespace BusinessLogic.InputWordActions
 {
     public class Permutator
     {
+        private HashSet<string> allPermutations;
+
+
         public Permutator()
         {
             allPermutations = new HashSet<string>();
         }
 
 
-        public HashSet<string> GetPermutations(InputWord word)
+        public HashSet<string> GetPermutations(string word)
         {
             GeneratePermutations(word.ToCharArray(), word.Count());
             allPermutations.Remove(word);
