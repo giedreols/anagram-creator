@@ -1,25 +1,25 @@
 ﻿using Cli;
 using Contracts.Data;
 
-namespace BusinessLogic
+namespace BusinessLogic.InputWordActions
 {
-    public static class WordValidator
+    public static class Validator
     {
-        public static bool IsValid(this string word)
+        public static bool IsValid(this InputWord word)
         {
             var minLength = new Configuration().MinLength;
             var renderer = new Renderer();
             bool isValid = true;
 
-            if (!IsValidChars(word))
+            if (!IsValidChars(word.MainForm))
             {
-                renderer.RejectWord(WordRejectionReasons.InvalidCharacters);
+                word.InvalidReason = WordRejectionReasons.InvalidCharacters;
                 isValid = false;
             }
 
-            if (!IsValidLength(word, minLength))
+            if (!IsValidLength(word.MainForm, minLength))
             {
-                renderer.RejectWord(WordRejectionReasons.TooShort);
+                word.InvalidReason = WordRejectionReasons.TooShort;
                 isValid = false;
             }
             return isValid;

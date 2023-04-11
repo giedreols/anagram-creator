@@ -2,7 +2,7 @@
 
 
 {
-    public class Word
+    public class DictWord
     {
         public string MainForm;
 

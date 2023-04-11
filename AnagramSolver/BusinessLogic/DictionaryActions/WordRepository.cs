@@ -1,18 +1,17 @@
 ﻿using Cli;
-using System.Security.Cryptography;
 
-namespace BusinessLogic
+namespace BusinessLogic.DictionaryActions
 {
     interface IWordRepository
     {
-        IList<Word> GetWords();
+        IList<DictWord> GetWords();
     }
 
     internal class WordRepository : IWordRepository
     {
-        public IList<Word> GetWords()
+        public IList<DictWord> GetWords()
         {
-            var words = new List<Word>(200000);
+            var words = new List<DictWord>(200000);
 
             string path = Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).FullName, "net7.0\\Files\\zodynas.txt");
 
@@ -25,7 +24,7 @@ namespace BusinessLogic
                     {
                         string[] fields = line.Split('\t');
 
-                        var word = new Word()
+                        var word = new DictWord()
                         {
                             MainForm = fields[0],
                             Type = fields[1],
