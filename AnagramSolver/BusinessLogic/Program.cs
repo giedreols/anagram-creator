@@ -5,13 +5,18 @@ using Cli;
 
 
 bool repeat = true;
-
 var renderer = new Renderer();
 
 while (repeat)
 {
     // ask for word
     var myWord = renderer.GetWord();
+
+    if (!myWord.IsValid())
+    {
+        continue;
+    }
+   
 
     // generate anagrams
     var anagramSolver = new AnagramSolver();
@@ -21,5 +26,5 @@ while (repeat)
     renderer.ShowAnagrams(anagrams);
 
     // ask about repeating
-    repeat = renderer.Repeat();
+    repeat = renderer.DoRepeat();
 }

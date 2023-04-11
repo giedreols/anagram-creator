@@ -1,60 +1,38 @@
-﻿using BusinessLogic;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Cli
+﻿namespace Cli
 {
     interface IRenderer
     {
-        void ShowAnagrams(IList<string> anagrams);
+        void ShowInitialText();
 
         string GetWord();
+
+        void RejectWord(string reason);
+
+        void ShowAnagrams(IList<string> anagrams);
+
+        bool DoRepeat();
+
     }
 
     public class Renderer : IRenderer
     {
-        public string GetWord()
+        void IRenderer.ShowInitialText()
         {
-            string word;
-
-            var config = new Configuration();
-            var minLength = config.MinLength;
-
             Console.WriteLine("**************");
-            Console.WriteLine("Enter word: ");
-            word = Console.ReadLine();
 
-            if (!IsValidChars(word))
-            {
-                Console.WriteLine("Word contains invalid characters. Try again.");
-                word = GetWord();
-            }
-
-            if (!IsValidLength(word, minLength))
-            {
-                Console.WriteLine("Word is too short. Min. length = " + minLength);
-                word = GetWord();
-            }
-
-            return word;
+            Console.WriteLine("ANAGRAM GENERATOR");
+            Console.WriteLine("**************");
         }
 
-        public bool Repeat()
+        public string GetWord()
         {
-            Console.WriteLine("Repeat? Y/N");
-            var repeat = Console.ReadLine().ToLower();
+            Console.WriteLine("Enter word: ");
+            return Console.ReadLine();
+        }
 
-            switch (repeat)
-            {
-                case "y": return true;
-                case "n": return false;
-                default:
-                    Repeat();
-                    return false;
-            }
+        public void RejectWord(string reason)
+        {
+            Console.WriteLine("Can't create anagram. Reason: " + reason);
         }
 
         public void ShowAnagrams(IList<string> anagrams)
@@ -78,29 +56,21 @@ namespace Cli
             Console.WriteLine("**************");
         }
 
-        private static bool IsValidChars(string word)
+        public bool DoRepeat()
         {
-            bool isValid = false;
+            Console.WriteLine("Repeat? Y/N");
+            var repeatText = Console.ReadLine().ToLower();
+            bool repeatValue = false;
 
-            foreach (char letter in word)
+            switch (repeatText)
             {
-                if (char.IsDigit(letter) || char.IsLetter(letter) || letter.Equals('-'))
-                {
-                    isValid = true;
-                }
-
-                else
-                {
-                    isValid = false;
+                case "y": repeatValue = true; break;
+                case "n": repeatValue = false; break;
+                default:
+                    DoRepeat();
                     break;
-                }
             }
-            return isValid;
-        }
-
-        private static bool IsValidLength(string word, int minLength)
-        {
-            return word.Length >= minLength;
+            return repeatValue;
         }
     }
 }
