@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Cli;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -11,21 +12,20 @@ namespace BusinessLogic.InputWordActions
     {
         private HashSet<string> allPermutations;
 
-
         public Permutator()
         {
             allPermutations = new HashSet<string>();
         }
 
-
-        public HashSet<string> GetPermutations(string word)
+        public InputWord GeneratePermutations(InputWord word)
         {
-            GeneratePermutations(word.ToCharArray(), word.Count());
-            allPermutations.Remove(word);
-            return allPermutations;
+            Permute(word.MainForm.ToCharArray(), word.MainForm.Length);
+            allPermutations.Remove(word.MainForm);
+            word.Permutations = allPermutations;
+            return word;
         }
 
-        private void GeneratePermutations(char[] arr, int size)
+        private void Permute(char[] arr, int size)
         {
             if (size == 1)
             {
@@ -35,7 +35,7 @@ namespace BusinessLogic.InputWordActions
 
             for (int i = 0; i < size; i++)
             {
-                GeneratePermutations(arr, size - 1);
+                Permute(arr, size - 1);
 
                 if (size % 2 == 1)
                 {
@@ -53,3 +53,4 @@ namespace BusinessLogic.InputWordActions
         }
     }
 }
+

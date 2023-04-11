@@ -1,5 +1,6 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using BusinessLogic;
+using BusinessLogic.AnagramActions;
 using BusinessLogic.InputWordActions;
 using Cli;
 
@@ -18,12 +19,12 @@ while (repeat)
         renderer.RejectWord(inputWord.InvalidReason);
         continue;
     }
-   
+
     // generate anagrams
-    var anagrams = anagramSolver.GetAnagrams(inputWord.MainForm);
+    var anagrams = anagramSolver.GetAnagrams(inputWord);
 
     // show anagrams
-    renderer.ShowAnagrams(anagrams);
+    renderer.ShowAnagrams(anagrams.ValidateAmount());
 
     // ask about repeating
     repeat = renderer.DoRepeat();

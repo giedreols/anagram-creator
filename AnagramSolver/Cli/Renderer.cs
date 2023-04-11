@@ -2,8 +2,6 @@
 {
     interface IRenderer
     {
-        void ShowInitialText();
-
         string GetWord();
 
         void RejectWord(string reason);
@@ -16,10 +14,9 @@
 
     public class Renderer : IRenderer
     {
-        void IRenderer.ShowInitialText()
+        public Renderer()
         {
             Console.WriteLine("**************");
-
             Console.WriteLine("ANAGRAM GENERATOR");
             Console.WriteLine("**************");
         }

@@ -8,7 +8,6 @@ namespace BusinessLogic.InputWordActions
         public static bool IsValid(this InputWord word)
         {
             var minLength = new Configuration().MinLength;
-            var renderer = new Renderer();
             bool isValid = true;
 
             if (!IsValidChars(word.MainForm))
