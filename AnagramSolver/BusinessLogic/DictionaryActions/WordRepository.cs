@@ -16,6 +16,7 @@ namespace BusinessLogic.DictionaryActions
             if (dir == null)
             {
                 renderer.ShowError("Can't find dictionary.");
+                // weird that we continue to attempt to access dir later + GetCurrentDirectory can't return null
             }
 
             try
@@ -31,7 +32,7 @@ namespace BusinessLogic.DictionaryActions
 
         public IList<DictWord> GetWords()
         {
-            List<DictWord> words = new(200000);
+            List<DictWord> words = new(200000); // file actually had less lines, so that number actually slows us down
 
             try
             {

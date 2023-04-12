@@ -19,6 +19,7 @@ namespace BusinessLogic.AnagramActions
             Permutator permutator = new Permutator();
             permutator.GeneratePermutations(inputWord);
 
+            // unnecessary null check (input word is not supposed to be null) + it should be at the beginning of the method
             if (inputWord == null)
                 return new List<string>();
 

@@ -20,7 +20,8 @@ namespace Cli
                 TotalAmount = int.Parse(config["AnagramSettings:TotalAmount"]);
                 MinLength = int.Parse(config["AnagramSettings:MinLength"]);
             }
-            catch (Exception)
+            catch (Exception) // eating of exceptions is not recommended. If user puts string instead of number in config it should not silently fail. 
+                              // But if you want to silently fail look at TryParse :)  
             {
                 TotalAmount = 1000;
                 MinLength = 1;
