@@ -1,5 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
 // this file should be in AnagramSolver.Cli
+
+using System.Text;
 using BusinessLogic.AnagramActions;
 using BusinessLogic.InputWordActions;
 using Cli;
