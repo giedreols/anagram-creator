@@ -1,15 +1,11 @@
-﻿using Cli;
-using Cli.Data;
-using Contracts.Models;
+﻿using Contracts.Models;
 
 namespace BusinessLogic.InputWordActions
 {
     public static class Validator
     {
-        public static void Validate(this InputWord word)
+        public static void Validate(this InputWord word, int minLength)
         {
-            int minLength = new Configuration().MinLength;
-
             if (!IsValidChars(word.MainForm))
             {
                 word.InvalidityReason = WordRejectionReasons.InvalidCharacters;

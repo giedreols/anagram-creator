@@ -1,5 +1,4 @@
-﻿using Cli;
-using Contracts.Interfaces;
+﻿using Contracts.Interfaces;
 using Contracts.Models;
 
 namespace BusinessLogic.DictionaryActions
@@ -7,32 +6,23 @@ namespace BusinessLogic.DictionaryActions
     internal class WordRepository : IWordRepository
     {
         private static string path { get; set; }
-        private Renderer renderer = new Renderer();
-
 
         public WordRepository()
         {
             var dir = Directory.GetCurrentDirectory();
-            if (dir == null)
-            {
-                renderer.ShowError("Can't find dictionary.");
-                // weird that we continue to attempt to access dir later + GetCurrentDirectory can't return null
-            }
-
             try
             {
                 path = Path.Combine(Directory.GetParent(dir).FullName, "net7.0\\Files\\zodynas.txt");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                renderer.ShowError(ex.Message);
-                throw;
+                throw new Exception();
             }
         }
 
         public IList<DictWord> GetWords()
         {
-            List<DictWord> words = new(200000); // file actually had less lines, so that number actually slows us down
+            List<DictWord> words = new();
 
             try
             {
@@ -45,10 +35,9 @@ namespace BusinessLogic.DictionaryActions
                     words.Add(word);
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                renderer.ShowError(ex.Message);
-                throw;
+                throw new Exception();
             }
 
             return words;
