@@ -28,7 +28,7 @@ while (repeat)
         continue;
     }
 
-    List<string> anagrams = anagramSolver.GetAnagrams(inputWord);
+    List<string> anagrams = anagramSolver.GetAnagrams(inputWord.MainForm);
 
     renderer.ShowAnagrams(anagrams.ValidateAmount(configuration.TotalAmount));
 
