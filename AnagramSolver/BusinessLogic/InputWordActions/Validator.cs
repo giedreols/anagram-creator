@@ -24,7 +24,7 @@ namespace BusinessLogic.InputWordActions
 
             foreach (char letter in word)
             {
-                if (char.IsDigit(letter) || char.IsLetter(letter) || letter.Equals('-'))
+                if (char.IsDigit(letter) || char.IsLetter(letter) || letter.Equals('-') || letter.Equals(' '))
                 {
                     isValid = true;
                 }

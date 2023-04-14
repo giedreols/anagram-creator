@@ -19,14 +19,12 @@ namespace BusinessLogic.AnagramActions
 
         public List<string> GetAnagrams(string inputWord)
         {
-            var tempList = new List<string>();
-            string tempInputWord = new(inputWord.OrderBy(c => c).ToArray());
+            List<string> tempList = new();
+            var tempInputWord = inputWord.OrderBy(c => c);
 
             foreach (var word in WordList)
             {
-                string tempDictWord = new(word.OrderBy(c => c).ToArray());
-
-                if (tempDictWord.SequenceEqual(tempInputWord))
+                if (tempInputWord.SequenceEqual(word.OrderBy(c => c)))
                 {
                     tempList.Add(word);
                 }
@@ -36,6 +34,7 @@ namespace BusinessLogic.AnagramActions
 
             return tempList;
         }
+
     }
 }
 
