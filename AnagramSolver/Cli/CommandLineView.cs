@@ -1,9 +1,16 @@
 ﻿using Contracts.Interfaces;
+using System.Text;
 
 namespace Cli
 {
     public class CommandLineView : IRenderer
     {
+        public CommandLineView()
+        {
+            Console.InputEncoding = Encoding.Unicode;
+            Console.OutputEncoding = Encoding.UTF8;
+        }
+
         public void ShowHeader()
         {
             Console.WriteLine("**************");

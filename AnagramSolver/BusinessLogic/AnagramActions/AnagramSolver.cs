@@ -1,11 +1,6 @@
 ﻿using BusinessLogic.DictionaryActions;
-using BusinessLogic.InputWordActions;
 using Contracts.Interfaces;
-using Contracts.Models;
-using System.Collections;
 using System.Collections.ObjectModel;
-using System.Diagnostics.Metrics;
-using System.Linq;
 
 namespace BusinessLogic.AnagramActions
 {

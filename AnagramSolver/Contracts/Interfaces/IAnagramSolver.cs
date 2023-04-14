@@ -1,6 +1,4 @@
-﻿using Contracts.Models;
-
-namespace Contracts.Interfaces
+﻿namespace Contracts.Interfaces
 {
     public interface IAnagramSolver
     {

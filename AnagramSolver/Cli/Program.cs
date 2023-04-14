@@ -1,19 +1,17 @@
-﻿using Cli;
-using Contracts.Models;
-using System.Text;
-using BusinessLogic.AnagramActions;
+﻿using BusinessLogic.AnagramActions;
 using BusinessLogic.InputWordActions;
+using Cli;
 using Contracts.Interfaces;
+using Contracts.Models;
 
 
 bool repeat = true;
+
 IRenderer renderer = new CommandLineView();
 Configuration configuration = new();
+IAnagramSolver anagramSolver = new AnagramSolver();
 
 renderer.ShowHeader();
-IAnagramSolver anagramSolver = new AnagramSolver();
-Console.InputEncoding = Encoding.Unicode;
-Console.OutputEncoding = Encoding.UTF8;
 
 while (repeat)
 {

@@ -24,11 +24,9 @@ namespace Cli
 
         private int ReadConfiguration(string settings)
         {
-            if (int.TryParse(Config[settings], out int value))
-            {
-                return value;
-            }
-            else throw new ConfigurationErrorsException($"{settings} is not set correctly in configuration");
+            return int.TryParse(Config[settings], out int value)
+                ? value
+                : throw new ConfigurationErrorsException($"{settings} is not set correctly in configuration");
         }
     }
 }

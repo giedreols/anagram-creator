@@ -1,6 +1,5 @@
 ﻿namespace Contracts.Models
 
-
 {
     public class DictWord
     {
@@ -13,7 +12,7 @@
         public DictWord(string mainForm, string type, string anotherForm)
         {
             MainForm = mainForm;
-            Type = type;    
+            Type = type;
             AnotherForm = anotherForm;
         }
     }

@@ -5,11 +5,7 @@ namespace BusinessLogic.AnagramActions
     {
         public static List<string> ValidateAmount(this List<string> list, int totalAmount)
         {
-            if (list.Count > totalAmount)
-            {
-                return list.GetRange(0, totalAmount);
-            }
-            return list;
+            return list.Count > totalAmount ? list.GetRange(0, totalAmount) : list;
         }
     }
 }
