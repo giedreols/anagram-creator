@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
+using System.Configuration;
 
 namespace Cli
 {
@@ -7,26 +8,27 @@ namespace Cli
         public int TotalAmount { get; private set; }
         public int MinLength { get; private set; }
 
+        private IConfigurationRoot Config { get; set; }
+
         public Configuration()
         {
             ConfigurationBuilder builder = new();
             builder.SetBasePath(Directory.GetCurrentDirectory())
-                   .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+                   .AddJsonFile("appsettings.json", optional: false);
 
-            IConfigurationRoot config = builder.Build();
+            Config = builder.Build();
 
-            try
-            {
-                TotalAmount = int.Parse(config["AnagramSettings:TotalAmount"]);
-                MinLength = int.Parse(config["AnagramSettings:MinLength"]);
-            }
-            catch (Exception) // eating of exceptions is not recommended. If user puts string instead of number in config it should not silently fail. 
-                              // But if you want to silently fail look at TryParse :)  
-            {
-                TotalAmount = 1000;
-                MinLength = 1;
-            }
+            TotalAmount = ReadConfiguration("AnagramSettings:TotalAmount");
+            MinLength = ReadConfiguration("AnagramSettings:MinLength");
         }
 
+        private int ReadConfiguration(string settings)
+        {
+            if (int.TryParse(Config[settings], out int value))
+            {
+                return value;
+            }
+            else throw new ConfigurationErrorsException($"{settings} is not set correctly in configuration");
+        }
     }
 }

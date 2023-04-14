@@ -2,7 +2,7 @@
 
 namespace Cli
 {
-    public class Renderer : IRenderer
+    public class CommandLineView : IRenderer
     {
         public void ShowHeader()
         {
