@@ -1,12 +1,14 @@
 ﻿using BusinessLogic.DictionaryActions;
 using Contracts.Interfaces;
+using Contracts.Models;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace BusinessLogic.AnagramActions
 {
     public class AnagramSolver : IAnagramSolver
     {
-        private ReadOnlyCollection<string> WordList { get; set; }
+        private IReadOnlyDictionary<string, string> WordList { get; set; }
 
         public AnagramSolver()
         {
@@ -14,27 +16,27 @@ namespace BusinessLogic.AnagramActions
 
             List<string> tempList = new(wordRepository.GetWords().Select(word => word.MainForm));
             tempList.AddRange(wordRepository.GetWords().Select(word => word.AnotherForm));
-            WordList = new ReadOnlyCollection<string>(tempList.Distinct().ToList());
+            tempList = tempList.Distinct().ToList();
+
+            var tempDictionary = tempList.ToDictionary(word => word, word => new string(word.OrderBy(c => c).ToArray()));
+            WordList = tempDictionary;
         }
 
         public List<string> GetAnagrams(string inputWord)
         {
-            List<string> tempList = new();
-            var tempInputWord = inputWord.OrderBy(c => c);
+            List<string> anagrams = new();
+            var inputSequence = inputWord.ToLower().OrderBy(c => c);
 
             foreach (var word in WordList)
             {
-                if (tempInputWord.SequenceEqual(word.OrderBy(c => c)))
+                if (inputSequence.SequenceEqual(word.Value.ToLower()) && word.Key.ToLower() != inputWord.ToLower())
                 {
-                    tempList.Add(word);
+                    anagrams.Add(word.Key);
                 }
             }
 
-            tempList.Remove(inputWord);
-
-            return tempList;
+            return anagrams;
         }
-
     }
 }
 
