@@ -17,7 +17,7 @@
         {
             MainForm = mainForm;
             LowerCaseForm = mainForm.ToLower();
-            OrderedForm = new String(mainForm.ToLower().OrderBy(a => a).ToArray());
+            OrderedForm = new String(mainForm.ToLower().OrderByDescending(a => a).ToArray());
             Type = type;
         }
     }
