@@ -2,6 +2,7 @@
 using Contracts.Interfaces;
 using Contracts.Models;
 using System.Collections.Immutable;
+using System.ComponentModel.Design;
 using System.Diagnostics;
 
 namespace BusinessLogic.AnagramActions
@@ -66,15 +67,83 @@ namespace BusinessLogic.AnagramActions
             var timer = new Stopwatch();
             timer.Start();
 
+            // temp lista issiskaidyti pagal tai, kokio ilgio jame zodziai
+            // key - ilgis, value - indeksas
+            Dictionary<int, int> wordLengthIndexes = new();
 
+            int counter = 1;
+            var firstIndex = 0;
 
+            for (int i = 0; i < tempList.Count - 2; i++)
+            {
+
+                if (tempList[i].OrderedForm.Length == tempList[i + 1].OrderedForm.Length)
+                {
+                    counter++;
+                }
+                else
+                {
+                    wordLengthIndexes.Add(tempList[i].OrderedForm.Length, firstIndex);
+                    counter = 1;
+                    firstIndex = i + 1;
+                }
+            }
+            if (firstIndex < tempList.Count - 1)
+            {
+                wordLengthIndexes.Add(tempList[firstIndex].OrderedForm.Length, firstIndex);
+            }
 
 
             while (index < tempList.Count)
             {
                 // 1 ismesti per ilgus zodzius arba sekas ar tai, kas turi netinkamu (nelikusiu) raidziu
-                if (tempList[index].MainForm.Length > residualChars.Length || !WordContainsOnlyCharsFromList(residualChars, tempList[index].OrderedForm))
+                if (tempList[index].MainForm.Length > residualChars.Length)
                 {
+                    counters["ilgieji"] = counters["ilgieji"] + 1;
+
+                    // 1.1
+                    if (index < tempList.Count - 1)
+                    {
+                        // rasti artimiausia tinkamo ilgio arba trumpesni indeksa
+                        var tempIndex = FindNextAppropriateLengthIndex(wordLengthIndexes, residualChars.Length);
+
+                        if (tempIndex == -1) break;
+                    }
+
+                    // 1.2
+                    else
+                    {
+                        // 1.2.1
+                        if (indexes.Count > 2)
+                        {
+                            residualChars = AppendResidualChars(residualChars, tempList[indexes.Peek()].OrderedForm);
+                            indexes.Pop();
+                            index = indexes.Peek() + 1;
+                            residualChars = AppendResidualChars(residualChars, tempList[indexes.Peek()].OrderedForm);
+                        }
+
+                        // 1.2.2
+                        else if (indexes.Count == 2)
+                        {
+                            indexes.Pop();
+                            index = indexes.Peek() + 1;
+                            residualChars = inputSequence.ToArray();
+                        }
+
+                        // 1.2.3
+                        else if (indexes.Count == 1)
+                        {
+                            index = indexes.Peek() + 1;
+                            residualChars = inputSequence.ToArray();
+                        }
+                    }
+                }
+
+                if (!WordContainsOnlyCharsFromList(residualChars, tempList[index].OrderedForm))
+                {
+                    counters["lygus"] = counters["lygus"] + 1;
+
+
                     // 1.1
                     if (index < tempList.Count - 1)
                     {
@@ -136,6 +205,8 @@ namespace BusinessLogic.AnagramActions
                 // 3 trumpieji zodziai
                 else
                 {
+                    counters["trumpieji"] = counters["trumpieji"] + 1;
+
                     // 3.1
                     if (index < tempList.Count - 1)
                     {
@@ -186,6 +257,23 @@ namespace BusinessLogic.AnagramActions
 
             return anagrams;
 
+        }
+
+        private int FindNextAppropriateLengthIndex(Dictionary<int, int> indexesList, int length)
+        {
+            while (length > 0)
+            {
+                if (indexesList.ContainsKey(length))
+                {
+                    return indexesList[length];
+                }
+                else
+                {
+                    length--;
+                }
+
+            }
+            return -1;
         }
 
         private static char[] AppendResidualChars(char[] residualChars, string word)
@@ -242,19 +330,26 @@ namespace BusinessLogic.AnagramActions
         {
             List<AnagramWord> list = new();
             string[] inputWordList = inputWords.ToLower().Split(' ');
+            string inputWordString = inputWords.ToLower();
+
 
             foreach (var word in WordList)
             {
                 bool isAppropriate = false;
 
-                if (inputWords.Length < word.OrderedForm.Length || inputWordList.Contains(word.LowerCaseForm))
+                if (word.LowerCaseForm.Equals("sula"))
+                {
+
+                }
+
+                if (inputWordString.Length < word.OrderedForm.Length || inputWordList.Contains(word.LowerCaseForm))
                 {
                     continue;
                 }
 
                 foreach (var letter in word.OrderedForm)
                 {
-                    if (inputWords.Contains(letter))
+                    if (inputWordString.Contains(letter))
                     {
                         isAppropriate = true;
                     }
