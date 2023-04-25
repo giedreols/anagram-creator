@@ -1,37 +1,42 @@
 ﻿using BusinessLogic.DictionaryActions;
 using Contracts.Interfaces;
 using Contracts.Models;
-using System.Collections.ObjectModel;
-using System.Linq;
+using System.Collections.Immutable;
 
 namespace BusinessLogic.AnagramActions
 {
     public class AnagramSolver : IAnagramSolver
     {
-        private IReadOnlyDictionary<string, string> WordList { get; set; }
+        private ImmutableList<AnagramWord> WordList { get; set; }
 
         public AnagramSolver()
         {
             IWordRepository wordRepository = new WordDictionary();
+            IList<DictWord> words = wordRepository.GetWords();
+            List<AnagramWord> tempList = new();
 
-            List<string> tempList = new(wordRepository.GetWords().Select(word => word.MainForm));
-            tempList.AddRange(wordRepository.GetWords().Select(word => word.AnotherForm));
-            tempList = tempList.Distinct().ToList();
+            foreach (var word in words)
+            {
+                tempList.Add(new AnagramWord(word.MainForm));
+                tempList.Add(new AnagramWord(word.AnotherForm));
+            }
 
-            var tempDictionary = tempList.ToDictionary(word => word, word => new string(word.OrderBy(c => c).ToArray()));
-            WordList = tempDictionary;
+            tempList = tempList.DistinctBy(word => word.LowerCaseForm).ToList();
+            tempList = tempList.OrderByDescending(word => word.MainForm.Length).ToList();
+            WordList = tempList.ToImmutableList();
         }
 
         public List<string> GetAnagrams(string inputWord)
         {
             List<string> anagrams = new();
-            var inputSequence = inputWord.ToLower().OrderBy(c => c);
+            var loweredInputWord = inputWord.ToLower().Replace(" ", "");
+            var inputSequence = loweredInputWord.OrderByDescending(c => c);
 
             foreach (var word in WordList)
             {
-                if (inputSequence.SequenceEqual(word.Value.ToLower()) && word.Key.ToLower() != inputWord.ToLower())
+                if (inputSequence.SequenceEqual(word.OrderedForm) && word.LowerCaseForm != loweredInputWord)
                 {
-                    anagrams.Add(word.Key);
+                    anagrams.Add(word.MainForm);
                 }
             }
 

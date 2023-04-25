@@ -50,7 +50,6 @@ namespace Cli
             Console.WriteLine("**************");
         }
 
-        // TODO: exception handling
         public bool DoRepeat()
         {
             Console.WriteLine("Repeat? Y/N");
