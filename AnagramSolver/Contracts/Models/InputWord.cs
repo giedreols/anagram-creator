@@ -8,8 +8,6 @@
 
         public string? InvalidityReason { get; set; }
 
-        public HashSet<string>? Permutations { get; set; }
-
         public InputWord(string mainForm)
         {
             MainForm = mainForm;
