@@ -2,8 +2,6 @@
 using Contracts.Interfaces;
 using Contracts.Models;
 using System.Collections.Immutable;
-using System.ComponentModel.Design;
-using System.Diagnostics;
 
 namespace BusinessLogic.AnagramActions
 {
@@ -19,8 +17,9 @@ namespace BusinessLogic.AnagramActions
 
             foreach (var word in words)
             {
-                tempList.Add(new AnagramWord(word.MainForm, word.Type));
-                tempList.Add(new AnagramWord(word.AnotherForm, word.Type));
+                tempList.Add(new AnagramWord(word.MainForm));
+                tempList.Add(new AnagramWord(word.AnotherForm));
+
             }
 
             tempList = tempList.DistinctBy(word => word.LowerCaseForm).ToList();
@@ -31,225 +30,14 @@ namespace BusinessLogic.AnagramActions
         public List<string> GetAnagrams(string inputWord)
         {
             List<string> anagrams = new();
-            var inputSequence = inputWord.ToLower().OrderByDescending(c => c);
+            var loweredInputWord = inputWord.ToLower().Replace(" ", "");
+            var inputSequence = loweredInputWord.OrderByDescending(c => c);
 
             foreach (var word in WordList)
             {
-                // koks skirtumas tarp ToLower ir ToLoweInvariant ?
-                if (inputSequence.SequenceEqual(word.OrderedForm) && word.LowerCaseForm != inputWord.ToLower())
+                if (inputSequence.SequenceEqual(word.OrderedForm) && word.LowerCaseForm != loweredInputWord)
                 {
                     anagrams.Add(word.MainForm);
-                }
-            }
-
-            return anagrams;
-        }
-
-
-        public List<List<string>> GetAnagramsMultiWord(string inputWords)
-        {
-            var tempList = GetValidWordsFromWordList(inputWords);
-
-            var inputSequence = new string(inputWords.Replace(" ", "").OrderBy(c => c).ToArray()).ToLower();
-
-            Dictionary<string, int> counters = new Dictionary<string, int>();
-            counters.Add("ilgieji", 0);
-            counters.Add("lygus", 0);
-            counters.Add("trumpieji", 0);
-
-
-            List<List<string>> anagrams = new();
-            Stack<int> indexes = new();
-            List<Stack<int>> anagramIndexes = new();
-            int index = 0;
-            char[] residualChars = inputSequence.ToArray();
-
-            var timer = new Stopwatch();
-            timer.Start();
-
-            // temp lista issiskaidyti pagal tai, kokio ilgio jame zodziai
-            // key - ilgis, value - indeksas
-            Dictionary<int, int> wordLengthIndexes = new();
-
-            int counter = 1;
-            var firstIndex = 0;
-
-            for (int i = 0; i < tempList.Count - 2; i++)
-            {
-
-                if (tempList[i].OrderedForm.Length == tempList[i + 1].OrderedForm.Length)
-                {
-                    counter++;
-                }
-                else
-                {
-                    wordLengthIndexes.Add(tempList[i].OrderedForm.Length, firstIndex);
-                    counter = 1;
-                    firstIndex = i + 1;
-                }
-            }
-            if (firstIndex < tempList.Count - 1)
-            {
-                wordLengthIndexes.Add(tempList[firstIndex].OrderedForm.Length, firstIndex);
-            }
-
-
-            while (index < tempList.Count)
-            {
-                // 1 ismesti per ilgus zodzius arba sekas ar tai, kas turi netinkamu (nelikusiu) raidziu
-                if (tempList[index].MainForm.Length > residualChars.Length)
-                {
-                    counters["ilgieji"] = counters["ilgieji"] + 1;
-
-                    // 1.1
-                    if (index < tempList.Count - 1)
-                    {
-                        // rasti artimiausia tinkamo ilgio arba trumpesni indeksa
-                        var tempIndex = FindNextAppropriateLengthIndex(wordLengthIndexes, residualChars.Length);
-
-                        if (tempIndex == -1) break;
-                    }
-
-                    // 1.2
-                    else
-                    {
-                        // 1.2.1
-                        if (indexes.Count > 2)
-                        {
-                            residualChars = AppendResidualChars(residualChars, tempList[indexes.Peek()].OrderedForm);
-                            indexes.Pop();
-                            index = indexes.Peek() + 1;
-                            residualChars = AppendResidualChars(residualChars, tempList[indexes.Peek()].OrderedForm);
-                        }
-
-                        // 1.2.2
-                        else if (indexes.Count == 2)
-                        {
-                            indexes.Pop();
-                            index = indexes.Peek() + 1;
-                            residualChars = inputSequence.ToArray();
-                        }
-
-                        // 1.2.3
-                        else if (indexes.Count == 1)
-                        {
-                            index = indexes.Peek() + 1;
-                            residualChars = inputSequence.ToArray();
-                        }
-                    }
-                }
-
-                if (!WordContainsOnlyCharsFromList(residualChars, tempList[index].OrderedForm))
-                {
-                    counters["lygus"] = counters["lygus"] + 1;
-
-
-                    // 1.1
-                    if (index < tempList.Count - 1)
-                    {
-                        index++;
-                        continue;
-                    }
-
-                    // 1.2
-                    else
-                    {
-                        // 1.2.1
-                        if (indexes.Count > 2)
-                        {
-                            residualChars = AppendResidualChars(residualChars, tempList[indexes.Peek()].OrderedForm);
-                            indexes.Pop();
-                            index = indexes.Peek() + 1;
-                            residualChars = AppendResidualChars(residualChars, tempList[indexes.Peek()].OrderedForm);
-                        }
-
-                        // 1.2.2
-                        else if (indexes.Count == 2)
-                        {
-                            indexes.Pop();
-                            index = indexes.Peek() + 1;
-                            residualChars = inputSequence.ToArray();
-                        }
-
-                        // 1.2.3
-                        else if (indexes.Count == 1)
-                        {
-                            index = indexes.Peek() + 1;
-                            residualChars = inputSequence.ToArray();
-                        }
-                    }
-                }
-
-                // 2 darbas su vienodo ilgio zodziais arba kai seka pasiekia reikiama ilgi
-                else if (tempList[index].MainForm.Length == residualChars.Length)
-                {
-                    indexes.Push(index);
-                    Stack<int> tempIndexes = new(indexes.AsEnumerable());
-                    anagramIndexes.Add(tempIndexes);
-
-                    // 2.1
-                    if (index < tempList.Count - 1)
-                    {
-                        index = indexes.Peek() + 1;
-                    }
-
-                    // 2.2
-                    else
-                    {
-                        indexes.Pop();
-                        index = indexes.Peek() + 1;
-                        residualChars = AppendResidualChars(residualChars, tempList[indexes.Peek()].OrderedForm);
-                    }
-                }
-
-                // 3 trumpieji zodziai
-                else
-                {
-                    counters["trumpieji"] = counters["trumpieji"] + 1;
-
-                    // 3.1
-                    if (index < tempList.Count - 1)
-                    {
-                        indexes.Push(index);
-                        residualChars = TrimWordCharsFromList(residualChars, tempList[indexes.Peek()].OrderedForm);
-                        index = indexes.Peek() + 1; // arba index++
-                        continue;
-                    }
-
-                    // 3.2
-                    else if (indexes.Count > 0)
-                    {
-                        index = indexes.Peek() + 1;
-                        residualChars = AppendResidualChars(residualChars, tempList[indexes.Peek()].OrderedForm);
-                    }
-                }
-
-                switch (indexes.Count)
-                {
-                    case 1: indexes.Clear(); break;
-                    case 0: index = tempList.Count; break;
-                    default: indexes.Pop(); break;
-
-                }
-            }
-
-
-
-            timer.Stop();
-
-            Console.WriteLine("Time taken: " + timer.Elapsed.ToString(@"m\:ss\.fff"));
-            Console.WriteLine("ilgieji: " + counters["ilgieji"]);
-            Console.WriteLine("lygus: " + counters["lygus"]);
-            Console.WriteLine("trumpieji: " + counters["trumpieji"]);
-
-
-            foreach (var indexSequence in anagramIndexes)
-            {
-                List<string> wordSequence = new();
-
-                foreach (var i in indexSequence)
-                {
-                    wordSequence.Add(tempList[i].MainForm);
                 }
 
                 anagrams.Add(wordSequence);
