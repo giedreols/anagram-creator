@@ -2,7 +2,7 @@
 
 namespace BusinessLogic.InputWordActions
 {
-    public static class Validator
+    public static class InputValidator
     {
         public static void Validate(this InputWord word, int minLength)
         {

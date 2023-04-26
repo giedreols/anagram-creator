@@ -6,7 +6,7 @@ namespace BusinessLogic.DictionaryActions
 {
     internal class WordDictionary : IWordRepository
     {
-        public ReadOnlyCollection<DictWord> Words { get; private set; }
+        private ReadOnlyCollection<DictWord> Words { get; set; }
         private static string path;
 
         public WordDictionary()

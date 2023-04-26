@@ -1,7 +1,7 @@
 ﻿
 namespace BusinessLogic.AnagramActions
 {
-    public static class Validator
+    public static class AnagramValidator
     {
         public static List<string> ValidateAmount(this List<string> list, int totalAmount)
         {
