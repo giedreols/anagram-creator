@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 
 namespace BusinessLogic.DictionaryActions
 {
-    internal class WordDictionary : IWordRepository
+    public class WordDictionary : IWordRepository
     {
         private ReadOnlyCollection<DictWord> Words { get; set; }
         private static string path;
