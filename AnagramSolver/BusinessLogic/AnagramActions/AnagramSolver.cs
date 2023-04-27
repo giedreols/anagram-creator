@@ -9,9 +9,8 @@ namespace BusinessLogic.AnagramActions
     {
         private ImmutableList<AnagramWord> WordList { get; set; }
 
-        public AnagramSolver()
+        public AnagramSolver(IWordRepository wordRepository)
         {
-            IWordRepository wordRepository = new WordDictionary();
             IList<DictWord> words = wordRepository.GetWords();
             List<AnagramWord> tempList = new();
 
