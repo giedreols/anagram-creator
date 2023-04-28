@@ -4,7 +4,7 @@ using BusinessLogic.DictionaryActions;
 using Cli;
 using Contracts.Interfaces;
 using Contracts.Models;
-
+using System.Diagnostics;
 
 bool repeat = true;
 
@@ -17,8 +17,10 @@ IAnagramSolver anagramSolver = new AnagramSolver(wordDictionary);
 
 renderer.ShowHeader();
 
+
 while (repeat)
 {
+
     string word = renderer.GetWord();
     InputWord inputWord = new(word);
 
@@ -30,10 +32,11 @@ while (repeat)
         continue;
     }
 
-    List<string> anagrams = anagramSolver.GetAnagrams(inputWord.MainForm);
+    //List<string> anagrams = anagramSolver.GetAnagrams(inputWord.MainForm);
+    List<List<string>> anagrams = anagramSolver.GetAnagramsMultiWord(inputWord.MainForm);
 
     renderer.ShowAnagrams(anagrams.ValidateAmount(configuration.TotalAmount));
 
     repeat = renderer.DoRepeat();
-}
 
+}

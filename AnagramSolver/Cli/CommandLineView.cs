@@ -29,7 +29,7 @@ namespace Cli
             Console.WriteLine("Can't create anagram. Reason: " + reason);
         }
 
-        public void ShowAnagrams(IList<string> anagrams)
+        public void ShowAnagrams(IList<List<string>> anagrams)
         {
             Console.WriteLine("**************");
 
@@ -37,9 +37,9 @@ namespace Cli
             {
                 Console.WriteLine("Anagrams:");
 
-                foreach (string anagram in anagrams)
+                foreach (var anagram in anagrams)
                 {
-                    Console.WriteLine(anagram);
+                    Console.WriteLine(string.Join(" ", anagram));
                 }
             }
             else

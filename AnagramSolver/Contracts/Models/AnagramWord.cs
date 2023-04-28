@@ -1,4 +1,5 @@
 ﻿namespace Contracts.Models
+
 {
     public class AnagramWord
     {
@@ -17,3 +18,4 @@
         }
     }
 }
+
