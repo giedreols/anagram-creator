@@ -1,5 +1,6 @@
 ﻿using Contracts.Interfaces;
 using Contracts.Models;
+using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 
 namespace BusinessLogic.DictionaryActions
@@ -21,7 +22,30 @@ namespace BusinessLogic.DictionaryActions
             }
         }
 
-        public IList<DictWord> GetWords()
+        // kaip geriau ir logiskiau - ar metode saugot kintamuosius, ar klaseje? ir privacius metodus geriau void ar return tipo daryt?
+        public ImmutableList<AnagramWord> GetWords()
+        {
+            ReadWords();
+            return ConvertDictionaryWordsToAnagramWords();
+        }
+
+        private ImmutableList<AnagramWord> ConvertDictionaryWordsToAnagramWords()
+        {
+            List<AnagramWord> tempList = new();
+
+            foreach (var word in Words)
+            {
+                tempList.Add(new AnagramWord(word.MainForm));
+                tempList.Add(new AnagramWord(word.AnotherForm));
+
+            }
+
+            tempList = tempList.DistinctBy(word => word.LowerCaseForm).ToList();
+            tempList = tempList.OrderByDescending(word => word.MainForm.Length).ToList();
+            return tempList.ToImmutableList();
+        }
+
+        private void ReadWords()
         {
             List<DictWord> tempList = new();
 
@@ -43,8 +67,6 @@ namespace BusinessLogic.DictionaryActions
             }
 
             Words = new ReadOnlyCollection<DictWord>(tempList.Distinct().ToList());
-
-            return Words;
         }
     }
 }

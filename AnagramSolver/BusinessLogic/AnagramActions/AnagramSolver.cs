@@ -10,19 +10,7 @@ namespace BusinessLogic.AnagramActions
 
         public AnagramSolver(IWordRepository wordRepository)
         {
-            IList<DictWord> words = wordRepository.GetWords();
-            List<AnagramWord> tempList = new();
-
-            foreach (var word in words)
-            {
-                tempList.Add(new AnagramWord(word.MainForm));
-                tempList.Add(new AnagramWord(word.AnotherForm));
-
-            }
-
-            tempList = tempList.DistinctBy(word => word.LowerCaseForm).ToList();
-            tempList = tempList.OrderByDescending(word => word.MainForm.Length).ToList();
-            WordList = tempList.ToImmutableList();
+            WordList = wordRepository.GetWords();
         }
 
         public List<string> GetAnagrams(string inputWord)

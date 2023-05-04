@@ -31,7 +31,6 @@ namespace AnagramSolverTests.BusinessLogicTests.AnagramActionsTests
             mockWordRepository = new Mock<IWordRepository>(MockBehavior.Strict);
             mockWordRepository.Setup(p => p.GetWords()).Returns(list);
 
-            // o kaip man uzzimokinti zodyna?????
             List<string> anagrams = new AnagramSolver(mockWordRepository.Object).GetAnagrams("uloss");
 
             List<string> expResult = new() { "sulos" };
