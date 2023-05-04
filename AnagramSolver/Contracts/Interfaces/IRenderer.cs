@@ -8,7 +8,7 @@
 
         void RejectWord(string reason);
 
-        void ShowAnagrams(IList<List<string>> anagrams);
+        void ShowAnagrams(IList<string> anagrams);
 
         bool DoRepeat();
 

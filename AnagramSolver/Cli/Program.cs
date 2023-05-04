@@ -11,7 +11,6 @@ bool repeat = true;
 IRenderer renderer = new CommandLineView();
 Configuration configuration = new();
 
-// perdariau su dependency injection, kad galėčiau testuoti, tačiau tada WordDictionary turi būti public, o ne internal. is it ok? ji kaip ir vidinė tokia...
 IWordRepository wordDictionary = new WordDictionary();
 IAnagramSolver anagramSolver = new AnagramSolver(wordDictionary);
 
@@ -32,10 +31,9 @@ while (repeat)
         continue;
     }
 
-    //List<string> anagrams = anagramSolver.GetAnagrams(inputWord.MainForm);
-    List<List<string>> anagrams = anagramSolver.GetAnagramsMultiWord(inputWord.MainForm);
+    List<string> anagrams = anagramSolver.GetAnagrams(inputWord.MainForm);
 
-    renderer.ShowAnagrams(anagrams.ValidateAmount(configuration.TotalAmount));
+    renderer.ShowAnagrams(anagrams.TrimIfTooManyItems(configuration.TotalAmount));
 
     repeat = renderer.DoRepeat();
 

@@ -29,7 +29,7 @@ namespace Cli
             Console.WriteLine("Can't create anagram. Reason: " + reason);
         }
 
-        public void ShowAnagrams(IList<List<string>> anagrams)
+        public void ShowAnagrams(IList<string> anagrams)
         {
             Console.WriteLine("**************");
 

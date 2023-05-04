@@ -13,7 +13,7 @@ namespace AnagramSolverTests.BusinessLogicTests.AnagramActionsTests
         }
 
         [Test]
-        public void ValidateAmount_ReturnsShortenedList_IfMaxAmountIsLessThanListCount()
+        public void TrimIfTooManyItems_ReturnsShortenedList_IfMaxAmountIsLessThanListCount()
         {
             List<string> list = new()
             {
@@ -24,14 +24,14 @@ namespace AnagramSolverTests.BusinessLogicTests.AnagramActionsTests
 
             int maxAmount = 2;
 
-            List<string> actualResult = list.ValidateAmount(maxAmount);
+            List<string> actualResult = list.TrimIfTooManyItems(maxAmount);
             List<string> expResult = list.Take(maxAmount).ToList();
 
             Assert.That(actualResult, Has.Count.EqualTo(expResult.Count));
         }
 
         [Test]
-        public void ValidateAmount_ReturnsFullList_IfMaxAmountIsMoreThanListCount()
+        public void TrimIfTooManyItems_ReturnsFullList_IfMaxAmountIsMoreThanListCount()
         {
             List<string> list = new()
             {
@@ -42,13 +42,13 @@ namespace AnagramSolverTests.BusinessLogicTests.AnagramActionsTests
 
             int maxAmount = 9;
 
-            List<string> actualResult = list.ValidateAmount(maxAmount);
+            List<string> actualResult = list.TrimIfTooManyItems(maxAmount);
 
             Assert.That(actualResult, Has.Count.EqualTo(list.Count));
         }
 
         [Test]
-        public void ValidateAmount_ReturnsFullList_IfMaxAmountIsEqualToListCount()
+        public void TrimIfTooManyItems_ReturnsFullList_IfMaxAmountIsEqualToListCount()
         {
             List<string> list = new()
             {
@@ -59,20 +59,20 @@ namespace AnagramSolverTests.BusinessLogicTests.AnagramActionsTests
 
             int maxAmount = 3;
 
-            List<string> actualResult = list.ValidateAmount(maxAmount);
+            List<string> actualResult = list.TrimIfTooManyItems(maxAmount);
             List<string> expResult = list.Take(maxAmount).ToList();
 
             Assert.That(actualResult, Has.Count.EqualTo(expResult.Count));
         }
 
         [Test]
-        public void ValidateAmount_ReturnsEmptyList_IfListIsEmpty()
+        public void TrimIfTooManyItems_ReturnsEmptyList_IfListIsEmpty()
         {
             List<string> list = new();
 
             int maxAmount = 9;
 
-            List<string> actualResult = list.ValidateAmount(maxAmount);
+            List<string> actualResult = list.TrimIfTooManyItems(maxAmount);
 
             Assert.IsEmpty(actualResult);
         }
