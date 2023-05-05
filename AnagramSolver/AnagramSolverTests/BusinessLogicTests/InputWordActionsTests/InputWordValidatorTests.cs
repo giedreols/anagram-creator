@@ -65,6 +65,7 @@ namespace AnagramSolverTests.BusinessLogicTests.InputWordActionsTests
             Assert.That(word.InvalidityReason, Is.Null);
         }
 
+        [Test]
         public void Validate_DoesNotAddInvalidityReasonInvalidLength_IfLengthIsBiggerThanMin()
         {
             InputWord word = new("alus");

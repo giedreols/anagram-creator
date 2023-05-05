@@ -1,41 +1,69 @@
 ﻿using BusinessLogic.AnagramActions;
-using BusinessLogic.DictionaryActions;
 using Contracts.Interfaces;
 using Contracts.Models;
 using Moq;
+using System.Collections.Immutable;
 
 namespace AnagramSolverTests.BusinessLogicTests.AnagramActionsTests
 {
     public class Tests
     {
+        private Mock<IWordRepository> mockWordRepository;
+        private AnagramSolver anagramSolver;
+
         [SetUp]
         public void Setup()
         {
-        }
-
-        private Mock<IWordRepository> mockWordRepository;
-
-        [Test]
-        public void Test1()
-        {
-            List<DictWord> list = new()
-            {
-                new DictWord("siela", "dkt.", "sielos"),
-                new DictWord("rūkas", "dkt.", "rūkai"),
-                new DictWord ("liepa", "dkt.", "liepoje"),
-                new DictWord ("palei", "prl.", "palei"),
-                new DictWord ("liesa", "bdv.", "liesos"),
-                new DictWord ("sula", "dkt.", "sulos"),
-            };
+            ImmutableList<AnagramWord> list = (new List<AnagramWord>() {
+                new AnagramWord("siela"),
+                new AnagramWord("alus"),
+                new AnagramWord("upė"),
+                new AnagramWord("liesa"),
+                new AnagramWord("liepa"),
+                new AnagramWord("sula") }).ToImmutableList();
 
             mockWordRepository = new Mock<IWordRepository>(MockBehavior.Strict);
             mockWordRepository.Setup(p => p.GetWords()).Returns(list);
 
-            List<string> anagrams = new AnagramSolver(mockWordRepository.Object).GetAnagrams("uloss");
+            anagramSolver = new(mockWordRepository.Object);
+        }
 
-            List<string> expResult = new() { "sulos" };
+
+        [Test]
+        public void GetAnagrams_ReturnsAnagram_IfInputWordHasIt()
+        {
+            List<string> anagrams = anagramSolver.GetAnagrams("palei");
+
+            List<string> expResult = new() { "liepa" };
 
             Assert.That(anagrams, Is.EqualTo(expResult));
         }
+
+        [Test]
+        public void GetAnagrams_ReturnsEmtpyList_IfInputWordDoesNotHaveIt()
+        {
+            List<string> anagrams = anagramSolver.GetAnagrams("rytas");
+
+            Assert.That(anagrams, Is.Empty);
+        }
+
+        [Test]
+        public void GetAnagrams_ReturnsAnagram_IfInputWordInCapitals()
+        {
+            List<string> anagrams = anagramSolver.GetAnagrams("LIESA");
+
+            List<string> expResult = new() { "siela" };
+
+            Assert.That(anagrams, Is.EqualTo(expResult));
+        }
+
+        [Test]
+        public void GetAnagrams_ReturnsEmptyList_IfInputWordExistsInList()
+        {
+            List<string> anagrams = anagramSolver.GetAnagrams("upė");
+
+            Assert.That(anagrams, Is.Empty);
+        }
+
     }
 }

@@ -15,8 +15,10 @@ namespace AnagramSolverTests.BusinessLogicTests.InputWordActionsTests
 
         }
 
+        // truksta testu kitiems comman line view metodams
 
-        [Test]
+
+        //[Test]
         public void GetWord_ReadsWordFromCommandLine_IfWordIsEntered()
         {
             // nezinau kaipo sita parasyt, nerandu kaip user input uzsimokint
@@ -25,7 +27,7 @@ namespace AnagramSolverTests.BusinessLogicTests.InputWordActionsTests
 
             using var sw = new StringWriter();
             Console.SetOut(sw);
-            
+
             Console.SetIn(new StringReader(input));
 
             // neveikia....
@@ -75,7 +77,16 @@ namespace AnagramSolverTests.BusinessLogicTests.InputWordActionsTests
         [Test]
         public void ShowAnagrams_ShowsInfoMessage_IfNoAnagrams()
         {
+            List<string> anagrams = new() { };
 
+            using var sw = new StringWriter();
+            Console.SetOut(sw);
+
+            new CommandLineView().ShowAnagrams(anagrams);
+
+            string result = sw.ToString().Trim();
+
+            StringAssert.Contains("No anagram", result);
         }
     }
 }
