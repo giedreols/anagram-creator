@@ -14,13 +14,13 @@ namespace AnagramSolverTests.BusinessLogicTests.AnagramActionsTests
         [SetUp]
         public void Setup()
         {
-            ImmutableList<AnagramWord> list = (new List<AnagramWord>() {
+            ImmutableList<AnagramWord> list = new List<AnagramWord>() {
                 new AnagramWord("siela"),
                 new AnagramWord("alus"),
                 new AnagramWord("upė"),
                 new AnagramWord("liesa"),
                 new AnagramWord("liepa"),
-                new AnagramWord("sula") }).ToImmutableList();
+                new AnagramWord("sula") }.ToImmutableList();
 
             mockWordRepository = new Mock<IWordRepository>(MockBehavior.Strict);
             mockWordRepository.Setup(p => p.GetWords()).Returns(list);

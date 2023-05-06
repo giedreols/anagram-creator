@@ -1,7 +1,4 @@
-using BusinessLogic.AnagramActions;
 using BusinessLogic.DictionaryActions;
-using Contracts.Interfaces;
-using Moq;
 
 namespace AnagramSolverTests.BusinessLogicTests.DictionaryActionsTests
 {
@@ -17,7 +14,10 @@ namespace AnagramSolverTests.BusinessLogicTests.DictionaryActionsTests
         [Test]
         public void FileReader_ConstructorDoesNotThrowError_IfFilePathIsCorrect()
         {
-            static void constructorDelegate() => new FileReader();
+            static void constructorDelegate()
+            {
+                new FileReader();
+            }
 
             Assert.DoesNotThrow(constructorDelegate);
         }

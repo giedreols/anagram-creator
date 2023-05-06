@@ -1,11 +1,6 @@
 ﻿using Cli;
-using Moq;
-using System;
-using Microsoft.Extensions.Logging.Abstractions;
-using McMaster.Extensions.CommandLineUtils;
-using Contracts.Interfaces;
 
-namespace AnagramSolverTests.BusinessLogicTests.InputWordActionsTests
+namespace AnagramSolverTests.CliTests.CommandLineViewTests
 {
     public class CommandLineViewTests
     {
@@ -15,22 +10,17 @@ namespace AnagramSolverTests.BusinessLogicTests.InputWordActionsTests
 
         }
 
-        // truksta testu kitiems comman line view metodams
-
-
+        // nezinau kaipo sita parasyt, kad veiktu
         //[Test]
         public void GetWord_ReadsWordFromCommandLine_IfWordIsEntered()
         {
-            // nezinau kaipo sita parasyt, nerandu kaip user input uzsimokint
-
-            string input = "ragai" + Environment.NewLine;
+            string input = "ragai\r\n";
 
             using var sw = new StringWriter();
             Console.SetOut(sw);
 
             Console.SetIn(new StringReader(input));
 
-            // neveikia....
             string result = new CommandLineView().GetWord();
 
             Assert.That(result, Is.EqualTo(input));

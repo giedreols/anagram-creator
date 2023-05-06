@@ -10,6 +10,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="CliTests\ConfigurationTests\**" />
+    <Compile Remove="CliTests\ProgramTests\**" />
+    <EmbeddedResource Remove="CliTests\ConfigurationTests\**" />
+    <EmbeddedResource Remove="CliTests\ProgramTests\**" />
+    <None Remove="CliTests\ConfigurationTests\**" />
+    <None Remove="CliTests\ProgramTests\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="McMaster.Extensions.CommandLineUtils" Version="4.0.2" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="7.0.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.3.2" />
@@ -25,11 +34,6 @@
     <ProjectReference Include="..\BusinessLogic\BusinessLogic.csproj" />
     <ProjectReference Include="..\Cli\Cli.csproj" />
     <ProjectReference Include="..\Contracts\Contracts.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="CliTests\ConfigurationTests\" />
-    <Folder Include="CliTests\ProgramTests\" />
   </ItemGroup>
 
 </Project>
