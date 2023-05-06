@@ -3,7 +3,7 @@ using BusinessLogic.AnagramActions;
 
 namespace AnagramSolverTests.BusinessLogicTests.AnagramActionsTests
 {
-    public class DictionaryActionsTests
+    public class AnagramValidatorTests
     {
         [SetUp]
         public void Setup()

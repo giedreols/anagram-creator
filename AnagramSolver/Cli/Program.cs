@@ -1,21 +1,20 @@
 ﻿using BusinessLogic.AnagramActions;
-using BusinessLogic.InputWordActions;
 using BusinessLogic.DictionaryActions;
+using BusinessLogic.InputWordActions;
 using Cli;
 using Contracts.Interfaces;
 using Contracts.Models;
-using System.Diagnostics;
 
 bool repeat = true;
 
 IRenderer renderer = new CommandLineView();
 Configuration configuration = new();
 
-IWordRepository wordDictionary = new WordDictionary();
+IFileReader fileReader = new FileReader();
+IWordRepository wordDictionary = new WordDictionary(fileReader);
 IAnagramSolver anagramSolver = new AnagramSolver(wordDictionary);
 
 renderer.ShowHeader();
-
 
 while (repeat)
 {

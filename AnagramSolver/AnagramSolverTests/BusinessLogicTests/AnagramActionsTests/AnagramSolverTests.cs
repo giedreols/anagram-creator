@@ -6,10 +6,10 @@ using System.Collections.Immutable;
 
 namespace AnagramSolverTests.BusinessLogicTests.AnagramActionsTests
 {
-    public class Tests
+    public class AnagramSolverTests
     {
         private Mock<IWordRepository> mockWordRepository;
-        private AnagramSolver anagramSolver;
+        private IAnagramSolver anagramSolver;
 
         [SetUp]
         public void Setup()
@@ -25,7 +25,7 @@ namespace AnagramSolverTests.BusinessLogicTests.AnagramActionsTests
             mockWordRepository = new Mock<IWordRepository>(MockBehavior.Strict);
             mockWordRepository.Setup(p => p.GetWords()).Returns(list);
 
-            anagramSolver = new(mockWordRepository.Object);
+            anagramSolver = new AnagramSolver(mockWordRepository.Object);
         }
 
 

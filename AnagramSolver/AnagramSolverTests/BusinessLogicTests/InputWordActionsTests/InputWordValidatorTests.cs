@@ -1,9 +1,5 @@
-﻿using BusinessLogic.AnagramActions;
-using BusinessLogic.DictionaryActions;
-using BusinessLogic.InputWordActions;
+﻿using BusinessLogic.InputWordActions;
 using Contracts.Models;
-using Microsoft.VisualStudio.Web.CodeGeneration;
-using Moq;
 
 namespace AnagramSolverTests.BusinessLogicTests.InputWordActionsTests
 {

@@ -7,66 +7,52 @@ namespace BusinessLogic.DictionaryActions
 {
     public class WordDictionary : IWordRepository
     {
-        private ReadOnlyCollection<DictWord> Words { get; set; }
-        private static string path;
+        private readonly IFileReader fileReader;
 
-        public WordDictionary()
+
+        public WordDictionary(IFileReader fileReader)
         {
-            try
-            {
-                path = Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).FullName, "net7.0\\Files\\zodynas.txt");
-            }
-            catch
-            {
-                throw new ArgumentException("Could not find file path");
-            }
+            this.fileReader = fileReader;
         }
 
-        // kaip geriau ir logiskiau - ar metode saugot kintamuosius, ar klaseje? ir privacius metodus geriau void ar return tipo daryt?
+        // kaip logiskiau - ar metode saugot kintamuosius, ar klaseje? privacius metodus geriau void ar return tipo daryt?
+        // ar man isvis yra prasme turet zodyno modeli, kuri iskart konvertuoju i anagramos modeli? ar geriau stringa iskart konvertuoti i anagramos modeli?
+        // o gal yra prasme - nes bus paprasciau kitokio formato zodyno faila naudot?
         public ImmutableList<AnagramWord> GetWords()
         {
-            ReadWords();
-            return ConvertDictionaryWordsToAnagramWords();
+            ReadOnlyCollection<DictWord> words = ReadWords();
+            return ConvertDictionaryWordsToAnagramWords(words);
         }
 
-        private ImmutableList<AnagramWord> ConvertDictionaryWordsToAnagramWords()
+        private static ImmutableList<AnagramWord> ConvertDictionaryWordsToAnagramWords(ReadOnlyCollection<DictWord> words)
         {
             List<AnagramWord> tempList = new();
 
-            foreach (var word in Words)
+            foreach (var word in words)
             {
                 tempList.Add(new AnagramWord(word.MainForm));
                 tempList.Add(new AnagramWord(word.AnotherForm));
-
             }
 
-            tempList = tempList.DistinctBy(word => word.LowerCaseForm).ToList();
-            tempList = tempList.OrderByDescending(word => word.MainForm.Length).ToList();
+            tempList = (tempList.DistinctBy(word => word.LowerCaseForm).ToList()).OrderByDescending(word => word.MainForm.Length).ToList();
+
             return tempList.ToImmutableList();
         }
 
-        private void ReadWords()
+        private ReadOnlyCollection<DictWord> ReadWords()
         {
+            IList<string> list = fileReader.ReadFile();
+
             List<DictWord> tempList = new();
 
-            try
+            foreach (string line in list)
             {
-                using StreamReader sr = new(path);
-                string line;
-
-                while ((line = sr.ReadLine()) != null)
-                {
-                    string[] fields = line.Split('\t');
-                    DictWord word = new(fields[0], fields[1], fields[2]);
-                    tempList.Add(word);
-                }
-            }
-            catch
-            {
-                throw new IOException("Could not get words from the dictionary.");
+                string[] fields = line.Split('\t');
+                DictWord word = new(fields[0], fields[1], fields[2]);
+                tempList.Add(word);
             }
 
-            Words = new ReadOnlyCollection<DictWord>(tempList.Distinct().ToList());
+            return new ReadOnlyCollection<DictWord>(tempList.Distinct().ToList());
         }
     }
 }
