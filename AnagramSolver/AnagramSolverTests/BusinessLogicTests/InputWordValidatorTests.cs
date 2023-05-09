@@ -1,22 +1,15 @@
 ﻿using BusinessLogic.InputWordActions;
 using Contracts.Models;
 
-namespace AnagramSolverTests.BusinessLogicTests.InputWordActionsTests
+namespace AnagramSolverTests.BusinessLogicTests
 {
     public class InputWordValidatorTests
     {
-        [SetUp]
-        public void Setup()
-        {
-
-        }
-
         [Test]
         [TestCase(".lus")]
         [TestCase("a'us")]
         [TestCase("al?s")]
         [TestCase("alu@")]
-
         public void Validate_AddsInvalidityReasonInvalidCharacters_IfContainsInvalidChars(string inputWord)
         {
             InputWord word = new(inputWord);
@@ -39,7 +32,6 @@ namespace AnagramSolverTests.BusinessLogicTests.InputWordActionsTests
 
             Assert.That(word.InvalidityReason, Is.Null);
         }
-
 
         [Test]
         public void Validate_AddsInvalidityReasonInvalidLength_IfTooShort()
@@ -70,6 +62,5 @@ namespace AnagramSolverTests.BusinessLogicTests.InputWordActionsTests
 
             Assert.That(word.InvalidityReason, Is.Null);
         }
-
     }
 }

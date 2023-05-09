@@ -7,12 +7,12 @@ namespace BusinessLogic.DictionaryActions
 {
     public class WordDictionary : IWordRepository
     {
-        private readonly IFileReader fileReader;
+        private readonly IFileReader _fileReader;
 
 
         public WordDictionary(IFileReader fileReader)
         {
-            this.fileReader = fileReader;
+            _fileReader = fileReader;
         }
 
         // kaip logiskiau - ar metode saugot kintamuosius, ar klaseje? privacius metodus geriau void ar return tipo daryt?
@@ -41,18 +41,41 @@ namespace BusinessLogic.DictionaryActions
 
         private ReadOnlyCollection<DictWord> ReadWords()
         {
-            IList<string> list = fileReader.ReadFile();
+            string text = _fileReader.ReadFile();
 
-            List<DictWord> tempList = new();
+            List<string> linesList = ParseLines(text);
 
-            foreach (string line in list)
+            List<DictWord> wordList = ParseWords(linesList);
+
+            return new ReadOnlyCollection<DictWord>(wordList.Distinct().ToList());
+        }
+
+        private static List<string> ParseLines(string text)
+        {
+            string[] lines = text.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+
+            return lines.ToList();
+        }
+
+        private static List<DictWord> ParseWords(List<string> linesList)
+        {
+            List<DictWord> wordList = new();
+
+            try
             {
-                string[] fields = line.Split('\t');
-                DictWord word = new(fields[0], fields[1], fields[2]);
-                tempList.Add(word);
+                foreach (string line in linesList)
+                {
+                    string[] fields = line.Split('\t');
+                    DictWord word = new(fields[0], fields[1], fields[2]);
+                    wordList.Add(word);
+                }
+            }
+            catch
+            {
+                throw new IndexOutOfRangeException("Dictionary is empty of file structure is incorrect; Each line should contain at least 3 fields, separated by tabs");
             }
 
-            return new ReadOnlyCollection<DictWord>(tempList.Distinct().ToList());
+            return wordList;
         }
     }
 }

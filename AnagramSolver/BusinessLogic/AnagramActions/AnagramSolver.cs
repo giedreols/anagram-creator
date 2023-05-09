@@ -6,11 +6,11 @@ namespace BusinessLogic.AnagramActions
 {
     public class AnagramSolver : IAnagramSolver
     {
-        private ImmutableList<AnagramWord> WordList { get; set; }
+        private ImmutableList<AnagramWord> _wordList { get; set; }
 
         public AnagramSolver(IWordRepository wordRepository)
         {
-            WordList = wordRepository.GetWords();
+            _wordList = wordRepository.GetWords();
         }
 
         public List<string> GetAnagrams(string inputWord)
@@ -19,7 +19,7 @@ namespace BusinessLogic.AnagramActions
             var loweredInputWord = inputWord.ToLower().Replace(" ", "");
             var inputSequence = loweredInputWord.OrderByDescending(c => c);
 
-            foreach (var word in WordList)
+            foreach (var word in _wordList)
             {
                 if (inputSequence.SequenceEqual(word.OrderedForm) && word.LowerCaseForm != loweredInputWord)
                 {

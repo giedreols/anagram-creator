@@ -8,7 +8,7 @@ namespace Cli
         public int TotalAmount { get; private set; }
         public int MinLength { get; private set; }
 
-        private IConfigurationRoot Config { get; set; }
+        private IConfigurationRoot _config { get; set; }
 
         public Configuration()
         {
@@ -16,7 +16,7 @@ namespace Cli
             builder.SetBasePath(Directory.GetCurrentDirectory())
                    .AddJsonFile("appsettings.json", optional: false);
 
-            Config = builder.Build();
+            _config = builder.Build();
 
             TotalAmount = ReadConfiguration("AnagramSettings:TotalAmount");
             MinLength = ReadConfiguration("AnagramSettings:MinLength");
@@ -24,7 +24,7 @@ namespace Cli
 
         private int ReadConfiguration(string settings)
         {
-            return int.TryParse(Config[settings], out int value)
+            return int.TryParse(_config[settings], out int value)
                 ? value
                 : throw new ConfigurationErrorsException($"{settings} is not set correctly in configuration");
         }

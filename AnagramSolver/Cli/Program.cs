@@ -18,7 +18,6 @@ renderer.ShowHeader();
 
 while (repeat)
 {
-
     string word = renderer.GetWord();
     InputWord inputWord = new(word);
 
