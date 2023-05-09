@@ -4,14 +4,13 @@ namespace BusinessLogic.DictionaryActions
 {
     public class FileReader : IFileReader
     {
-        private static string path;
+        private static string _path;
 
-        // turbut reiketu failo pavadinima iskelti kur nors i konfiga, o pati patha paduoti i "read file"? ir tada galeciau testuoti sita klase labiau?
         public FileReader()
         {
             try
             {
-                path = Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).FullName, "net7.0\\Files\\zodynas.txt");
+                _path = Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).FullName, "net7.0\\Files\\zodynas.txt");
             }
             catch
             {
@@ -19,26 +18,20 @@ namespace BusinessLogic.DictionaryActions
             }
         }
 
-        public IList<string> ReadFile()
+        public string ReadFile()
         {
-            List<string> list = new();
+            string text;
 
             try
             {
-                using StreamReader sr = new(path);
-                string line;
-
-                while ((line = sr.ReadLine()) != null)
-                {
-                    list.Add(line);
-                }
+                text = File.ReadAllText(_path);
             }
             catch
             {
                 throw new IOException("Could not get words from the dictionary.");
             }
 
-            return list;
+            return text;
         }
     }
 }
