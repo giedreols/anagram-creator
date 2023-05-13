@@ -1,0 +1,18 @@
+﻿@model AnagamSolverWebApp.Models.AnagramWords;
+
+@{
+	ViewData["Title"] = "Anagramos";
+}
+
+<div class="text-left">
+
+	<h2>@Model.Word</h2>
+
+	<ul>
+		@foreach (var item in @Model.Anagrams)
+		{
+			<li>@item</li>
+		}
+	</ul>
+
+</div>
