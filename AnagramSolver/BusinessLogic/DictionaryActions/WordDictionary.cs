@@ -9,7 +9,6 @@ namespace BusinessLogic.DictionaryActions
 	{
 		private readonly IFileReader _fileReader;
 
-
 		public WordDictionary(IFileReader fileReader)
 		{
 			_fileReader = fileReader;

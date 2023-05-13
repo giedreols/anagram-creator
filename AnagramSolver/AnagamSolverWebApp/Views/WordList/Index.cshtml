@@ -1,0 +1,16 @@
+﻿@model AnagamSolverWebApp.Models.WordListModel;
+
+@{
+	ViewData["Title"] = "Žodžių sąrašas";
+}
+
+<div class="text-left">
+
+	<ul>
+		@foreach (var word in @Model.Words)
+		{
+			<li>@word</li>
+		}
+	</ul>
+
+</div>

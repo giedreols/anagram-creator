@@ -7,6 +7,8 @@ using System.Diagnostics;
 
 namespace AnagamSolverWebApp.Controllers
 {
+	// TODO: PRIDĖTI MYGTUKĄ, KURIS PARODO VISĄ SĄRAŠĄ
+
 	public class HomeController : Controller
 	{
 		private readonly ILogger<HomeController> _logger;
@@ -20,7 +22,7 @@ namespace AnagamSolverWebApp.Controllers
 
 		public IActionResult Index(string inputWord = "")
 		{
-			AnagramWords wordWithAnagrams;
+			AnagramWordsModel wordWithAnagrams;
 
 			if (inputWord != "")
 			{

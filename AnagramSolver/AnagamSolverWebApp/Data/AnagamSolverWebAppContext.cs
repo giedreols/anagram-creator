@@ -14,6 +14,6 @@ namespace AnagamSolverWebApp.Data
         {
         }
 
-        public DbSet<AnagamSolverWebApp.Models.AnagramWords> AnagramWords { get; set; } = default!;
+        public DbSet<AnagamSolverWebApp.Models.AnagramWordsModel> AnagramWords { get; set; } = default!;
     }
 }
