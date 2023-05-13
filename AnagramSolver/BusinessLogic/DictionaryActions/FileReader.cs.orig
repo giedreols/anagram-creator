@@ -10,7 +10,11 @@ namespace BusinessLogic.DictionaryActions
         {
             try
             {
-				_path = Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).FullName + "\\BusinessLogic\\bin\\Debug\\net7.0\\Files\\zodynas.txt");
+<<<<<<< HEAD
+                _path = Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).FullName, "net7.0\\Files\\zodynas.txt");
+=======
+                path = Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).FullName, "BusinessLogic\\bin\\debug\\net7.0\\Files\\zodynas.txt");
+>>>>>>> MVC_Web
             }
             catch
             {
