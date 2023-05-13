@@ -11,7 +11,7 @@ namespace BusinessLogic.DictionaryActions
         {
             try
             {
-                path = Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).FullName, "net7.0\\Files\\zodynas.txt");
+                path = Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).FullName, "BusinessLogic\\bin\\debug\\net7.0\\Files\\zodynas.txt");
             }
             catch
             {

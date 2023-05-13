@@ -1,4 +1,9 @@
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using AnagamSolverWebApp.Data;
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddDbContext<AnagamSolverWebAppContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("AnagamSolverWebAppContext") ?? throw new InvalidOperationException("Connection string 'AnagamSolverWebAppContext' not found.")));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
