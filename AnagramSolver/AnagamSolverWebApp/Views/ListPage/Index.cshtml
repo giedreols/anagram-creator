@@ -1,0 +1,26 @@
+﻿@model AnagamSolverWebApp.Models.ListPageModel
+
+@{
+	ViewData["Title"] = "Žodžių sąrašas";
+}
+
+<div class="text-left">
+
+	<ul>
+		@foreach (var word in @Model.Words)
+		{
+			<li>@word</li>
+		}
+	</ul>
+
+	<div>
+		@if (Model.TotalPages > 1)
+		{
+			@for (var page = 1; page <= Model.TotalPages; page++)
+			{
+				<a href="?page=@(page)" class="@(Model.CurrentPage == page ? "active" : "")">@(page)</a>
+			}
+		}
+	</div>
+
+</div>
