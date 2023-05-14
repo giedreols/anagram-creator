@@ -1,4 +1,4 @@
-﻿using AnagamSolverWebApp.Data;
+﻿using AnagramSolverWebApp.Data;
 using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<AnagamSolverWebAppContext>(options =>

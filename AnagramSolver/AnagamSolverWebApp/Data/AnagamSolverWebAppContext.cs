@@ -1,6 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AnagramSolverWebApp.Models;
+using Microsoft.EntityFrameworkCore;
 
-namespace AnagamSolverWebApp.Data
+namespace AnagramSolverWebApp.Data
 {
 	public class AnagamSolverWebAppContext : DbContext
 	{
@@ -9,6 +10,6 @@ namespace AnagamSolverWebApp.Data
 		{
 		}
 
-		public DbSet<AnagamSolverWebApp.Models.AnagramWordsModel> AnagramWords { get; set; } = default!;
+		public DbSet<AnagramWordsModel> AnagramWords { get; set; } = default!;
 	}
 }

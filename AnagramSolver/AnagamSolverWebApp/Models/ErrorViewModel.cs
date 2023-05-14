@@ -1,4 +1,4 @@
-namespace AnagamSolverWebApp.Models
+namespace AnagramSolverWebApp.Models
 {
 	public class ErrorViewModel
 	{

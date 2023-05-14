@@ -1,12 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace AnagamSolverWebApp.Models;
+﻿namespace AnagramSolverWebApp.Models;
 
 public class AnagramWordsModel
 {
-    public int Id { get; private set; }
-    public string Word { get; private set; }
-    public List<string> Anagrams { get; private set; }
+	public int Id { get; private set; }
+	public string Word { get; private set; }
+	public List<string> Anagrams { get; private set; }
 
 	public AnagramWordsModel(string word, List<string> anagrams)
 	{

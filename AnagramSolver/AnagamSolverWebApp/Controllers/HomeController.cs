@@ -1,14 +1,12 @@
-﻿using AnagamSolverWebApp.Models;
+﻿using AnagramSolverWebApp.Models;
 using BusinessLogic.AnagramActions;
 using BusinessLogic.DictionaryActions;
 using Contracts.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
-namespace AnagamSolverWebApp.Controllers
+namespace AnagramSolverWebApp.Controllers
 {
-	// TODO: PRIDĖTI MYGTUKĄ, KURIS PARODO VISĄ SĄRAŠĄ
-
 	public class HomeController : Controller
 	{
 		private readonly ILogger<HomeController> _logger;
@@ -22,17 +20,7 @@ namespace AnagamSolverWebApp.Controllers
 
 		public IActionResult Index(string inputWord = "")
 		{
-			AnagramWordsModel wordWithAnagrams;
-
-			if (inputWord != "")
-			{
-				wordWithAnagrams = new(inputWord, _anagramSolver.GetAnagrams(inputWord));
-			}
-			else
-			{
-				wordWithAnagrams = new("", new List<string>());
-			}
-
+			AnagramWordsModel wordWithAnagrams = inputWord != "" ? new(inputWord, _anagramSolver.GetAnagrams(inputWord)) : new("", new List<string>());
 			return View(wordWithAnagrams);
 		}
 

@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contracts", "Contracts\Cont
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnagramSolverTests", "AnagramSolverTests\AnagramSolverTests.csproj", "{98199F17-604E-49CE-A218-89E724EFC508}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnagamSolverWebApp", "AnagamSolverWebApp\AnagamSolverWebApp.csproj", "{C8E8BB57-0FBB-4584-B582-859D50C0C5D1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnagramSolverWebApp", "AnagamSolverWebApp\AnagramSolverWebApp.csproj", "{C8E8BB57-0FBB-4584-B582-859D50C0C5D1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

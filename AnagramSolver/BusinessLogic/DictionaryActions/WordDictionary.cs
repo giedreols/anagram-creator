@@ -33,7 +33,7 @@ namespace BusinessLogic.DictionaryActions
 				tempList.Add(new AnagramWord(word.AnotherForm));
 			}
 
-			tempList = (tempList.DistinctBy(word => word.LowerCaseForm).ToList()).OrderByDescending(word => word.MainForm.Length).ToList();
+			tempList = tempList.DistinctBy(word => word.LowerCaseForm).ToList().OrderByDescending(word => word.MainForm.Length).ToList();
 
 			return tempList.ToImmutableList();
 		}

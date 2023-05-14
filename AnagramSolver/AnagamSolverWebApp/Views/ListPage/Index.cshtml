@@ -1,4 +1,4 @@
-﻿@model AnagamSolverWebApp.Models.ListPageModel
+﻿@model 			ListPageModel
 
 @{
 	ViewData["Title"] = "Žodžių sąrašas";
@@ -7,7 +7,7 @@
 <div class="text-left">
 
 	<ul>
-		@foreach (var word in @Model.Words)
+		@foreach (var word in @Model.CurrentPageWords)
 		{
 			<li>@word</li>
 		}

@@ -16,24 +16,18 @@ namespace AnagamSolverWebApp.Controllers
 			_dictionary = new WordDictionary(new FileReader());
 		}
 
-		// error handlinga, jeigu itemu maziau negu nurodyta pageSize arba ieskomo puslapio nera
-		public IActionResult Index(int currentPage = 1, int pageSize = 100)
+		public IActionResult Index(int page = 1, int pageSize = 100)
 		{
 			// ar tikrai gerai gauti visus žodžius kiekvieną kartą?
-			// ar geriau gauti visus ir turėti šitoj klasėj (ne metode), ar kaskart gauti nepilną sąrašą pagal indeksą?
+			// ar geriau gauti visus ir turėti šitoj klasėj, ar gal geriau kaskart gauti nepilną sąrašą pagal indeksą?
 
-			var allItems = _dictionary.GetWords();
-			var totalItems = allItems.Count;
+			var allWords = _dictionary.GetWords();
 
-			int totalPages = (int)Math.Ceiling(totalItems / (double)pageSize);
-			List<string> currentPageItems = allItems.OrderBy(w => w.MainForm).Skip((currentPage - 1) * pageSize).Take(pageSize).Select(w => w.MainForm).ToList();
+			var totalPages = (int)Math.Ceiling(allWords.Count / (double)pageSize);
 
-			ListPageModel viewModel = new()
-			{
-				Words = currentPageItems,
-				Count = totalItems,
-				CurrentPage = currentPage,
-			};
+			List<string> currentPageItems = allWords.OrderBy(w => w.LowerCaseForm).Skip((page - 1) * pageSize).Take(pageSize).Select(w => w.MainForm).ToList();
+
+			ListPageModel viewModel = new(currentPageItems, page, allWords.Count, pageSize);
 
 			return View(viewModel);
 		}
