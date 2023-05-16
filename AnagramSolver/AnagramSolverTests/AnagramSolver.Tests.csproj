@@ -31,10 +31,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AnagamSolverWebApp\AnagramSolverWebApp.csproj" />
-    <ProjectReference Include="..\BusinessLogic\BusinessLogic.csproj" />
-    <ProjectReference Include="..\Cli\Cli.csproj" />
-    <ProjectReference Include="..\Contracts\Contracts.csproj" />
+    <ProjectReference Include="..\AnagamSolverWebApp\AnagramSolver.WebApp.csproj" />
+    <ProjectReference Include="..\BusinessLogic\AnagramSolver.BusinessLogic.csproj" />
+    <ProjectReference Include="..\Cli\AnagramSolver.Cli.csproj" />
+    <ProjectReference Include="..\Contracts\AnagramSolver.Contracts.csproj" />
   </ItemGroup>
 
 </Project>
