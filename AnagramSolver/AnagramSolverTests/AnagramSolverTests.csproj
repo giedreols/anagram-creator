@@ -31,6 +31,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AnagamSolverWebApp\AnagramSolverWebApp.csproj" />
     <ProjectReference Include="..\BusinessLogic\BusinessLogic.csproj" />
     <ProjectReference Include="..\Cli\Cli.csproj" />
     <ProjectReference Include="..\Contracts\Contracts.csproj" />
