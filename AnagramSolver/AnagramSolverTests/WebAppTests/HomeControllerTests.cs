@@ -38,7 +38,7 @@ namespace AnagramSolverTests.WebAppTests
 			_mockAnagramSolver.Setup(p => p.GetAnagrams(word)).Returns(new List<string>() { anagram });
 
 			var result = (ViewResult)_homeController.Index(word);
-			AnagramWordsModel model = (AnagramWordsModel)result.Model;
+			var model = (AnagramWordsModel)result.Model;
 
 			Assert.That(model.Anagrams[0], Is.EqualTo(anagram));
 		}
@@ -50,7 +50,7 @@ namespace AnagramSolverTests.WebAppTests
 			_mockAnagramSolver.Setup(p => p.GetAnagrams(word)).Returns(new List<string>());
 
 			var result = (ViewResult)_homeController.Index(word);
-			AnagramWordsModel model = (AnagramWordsModel)result.Model;
+			var model = (AnagramWordsModel)result.Model;
 
 			Assert.That(model.Word, Is.EqualTo(word));
 		}
