@@ -1,33 +1,29 @@
 ﻿using AnagramSolverWebApp.Models;
 using BusinessLogic.DictionaryActions;
 using Contracts.Interfaces;
+using Contracts.Models;
 using Microsoft.AspNetCore.Mvc;
-
 
 namespace AnagamSolverWebApp.Controllers
 {
 	public class ListPageController : Controller
 	{
 		IWordRepository _dictionary;
+		private List<AnagramWord> _allWords;
 
-		// turbut ne ok kurti vis naujus zodyno objektus skirtinguose kontroleriuose?
 		public ListPageController()
 		{
 			_dictionary = new WordDictionary(new FileReader());
+			_allWords = _dictionary.GetWords().OrderBy(w => w.LowerCaseForm).ToList();
 		}
 
 		public IActionResult Index(int page = 1, int pageSize = 100)
 		{
-			// ar tikrai gerai gauti visus žodžius kiekvieną kartą?
-			// ar geriau gauti visus ir turėti šitoj klasėj, ar gal geriau kaskart gauti nepilną sąrašą pagal indeksą?
+			var totalPages = (int)Math.Ceiling(_allWords.Count / (double)pageSize);
 
-			var allWords = _dictionary.GetWords();
+			List<string> currentPageItems = _allWords.Skip((page - 1) * pageSize).Take(pageSize).Select(w => w.MainForm).ToList();
 
-			var totalPages = (int)Math.Ceiling(allWords.Count / (double)pageSize);
-
-			List<string> currentPageItems = allWords.OrderBy(w => w.LowerCaseForm).Skip((page - 1) * pageSize).Take(pageSize).Select(w => w.MainForm).ToList();
-
-			ListPageModel viewModel = new(currentPageItems, page, allWords.Count, pageSize);
+			ListPageModel viewModel = new(currentPageItems, page, _allWords.Count, pageSize);
 
 			return View(viewModel);
 		}
