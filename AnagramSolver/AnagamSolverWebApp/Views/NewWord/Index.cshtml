@@ -1,0 +1,17 @@
+﻿@model NewWordModel
+
+@{
+	ViewData["Title"] = "Naujas žodis";
+}
+
+<div class="text-left">
+
+	<form asp-action="Create">
+		<div class="form-actions no-color">
+			<p>
+				Įrašykite žodį: <input type="text" name="newWord" />
+				<input type="submit" value="Išsaugoti" class="btn btn-default" />
+			</p>
+		</div>
+	</form>
+</div>

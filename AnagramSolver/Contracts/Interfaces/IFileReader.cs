@@ -3,5 +3,7 @@
     public interface IFileReader
     {
         string ReadFile();
-    }
+
+		void WriteFile(string lines);
+	}
 }

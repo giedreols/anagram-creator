@@ -23,6 +23,24 @@ namespace BusinessLogic.DictionaryActions
 			return ConvertDictionaryWordsToAnagramWords(words);
 		}
 
+		public bool SaveWord(string word)
+		{
+			List<AnagramWord> currentWords = GetWords();
+
+			foreach (var existingWord in currentWords)
+			{
+				if (existingWord.LowerCaseForm == word.ToLower())
+				{
+					return false;
+				}
+			}
+
+			word += $"\t.\t{word}\t.";
+			_fileReader.WriteFile(word);
+			return true;
+
+		}
+
 		private static List<AnagramWord> ConvertDictionaryWordsToAnagramWords(ReadOnlyCollection<DictWord> words)
 		{
 			List<AnagramWord> tempList = new();

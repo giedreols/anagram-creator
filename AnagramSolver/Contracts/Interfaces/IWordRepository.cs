@@ -6,5 +6,7 @@ namespace Contracts.Interfaces
     public interface IWordRepository
     {
         List<AnagramWord> GetWords();
+
+        bool SaveWord(string word);
     }
 }

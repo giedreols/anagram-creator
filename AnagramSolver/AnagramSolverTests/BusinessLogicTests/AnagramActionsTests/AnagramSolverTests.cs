@@ -1,12 +1,10 @@
-﻿using BusinessLogic.AnagramActions;
-using Contracts.Interfaces;
+﻿using Contracts.Interfaces;
 using Contracts.Models;
-using System.Collections.Immutable;
 using Moq;
 
 namespace AnagramSolverTests.BusinessLogicTests.AnagramActionsTests
 {
-    public class AnagramSolverTests
+	public class AnagramSolverTests
     {
         private Mock<IWordRepository> _mockWordRepository;
         private IAnagramSolver _anagramSolver;
@@ -25,7 +23,7 @@ namespace AnagramSolverTests.BusinessLogicTests.AnagramActionsTests
             _mockWordRepository = new Mock<IWordRepository>(MockBehavior.Strict);
             _mockWordRepository.Setup(p => p.GetWords()).Returns(list);
 
-            _anagramSolver = new AnagramSolver(_mockWordRepository.Object);
+			_anagramSolver = new BusinessLogic.AnagramActions.AnagramSolver(_mockWordRepository.Object);
         }
 
 
