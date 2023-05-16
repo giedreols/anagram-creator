@@ -1,5 +1,4 @@
 ﻿using AnagramSolverWebApp.Models;
-using BusinessLogic.DictionaryActions;
 using Contracts.Interfaces;
 using Contracts.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -11,9 +10,9 @@ namespace AnagamSolverWebApp.Controllers
 		IWordRepository _dictionary;
 		private List<AnagramWord> _allWords;
 
-		public ListPageController()
+		public ListPageController(IWordRepository dictionary)
 		{
-			_dictionary = new WordDictionary(new FileReader());
+			_dictionary = dictionary;
 			_allWords = _dictionary.GetWords().OrderBy(w => w.LowerCaseForm).ToList();
 		}
 

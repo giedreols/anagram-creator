@@ -1,6 +1,4 @@
 ﻿using AnagramSolverWebApp.Models;
-using BusinessLogic.AnagramActions;
-using BusinessLogic.DictionaryActions;
 using Contracts.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
@@ -9,13 +7,11 @@ namespace AnagramSolverWebApp.Controllers
 {
 	public class HomeController : Controller
 	{
-		private readonly ILogger<HomeController> _logger;
 		private IAnagramSolver _anagramSolver;
 
-		public HomeController(ILogger<HomeController> logger)
+		public HomeController(IAnagramSolver anagramSolver)
 		{
-			_logger = logger;
-			_anagramSolver = new AnagramSolver(new WordDictionary(new FileReader()));
+			_anagramSolver = anagramSolver;
 		}
 
 		public IActionResult Index(string inputWord = "")

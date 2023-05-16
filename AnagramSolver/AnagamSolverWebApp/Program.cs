@@ -1,14 +1,24 @@
 ﻿using AnagramSolverWebApp.Data;
+using BusinessLogic.AnagramActions;
+using BusinessLogic.DictionaryActions;
+using Contracts.Interfaces;
 using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<AnagramSolverWebAppContext>(options =>
 	options.UseSqlServer(builder.Configuration.GetConnectionString("AnagamSolverWebAppContext") ?? throw new InvalidOperationException("Connection string 'AnagamSolverWebAppContext' not found.")));
 
 // Add services to the container.
+builder.Services.AddScoped<IFileReader, FileReader>();
+builder.Services.AddScoped<IWordRepository, WordDictionary>();
+builder.Services.AddScoped<IAnagramSolver, AnagramSolver>();
+
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
 var app = builder.Build();
+
+
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
