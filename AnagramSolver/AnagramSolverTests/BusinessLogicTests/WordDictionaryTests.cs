@@ -47,7 +47,7 @@ namespace AnagramSolverTests.BusinessLogicTests
 
             var result = _wordRepository.GetWords();
 
-            Assert.That(result, Is.InstanceOf(typeof(ImmutableList<AnagramWord>)));
+            Assert.That(result, Is.InstanceOf(typeof(List<AnagramWord>)));
         }
 
         [Test]

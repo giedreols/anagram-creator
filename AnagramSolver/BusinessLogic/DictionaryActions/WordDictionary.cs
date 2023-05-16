@@ -17,13 +17,13 @@ namespace BusinessLogic.DictionaryActions
 		// kaip logiskiau - ar metode saugot kintamuosius, ar klaseje? privacius metodus geriau void ar return tipo daryt?
 		// ar man isvis yra prasme turet zodyno modeli, kuri iskart konvertuoju i anagramos modeli? ar geriau stringa iskart konvertuoti i anagramos modeli?
 		// o gal yra prasme - nes bus paprasciau kitokio formato zodyno faila naudot?
-		public ImmutableList<AnagramWord> GetWords()
+		public List<AnagramWord> GetWords()
 		{
 			ReadOnlyCollection<DictWord> words = ReadWords();
 			return ConvertDictionaryWordsToAnagramWords(words);
 		}
 
-		private static ImmutableList<AnagramWord> ConvertDictionaryWordsToAnagramWords(ReadOnlyCollection<DictWord> words)
+		private static List<AnagramWord> ConvertDictionaryWordsToAnagramWords(ReadOnlyCollection<DictWord> words)
 		{
 			List<AnagramWord> tempList = new();
 
@@ -35,7 +35,7 @@ namespace BusinessLogic.DictionaryActions
 
 			tempList = tempList.DistinctBy(word => word.LowerCaseForm).ToList().OrderByDescending(word => word.MainForm.Length).ToList();
 
-			return tempList.ToImmutableList();
+			return tempList;
 		}
 
 		private ReadOnlyCollection<DictWord> ReadWords()

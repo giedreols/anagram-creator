@@ -24,7 +24,7 @@ namespace AnagramSolverTests.WebAppTests
 		[Test]
 		public void Index_ReturnsListPagesModel()
 		{
-			_mockWordRepository.Setup(p => p.GetWords()).Returns(new List<AnagramWord>() { new AnagramWord("") }.ToImmutableList());
+			_mockWordRepository.Setup(p => p.GetWords()).Returns(new List<AnagramWord>() { new AnagramWord("") });
 
 			var result = (ViewResult)_listPageController.Index();
 
@@ -36,7 +36,7 @@ namespace AnagramSolverTests.WebAppTests
 		public void Index_ReturnsCurrentPageWordsInFirstPage()
 		{
 			var word = "liepa";
-			_mockWordRepository.Setup(p => p.GetWords()).Returns(new List<AnagramWord>() { new AnagramWord(word) }.ToImmutableList());
+			_mockWordRepository.Setup(p => p.GetWords()).Returns(new List<AnagramWord>() { new AnagramWord(word) });
 
 			var result = (ViewResult)_listPageController.Index();
 			var model = (ListPageModel)result.ViewData.Model;
@@ -51,7 +51,7 @@ namespace AnagramSolverTests.WebAppTests
 			var pageSize = 1;
 			var wordB = "wordB";
 
-			_mockWordRepository.Setup(p => p.GetWords()).Returns(new List<AnagramWord>() { new AnagramWord("wordA"), new AnagramWord(wordB) }.ToImmutableList());
+			_mockWordRepository.Setup(p => p.GetWords()).Returns(new List<AnagramWord>() { new AnagramWord("wordA"), new AnagramWord(wordB) });
 
 			var result = (ViewResult)_listPageController.Index(page, pageSize);
 			var model = (ListPageModel)result.ViewData.Model;
@@ -65,7 +65,7 @@ namespace AnagramSolverTests.WebAppTests
 			var pageSixe = 2;
 
 			_mockWordRepository.Setup(p => p.GetWords()).Returns(new List<AnagramWord>() { new AnagramWord("wordA"), new AnagramWord("wordB"),
-				new AnagramWord("wordC"), new AnagramWord("wordD") }.ToImmutableList());
+				new AnagramWord("wordC"), new AnagramWord("wordD") });
 
 			var result = (ViewResult)_listPageController.Index(1, pageSixe);
 			var model = (ListPageModel)result.ViewData.Model;
@@ -77,7 +77,7 @@ namespace AnagramSolverTests.WebAppTests
 		public void Index_ReturnsCorrectCurrentPage_IfItIstSet()
 		{
 			var page = 5;
-			_mockWordRepository.Setup(p => p.GetWords()).Returns(new List<AnagramWord>() { new AnagramWord("") }.ToImmutableList());
+			_mockWordRepository.Setup(p => p.GetWords()).Returns(new List<AnagramWord>() { new AnagramWord("") });
 
 			var result = (ViewResult)_listPageController.Index(page);
 			var model = (ListPageModel)result.ViewData.Model;
@@ -89,7 +89,7 @@ namespace AnagramSolverTests.WebAppTests
 		public void Index_ReturnsCorrectPageSize_IfItIstSet()
 		{
 			var pageSize = 5;
-			_mockWordRepository.Setup(p => p.GetWords()).Returns(new List<AnagramWord>() { new AnagramWord("") }.ToImmutableList());
+			_mockWordRepository.Setup(p => p.GetWords()).Returns(new List<AnagramWord>() { new AnagramWord("") });
 
 			var result = (ViewResult)_listPageController.Index(1, pageSize);
 			var model = (ListPageModel)result.ViewData.Model;
@@ -102,7 +102,7 @@ namespace AnagramSolverTests.WebAppTests
 		{
 			var pageSize = 1;
 			_mockWordRepository.Setup(p => p.GetWords()).Returns(new List<AnagramWord>() { new AnagramWord("wordA"), new AnagramWord("wordB"),
-				new AnagramWord("wordC"), new AnagramWord("wordD") }.ToImmutableList());
+				new AnagramWord("wordC"), new AnagramWord("wordD") });
 
 			var result = (ViewResult)_listPageController.Index(1, pageSize);
 			var model = (ListPageModel)result.ViewData.Model;
@@ -114,7 +114,7 @@ namespace AnagramSolverTests.WebAppTests
 		public void Index_ReturnsCorrectTotalWords()
 		{
 			_mockWordRepository.Setup(p => p.GetWords()).Returns(new List<AnagramWord>() { new AnagramWord("wordA"), new AnagramWord("wordB"),
-				new AnagramWord("wordC"), new AnagramWord("wordD") }.ToImmutableList());
+				new AnagramWord("wordC"), new AnagramWord("wordD") });
 
 			var result = (ViewResult)_listPageController.Index(1, 1);
 			var model = (ListPageModel)result.ViewData.Model;

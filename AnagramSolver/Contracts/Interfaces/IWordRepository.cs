@@ -5,6 +5,6 @@ namespace Contracts.Interfaces
 {
     public interface IWordRepository
     {
-        ImmutableList<AnagramWord> GetWords();
+        List<AnagramWord> GetWords();
     }
 }

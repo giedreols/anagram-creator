@@ -6,7 +6,7 @@ namespace BusinessLogic.AnagramActions
 {
     public class AnagramSolver : IAnagramSolver
     {
-        private ImmutableList<AnagramWord> _wordList { get; set; }
+        private List<AnagramWord> _wordList { get; set; }
 
         public AnagramSolver(IWordRepository wordRepository)
         {
