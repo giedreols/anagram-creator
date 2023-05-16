@@ -9,7 +9,7 @@
 	<ul>
 		@foreach (var word in @Model.CurrentPageWords)
 		{
-			<li>@word</li>
+			<li><a href="@Url.Action("Index", "Home", new { inputWord = @word })">@(word)</a></li>
 		}
 	</ul>
 

@@ -1,4 +1,4 @@
-﻿using AnagamSolverWebApp.Models;
+﻿using AnagramSolverWebApp.Models;
 using BusinessLogic.DictionaryActions;
 using Contracts.Interfaces;
 using Microsoft.AspNetCore.Mvc;

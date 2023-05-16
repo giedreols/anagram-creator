@@ -1,4 +1,4 @@
-﻿@model 			AnagramWordsModel;
+﻿@model AnagramWordsModel;
 
 @{
 	ViewData["Title"] = "Anagramos";
@@ -8,11 +8,19 @@
 
 	<h2>@Model.Word</h2>
 
-	<ul>
-		@foreach (var item in @Model.Anagrams)
-		{
-			<li>@item</li>
-		}
-	</ul>
+	@if (@Model.Word != "" && Model.Anagrams.Count == 0)
+	{
+		<p>Deja, anagramų neradome :(.</p>
+	}
 
+	else if (Model.Anagrams.Count != 0)
+	{
+		<p>Anagramos:</p>
+		<ul>
+			@foreach (var item in @Model.Anagrams)
+			{
+				<li>@item</li>
+			}
+		</ul>
+	}
 </div>

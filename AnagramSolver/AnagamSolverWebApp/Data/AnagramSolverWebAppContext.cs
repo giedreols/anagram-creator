@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AnagramSolverWebApp.Data
 {
-	public class AnagamSolverWebAppContext : DbContext
+	public class AnagramSolverWebAppContext : DbContext
 	{
-		public AnagamSolverWebAppContext(DbContextOptions<AnagamSolverWebAppContext> options)
+		public AnagramSolverWebAppContext(DbContextOptions<AnagramSolverWebAppContext> options)
 			: base(options)
 		{
 		}
