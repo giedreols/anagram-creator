@@ -5,12 +5,12 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AnagramSolver.WebApp.Controllers
 {
-	public class ListPageController : Controller
+	public class WordListController : Controller
 	{
 		private readonly IWordRepository _dictionary;
 		private readonly MyConfiguration _config;
 
-		public ListPageController(IWordRepository dictionary, MyConfiguration congif)
+		public WordListController(IWordRepository dictionary, MyConfiguration congif)
 		{
 			_dictionary = dictionary;
 			_config = congif;
@@ -24,7 +24,7 @@ namespace AnagramSolver.WebApp.Controllers
 
 			List<string> currentPageItems = allWords.Skip((page - 1) * pageSize).Take(pageSize).Select(w => w.MainForm).ToList();
 
-			ListPageModel viewModel = new(currentPageItems, page, allWords.Count, pageSize);
+			WordListModel viewModel = new(currentPageItems, page, allWords.Count, pageSize);
 
 			return View(viewModel);
 		}

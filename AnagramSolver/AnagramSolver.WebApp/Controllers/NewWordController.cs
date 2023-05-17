@@ -43,11 +43,7 @@ namespace AnagramSolver.WebApp.Controllers
 				return View("Index", new WordFailedToSaveModel(WordRejectionReasons.AlreadyExists));
 			}
 
-			NewWordModel model = new()
-			{
-				Word = newWord,
-				Anagrams = _anagramSolver.GetAnagrams(newWord)
-			};
+			AnagramWordsModel model = new(newWord, _anagramSolver.GetAnagrams(newWord));
 
 			return View("WordCreated", model);
 
