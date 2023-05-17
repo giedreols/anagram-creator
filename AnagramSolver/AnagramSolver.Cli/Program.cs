@@ -4,6 +4,7 @@ using AnagramSolver.BusinessLogic.InputWordActions;
 using AnagramSolver.Cli;
 using AnagramSolver.Contracts.Interfaces;
 using AnagramSolver.Contracts.Models;
+using Microsoft.Extensions.Configuration;
 
 bool repeat = true;
 
@@ -19,17 +20,16 @@ renderer.ShowHeader();
 while (repeat)
 {
 	string word = renderer.GetWord();
-	InputWordModel inputWord = new(word);
 
-	inputWord.Validate(configuration.MinLength);
+	var invalidityReason = word.Validate(configuration.MinLength, configuration.MaxLength);
 
-	if (inputWord.InvalidityReason != null)
+	if (invalidityReason != null)
 	{
-		renderer.RejectWord(inputWord.InvalidityReason);
+		renderer.RejectWord(invalidityReason);
 		continue;
 	}
 
-	List<string> anagrams = anagramSolver.GetAnagrams(inputWord.Word);
+	List<string> anagrams = anagramSolver.GetAnagrams(word);
 
 	renderer.ShowAnagrams(anagrams.TrimIfTooManyItems(configuration.TotalAmount));
 

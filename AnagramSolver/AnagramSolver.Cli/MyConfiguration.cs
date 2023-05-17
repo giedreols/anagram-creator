@@ -1,21 +1,21 @@
 ﻿using Microsoft.Extensions.Configuration;
 using System.Configuration;
+using System.Reflection;
 
 namespace AnagramSolver.Cli
 {
 	public class MyConfiguration
 	{
-		public int TotalAmount { get; private set; }
-		public int MinLength { get; private set; }
-		public int MaxLength { get; private set; }
-
+		public int TotalAmount { get; set; }
+		public int MinLength { get; set; }
+		public int MaxLength { get; set; }
 
 		private IConfigurationRoot _config { get; set; }
 
 		public MyConfiguration()
 		{
-			ConfigurationBuilder builder = new();
-			builder.SetBasePath(Directory.GetParent(Directory.GetCurrentDirectory()).FullName + "\\AnagramSolver.WebApp\\bin\\Debug\\net7.0")
+			var builder = new ConfigurationBuilder();
+			builder.SetBasePath(Directory.GetCurrentDirectory())
 				   .AddJsonFile("appsettings.json", optional: false);
 
 			_config = builder.Build();
@@ -30,6 +30,12 @@ namespace AnagramSolver.Cli
 			return int.TryParse(_config[settings], out int value)
 				? value
 				: throw new ConfigurationErrorsException($"{settings} is not set correctly in configuration");
+		}
+
+		static string GetProjectName(string baseDirectory)
+		{
+			int lastSeparatorIndex = baseDirectory.TrimEnd('\\').LastIndexOf('\\');
+			return baseDirectory.Substring(lastSeparatorIndex + 1);
 		}
 	}
 }

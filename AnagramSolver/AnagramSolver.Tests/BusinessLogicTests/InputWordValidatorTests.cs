@@ -12,55 +12,60 @@ namespace AnagramSolver.Tests.BusinessLogicTests
 		[TestCase("alu@")]
 		public void Validate_AddsInvalidityReasonInvalidCharacters_IfContainsInvalidChars(string inputWord)
 		{
-			InputWordModel word = new(inputWord);
+			var result = inputWord.Validate(1, 2);
 
-			word.Validate(1);
-
-			Assert.That(word.InvalidityReason, Is.EqualTo(WordRejectionReasons.InvalidChars));
+			Assert.That(result, Is.EqualTo(WordRejectionReasons.InvalidChars));
 		}
 
 		[Test]
 		[TestCase("alus")]
-		[TestCase("alaus puta")]
 		[TestCase("5alūs")]
 		[TestCase("alus-gardus")]
 		public void Validate_DoesNotAddInvalidityReasonInvalidCharacters_IfContainsValidChars(string inputWord)
 		{
-			InputWordModel word = new(inputWord);
+			var result = inputWord.Validate(1, 20);
 
-			word.Validate(1);
-
-			Assert.That(word.InvalidityReason, Is.Null);
+			Assert.That(result, Is.Null);
 		}
 
 		[Test]
 		public void Validate_AddsInvalidityReasonInvalidLength_IfTooShort()
 		{
-			InputWordModel word = new("alus");
+			var result = "alus".Validate(5, 10);
 
-			word.Validate(5);
-
-			Assert.That(word.InvalidityReason, Is.EqualTo(WordRejectionReasons.TooShort));
+			Assert.That(result, Is.EqualTo(WordRejectionReasons.TooShort));
 		}
 
 		[Test]
 		public void Validate_DoesNotAddInvalidityReasonInvalidLength_IfLengthIsEqualToMinLength()
 		{
-			InputWordModel word = new("alus");
+			var result = "alus".Validate(4, 10);
 
-			word.Validate(4);
-
-			Assert.That(word.InvalidityReason, Is.Null);
+			Assert.That(result, Is.Null);
 		}
 
 		[Test]
 		public void Validate_DoesNotAddInvalidityReasonInvalidLength_IfLengthIsBiggerThanMin()
 		{
-			InputWordModel word = new("alus");
+			var result = "alus".Validate(3, 10);
 
-			word.Validate(3);
+			Assert.That(result, Is.Null);
+		}
 
-			Assert.That(word.InvalidityReason, Is.Null);
+		[Test]
+		public void Validate_AddsInvalidityReasonInvalidLength_IfWordIsTooLong()
+		{
+			var result = "alus".Validate(1, 3);
+
+			Assert.That(result, Is.EqualTo(WordRejectionReasons.TooLong));
+		}
+
+		[Test]
+		public void Validate_DoesNotAddInvalidityReasonTooLOng_IfWordIsEqualToMaxLength()
+		{
+			var result = "alus".Validate(1, 4);
+
+			Assert.That(result, Is.Null);
 		}
 	}
 }

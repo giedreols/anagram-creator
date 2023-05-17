@@ -15,20 +15,22 @@ namespace AnagramSolver.Tests.WebAppTests
 		private Mock<IWordRepository> _mockWordRepository;
 		private Mock<MyConfiguration> _mockConfig;
 
-
 		[SetUp]
 		public void SetUp()
 		{
 			_mockWordRepository = new Mock<IWordRepository>(MockBehavior.Strict);
 			_mockConfig = new Mock<MyConfiguration>(MockBehavior.Strict);
+			_mockConfig.SetupAllProperties();
+			_mockConfig.Object.TotalAmount = 1;
 			_listPageController = new ListPageController(_mockWordRepository.Object, _mockConfig.Object);
+
 		}
 
 		[Test]
 		public void Index_ReturnsListPagesModel()
 		{
 			_mockWordRepository.Setup(p => p.GetWords()).Returns(new List<AnagramWord>() { new AnagramWord("") });
-
+			
 			var result = (ViewResult)_listPageController.Index();
 
 			Assert.That(result, Is.Not.Null);
@@ -51,7 +53,6 @@ namespace AnagramSolver.Tests.WebAppTests
 		public void Index_ReturnsCurrentPageWordsInSecondPage()
 		{
 			var page = 2;
-			var pageSize = 1;
 			var wordB = "wordB";
 
 			_mockWordRepository.Setup(p => p.GetWords()).Returns(new List<AnagramWord>() { new AnagramWord("wordA"), new AnagramWord(wordB) });
@@ -65,15 +66,13 @@ namespace AnagramSolver.Tests.WebAppTests
 		[Test]
 		public void Index_ReturnsCorrectWordsCountInCurrentPage()
 		{
-			var pageSixe = 2;
-
 			_mockWordRepository.Setup(p => p.GetWords()).Returns(new List<AnagramWord>() { new AnagramWord("wordA"), new AnagramWord("wordB"),
 				new AnagramWord("wordC"), new AnagramWord("wordD") });
 
 			var result = (ViewResult)_listPageController.Index(1);
 			var model = (ListPageModel)result.ViewData.Model;
 
-			Assert.That(model.CurrentPageWords.Count, Is.EqualTo(pageSixe));
+			Assert.That(model.CurrentPageWords.Count, Is.EqualTo(_mockConfig.Object.TotalAmount));
 		}
 
 		[Test]
@@ -89,21 +88,8 @@ namespace AnagramSolver.Tests.WebAppTests
 		}
 
 		[Test]
-		public void Index_ReturnsCorrectPageSize_IfItIstSet()
-		{
-			var pageSize = 5;
-			_mockWordRepository.Setup(p => p.GetWords()).Returns(new List<AnagramWord>() { new AnagramWord("") });
-
-			var result = (ViewResult)_listPageController.Index(1);
-			var model = (ListPageModel)result.ViewData.Model;
-
-			Assert.That(model.PageSize, Is.EqualTo(pageSize));
-		}
-
-		[Test]
 		public void Index_ReturnsCorrectTotalPages()
-		{
-			var pageSize = 1;
+		{			
 			_mockWordRepository.Setup(p => p.GetWords()).Returns(new List<AnagramWord>() { new AnagramWord("wordA"), new AnagramWord("wordB"),
 				new AnagramWord("wordC"), new AnagramWord("wordD") });
 

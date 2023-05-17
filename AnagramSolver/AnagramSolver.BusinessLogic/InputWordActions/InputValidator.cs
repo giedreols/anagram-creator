@@ -4,46 +4,30 @@ namespace AnagramSolver.BusinessLogic.InputWordActions
 {
 	public static class InputValidator
 	{
-		public static void Validate(this InputWordModel word, int minLength, int maxLength = 20)
-		{
-			if (word.Word == null)
-			{
-				word.InvalidityReason = WordRejectionReasons.Empty;
-				return;
-			}
-
-			if (!IsValidChars(word.Word))
-			{
-				word.InvalidityReason = WordRejectionReasons.InvalidChars;
-				return;
-			}
-
-			if (!(word.Word.Length >= minLength))
-			{
-				word.InvalidityReason = WordRejectionReasons.TooShort;
-				return;
-			}
-
-			if (!(word.Word.Length <= maxLength))
-			{
-				word.InvalidityReason = WordRejectionReasons.TooLong;
-				return;
-			}
-		}
-
-		public static string Validate(this string? word, int minLength, int maxLength = 20)
+		public static string Validate(this string word, int minLength, int maxLength)
 		{
 			if (word == null)
 			{
 				return WordRejectionReasons.Empty;
 			}
 
-			var tempWord = new InputWordModel(word);
-			tempWord.Validate(minLength, maxLength);
+			if (!IsValidChars(word))
+			{
+				return WordRejectionReasons.InvalidChars;
+			}
 
-			return tempWord.InvalidityReason;
+			if (!(word.Length >= minLength))
+			{
+				return WordRejectionReasons.TooShort;
+			}
+
+			if (!(word.Length <= maxLength))
+			{
+				return WordRejectionReasons.TooLong;
+			}
+
+			return null;
 		}
-
 
 		private static bool IsValidChars(string word)
 		{
