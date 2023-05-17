@@ -1,5 +1,6 @@
 ﻿using AnagramSolverWebApp.Data;
 using BusinessLogic.DictionaryActions;
+using Cli;
 using Contracts.Interfaces;
 using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
@@ -10,6 +11,7 @@ builder.Services.AddDbContext<AnagramSolverWebAppContext>(options =>
 builder.Services.AddScoped<IFileReader, FileReader>();
 builder.Services.AddScoped<IWordRepository, WordDictionary>();
 builder.Services.AddScoped<IAnagramSolver, BusinessLogic.AnagramActions.AnagramSolver>();
+builder.Services.AddScoped<MyConfiguration>();
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();

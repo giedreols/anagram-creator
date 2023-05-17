@@ -1,4 +1,5 @@
 ﻿using AnagramSolverWebApp.Models;
+using Cli;
 using Contracts.Interfaces;
 using Contracts.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -9,14 +10,18 @@ namespace AnagamSolverWebApp.Controllers
 	{
 		IWordRepository _dictionary;
 		private List<AnagramWord> _allWords;
+		private MyConfiguration _config;
 
-		public ListPageController(IWordRepository dictionary)
+		public ListPageController(IWordRepository dictionary, MyConfiguration congif)
 		{
 			_dictionary = dictionary;
+			_config = congif;
 		}
 
-		public IActionResult Index(int page = 1, int pageSize = 100)
+		public IActionResult Index(int page = 1)
 		{
+			int pageSize = _config.TotalAmount;
+
 			_allWords = _dictionary.GetWords().OrderBy(w => w.LowerCaseForm).ToList();
 
 			var totalPages = (int)Math.Ceiling(_allWords.Count / (double)pageSize);

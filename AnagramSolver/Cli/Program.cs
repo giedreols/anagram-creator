@@ -8,7 +8,7 @@ using Contracts.Models;
 bool repeat = true;
 
 IRenderer renderer = new CommandLineView();
-Configuration configuration = new();
+MyConfiguration configuration = new();
 
 IFileReader fileReader = new FileReader();
 IWordRepository wordDictionary = new WordDictionary(fileReader);
@@ -19,7 +19,7 @@ renderer.ShowHeader();
 while (repeat)
 {
     string word = renderer.GetWord();
-    InputWord inputWord = new(word);
+    InputWordModel inputWord = new(word);
 
     inputWord.Validate(configuration.MinLength);
 
@@ -29,7 +29,7 @@ while (repeat)
         continue;
     }
 
-    List<string> anagrams = anagramSolver.GetAnagrams(inputWord.MainForm);
+    List<string> anagrams = anagramSolver.GetAnagrams(inputWord.Word);
 
     renderer.ShowAnagrams(anagrams.TrimIfTooManyItems(configuration.TotalAmount));
 

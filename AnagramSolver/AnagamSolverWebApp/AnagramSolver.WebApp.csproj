@@ -17,6 +17,13 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BusinessLogic\AnagramSolver.BusinessLogic.csproj" />
+    <ProjectReference Include="..\Cli\AnagramSolver.Cli.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

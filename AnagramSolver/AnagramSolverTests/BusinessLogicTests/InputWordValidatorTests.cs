@@ -12,11 +12,11 @@ namespace AnagramSolverTests.BusinessLogicTests
         [TestCase("alu@")]
         public void Validate_AddsInvalidityReasonInvalidCharacters_IfContainsInvalidChars(string inputWord)
         {
-            InputWord word = new(inputWord);
+            InputWordModel word = new(inputWord);
 
             word.Validate(1);
 
-            Assert.That(word.InvalidityReason, Is.EqualTo(WordRejectionReasons.InvalidCharacters));
+            Assert.That(word.InvalidityReason, Is.EqualTo(WordRejectionReasons.InvalidChars));
         }
 
         [Test]
@@ -26,7 +26,7 @@ namespace AnagramSolverTests.BusinessLogicTests
         [TestCase("alus-gardus")]
         public void Validate_DoesNotAddInvalidityReasonInvalidCharacters_IfContainsValidChars(string inputWord)
         {
-            InputWord word = new(inputWord);
+            InputWordModel word = new(inputWord);
 
             word.Validate(1);
 
@@ -36,7 +36,7 @@ namespace AnagramSolverTests.BusinessLogicTests
         [Test]
         public void Validate_AddsInvalidityReasonInvalidLength_IfTooShort()
         {
-            InputWord word = new("alus");
+            InputWordModel word = new("alus");
 
             word.Validate(5);
 
@@ -46,7 +46,7 @@ namespace AnagramSolverTests.BusinessLogicTests
         [Test]
         public void Validate_DoesNotAddInvalidityReasonInvalidLength_IfLengthIsEqualToMinLength()
         {
-            InputWord word = new("alus");
+            InputWordModel word = new("alus");
 
             word.Validate(4);
 
@@ -56,7 +56,7 @@ namespace AnagramSolverTests.BusinessLogicTests
         [Test]
         public void Validate_DoesNotAddInvalidityReasonInvalidLength_IfLengthIsBiggerThanMin()
         {
-            InputWord word = new("alus");
+            InputWordModel word = new("alus");
 
             word.Validate(3);
 

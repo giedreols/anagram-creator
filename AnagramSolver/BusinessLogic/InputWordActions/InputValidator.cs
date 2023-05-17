@@ -2,45 +2,67 @@
 
 namespace BusinessLogic.InputWordActions
 {
-    public static class InputValidator
-    {
-        public static void Validate(this InputWord word, int minLength)
-        {
-            if (!IsValidChars(word.MainForm))
-            {
-                word.InvalidityReason = WordRejectionReasons.InvalidCharacters;
-            }
+	public static class InputValidator
+	{
+		public static void Validate(this InputWordModel word, int minLength, int maxLength = 20)
+		{
+			if (word.Word == null)
+			{
+				word.InvalidityReason = WordRejectionReasons.Empty;
+				return;
+			}
 
-            if (!IsValidLength(word.MainForm, minLength))
-            {
-                word.InvalidityReason = WordRejectionReasons.TooShort;
-            }
-        }
+			if (!IsValidChars(word.Word))
+			{
+				word.InvalidityReason = WordRejectionReasons.InvalidChars;
+				return;
+			}
+
+			if (!(word.Word.Length >= minLength))
+			{
+				word.InvalidityReason = WordRejectionReasons.TooShort;
+				return;
+			}
+
+			if (!(word.Word.Length <= maxLength))
+			{
+				word.InvalidityReason = WordRejectionReasons.TooLong;
+				return;
+			}
+		}
+
+		public static string Validate(this string? word, int minLength, int maxLength = 20)
+		{
+			if (word == null)
+			{
+				return WordRejectionReasons.Empty;
+			}
+
+			var tempWord = new InputWordModel(word);
+			Validate(tempWord, minLength, maxLength);
+
+			return tempWord.InvalidityReason;
+		}
 
 
-        private static bool IsValidChars(string word)
-        {
-            bool isValid = false;
+		private static bool IsValidChars(string word)
+		{
+			bool isValid = false;
 
-            foreach (char letter in word)
-            {
-                if (char.IsDigit(letter) || char.IsLetter(letter) || letter.Equals('-') || letter.Equals(' '))
-                {
-                    isValid = true;
-                }
+			foreach (char letter in word)
+			{
+				if (char.IsDigit(letter) || char.IsLetter(letter) || letter.Equals('-'))
+				{
+					isValid = true;
+				}
 
-                else
-                {
-                    isValid = false;
-                    break;
-                }
-            }
-            return isValid;
-        }
-
-        private static bool IsValidLength(string word, int minLength)
-        {
-            return word.Length >= minLength;
-        }
-    }
+				else
+				{
+					isValid = false;
+					break;
+				}
+			}
+			return isValid;
+		}
+	}
 }
