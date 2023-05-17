@@ -9,9 +9,9 @@ namespace AnagramSolver.WebApp.Controllers
 {
 	public class NewWordController : Controller
 	{
-		private IWordRepository _wordRepository;
-		private IAnagramGenerator _anagramSolver;
-		private MyConfiguration _config;
+		private readonly IWordRepository _wordRepository;
+		private readonly IAnagramGenerator _anagramSolver;
+		private readonly MyConfiguration _config;
 
 		public NewWordController(IWordRepository wordRepository, IAnagramGenerator anagramSolver, MyConfiguration config)
 		{
