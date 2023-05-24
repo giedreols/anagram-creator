@@ -1,24 +1,24 @@
 ﻿using AnagramSolver.Contracts.Interfaces;
-using AnagramSolver.Contracts.Models;
 
 namespace AnagramSolver.BusinessLogic.AnagramActions
 {
 	public class AnagramGenerator : IAnagramGenerator
 	{
-		private List<AnagramWord> _wordList { get; set; }
+		private readonly IWordRepository _wordRepository;
 
 		public AnagramGenerator(IWordRepository wordRepository)
 		{
-			_wordList = wordRepository.GetWords();
+			_wordRepository = wordRepository;
 		}
 
 		public List<string> GetAnagrams(string inputWord)
 		{
+			var wordList = _wordRepository.GetWords();
 			List<string> anagrams = new();
 			var loweredInputWord = inputWord.ToLower().Replace(" ", "");
 			var inputSequence = loweredInputWord.OrderByDescending(c => c);
 
-			foreach (var word in _wordList)
+			foreach (var word in wordList)
 			{
 				if (inputSequence.SequenceEqual(word.OrderedForm) && word.LowerCaseForm != loweredInputWord)
 				{

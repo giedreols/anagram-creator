@@ -1,5 +1,6 @@
 ﻿using AnagramSolver.Cli;
 using AnagramSolver.Contracts.Interfaces;
+using AnagramSolver.Contracts.Models;
 using AnagramSolver.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,13 +19,11 @@ namespace AnagramSolver.WebApp.Controllers
 
 		public IActionResult Index(int page = 1)
 		{
-			var pageSize = _config.TotalAmount;
-			var allWords = _dictionary.GetWords().OrderBy(w => w.LowerCaseForm).ToList();
-			var totalPages = (int)Math.Ceiling(allWords.Count / (double)pageSize);
+			int pageSize = _config.TotalAmount;
 
-			List<string> currentPageItems = allWords.Skip((page - 1) * pageSize).Take(pageSize).Select(w => w.MainForm).ToList();
+			PageWordModel wordsPerPage = _dictionary.GetWordsByPage(page, pageSize);
 
-			WordListModel viewModel = new(currentPageItems, page, allWords.Count, pageSize);
+			WordListModel viewModel = new(wordsPerPage.Words, page, wordsPerPage.TotalWordsCount, pageSize);
 
 			return View(viewModel);
 		}

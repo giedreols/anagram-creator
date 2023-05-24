@@ -7,5 +7,8 @@ namespace AnagramSolver.Contracts.Interfaces
 		List<AnagramWord> GetWords();
 
 		bool SaveWord(string word);
+
+		PageWordModel GetWordsByPage(int page, int totalAmount);
+
 	}
 }

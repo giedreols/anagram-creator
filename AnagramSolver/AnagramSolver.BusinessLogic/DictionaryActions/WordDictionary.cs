@@ -22,6 +22,16 @@ namespace AnagramSolver.BusinessLogic.DictionaryActions
 			return ConvertDictionaryWordsToAnagramWords(words);
 		}
 
+		public PageWordModel GetWordsByPage(int page = 1, int pageSize = 100)
+		{
+			var allWords = GetWords().OrderBy(w => w.LowerCaseForm).ToList();
+			var totalPages = (int)Math.Ceiling(allWords.Count / (double)pageSize);
+
+			List<string> currentPageItems = allWords.Skip((page - 1) * pageSize).Select(w => w.LowerCaseForm).Take(pageSize).ToList();
+
+			return new PageWordModel(currentPageItems, pageSize, allWords.Count);
+		}
+
 		public bool SaveWord(string word)
 		{
 			List<AnagramWord> currentWords = GetWords();

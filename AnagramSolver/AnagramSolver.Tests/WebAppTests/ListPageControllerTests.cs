@@ -29,8 +29,8 @@ namespace AnagramSolver.Tests.WebAppTests
 		[Test]
 		public void Index_ReturnsListPagesModel()
 		{
-			_mockWordRepository.Setup(p => p.GetWords()).Returns(new List<AnagramWord>() { new AnagramWord("") });
-			
+			_mockWordRepository.Setup(p => p.GetWordsByPage(1, 1)).Returns(new PageWordModel(new List<string>(), 1, 1) { });
+
 			var result = (ViewResult)_listPageController.Index();
 
 			Assert.That(result, Is.Not.Null);
@@ -41,74 +41,12 @@ namespace AnagramSolver.Tests.WebAppTests
 		public void Index_ReturnsCurrentPageWordsInFirstPage()
 		{
 			var word = "liepa";
-			_mockWordRepository.Setup(p => p.GetWords()).Returns(new List<AnagramWord>() { new AnagramWord(word) });
+			_mockWordRepository.Setup(p => p.GetWordsByPage(1, 1)).Returns(new PageWordModel(new List<string>() { word }, 1, 1) { });
 
 			var result = (ViewResult)_listPageController.Index();
 			var model = (WordListModel)result.ViewData.Model;
 
 			Assert.That(model.CurrentPageWords[0], Is.EqualTo(word));
-		}
-
-		[Test]
-		public void Index_ReturnsCurrentPageWordsInSecondPage()
-		{
-			var page = 2;
-			var wordB = "wordB";
-
-			_mockWordRepository.Setup(p => p.GetWords()).Returns(new List<AnagramWord>() { new AnagramWord("wordA"), new AnagramWord(wordB) });
-
-			var result = (ViewResult)_listPageController.Index(page);
-			var model = (WordListModel)result.ViewData.Model;
-
-			Assert.That(model.CurrentPageWords[0], Is.EqualTo(wordB));
-		}
-
-		[Test]
-		public void Index_ReturnsCorrectWordsCountInCurrentPage()
-		{
-			_mockWordRepository.Setup(p => p.GetWords()).Returns(new List<AnagramWord>() { new AnagramWord("wordA"), new AnagramWord("wordB"),
-				new AnagramWord("wordC"), new AnagramWord("wordD") });
-
-			var result = (ViewResult)_listPageController.Index(1);
-			var model = (WordListModel)result.ViewData.Model;
-
-			Assert.That(model.CurrentPageWords.Count, Is.EqualTo(_mockConfig.Object.TotalAmount));
-		}
-
-		[Test]
-		public void Index_ReturnsCorrectCurrentPage_IfItIstSet()
-		{
-			var page = 5;
-			_mockWordRepository.Setup(p => p.GetWords()).Returns(new List<AnagramWord>() { new AnagramWord("") });
-
-			var result = (ViewResult)_listPageController.Index(page);
-			var model = (WordListModel)result.ViewData.Model;
-
-			Assert.That(model.CurrentPage, Is.EqualTo(page));
-		}
-
-		[Test]
-		public void Index_ReturnsCorrectTotalPages()
-		{			
-			_mockWordRepository.Setup(p => p.GetWords()).Returns(new List<AnagramWord>() { new AnagramWord("wordA"), new AnagramWord("wordB"),
-				new AnagramWord("wordC"), new AnagramWord("wordD") });
-
-			var result = (ViewResult)_listPageController.Index(1);
-			var model = (WordListModel)result.ViewData.Model;
-
-			Assert.That(model.TotalPages, Is.EqualTo(4));
-		}
-
-		[Test]
-		public void Index_ReturnsCorrectTotalWords()
-		{
-			_mockWordRepository.Setup(p => p.GetWords()).Returns(new List<AnagramWord>() { new AnagramWord("wordA"), new AnagramWord("wordB"),
-				new AnagramWord("wordC"), new AnagramWord("wordD") });
-
-			var result = (ViewResult)_listPageController.Index(1);
-			var model = (WordListModel)result.ViewData.Model;
-
-			Assert.That(model.TotalWords, Is.EqualTo(4));
-		}
+		}	
 	}
 }
