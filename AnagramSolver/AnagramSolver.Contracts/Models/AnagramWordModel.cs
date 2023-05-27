@@ -1,7 +1,7 @@
 ﻿namespace AnagramSolver.Contracts.Models
 
 {
-	public class AnagramWord
+	public class AnagramWordModel
 	{
 
 		public string MainForm { get; set; }
@@ -10,7 +10,7 @@
 
 		public string OrderedForm { get; set; }
 
-		public AnagramWord(string mainForm)
+		public AnagramWordModel(string mainForm)
 		{
 			MainForm = mainForm;
 			LowerCaseForm = mainForm.ToLower();

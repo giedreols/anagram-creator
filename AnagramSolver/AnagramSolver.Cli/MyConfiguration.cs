@@ -15,8 +15,9 @@ namespace AnagramSolver.Cli
 		public MyConfiguration()
 		{
 			var builder = new ConfigurationBuilder();
-			builder.SetBasePath(Directory.GetCurrentDirectory())
-				   .AddJsonFile("appsettings.json", optional: false);
+			var path = Directory.GetCurrentDirectory();
+			var newPath = path.Replace("Cli", "WebApp");
+			builder.SetBasePath(newPath).AddJsonFile("appsettings.json", optional: false);
 
 			_config = builder.Build();
 

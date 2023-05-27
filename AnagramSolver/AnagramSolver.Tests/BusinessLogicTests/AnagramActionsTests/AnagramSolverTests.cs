@@ -12,13 +12,13 @@ namespace AnagramSolver.Tests.BusinessLogicTests.AnagramActionsTests
 		[SetUp]
 		public void Setup()
 		{
-			List<AnagramWord> list = new() {
-				new AnagramWord("siela"),
-				new AnagramWord("alus"),
-				new AnagramWord("upė"),
-				new AnagramWord("liesa"),
-				new AnagramWord("liepa"),
-				new AnagramWord("sula") };
+			List<AnagramWordModel> list = new() {
+				new AnagramWordModel("siela"),
+				new AnagramWordModel("alus"),
+				new AnagramWordModel("upė"),
+				new AnagramWordModel("liesa"),
+				new AnagramWordModel("liepa"),
+				new AnagramWordModel("sula") };
 
 			_mockWordRepository = new Mock<IWordRepository>(MockBehavior.Strict);
 			_mockWordRepository.Setup(p => p.GetWords()).Returns(list);

@@ -1,4 +1,5 @@
 ﻿using AnagramSolver.Contracts.Interfaces;
+using System.IO;
 
 namespace AnagramSolver.BusinessLogic.DictionaryActions
 {
@@ -8,9 +9,21 @@ namespace AnagramSolver.BusinessLogic.DictionaryActions
 
 		public FileReader()
 		{
+			string currentDirectory = Directory.GetCurrentDirectory();
 			try
 			{
-				_path = Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).FullName + "\\AnagramSolver.BusinessLogic\\bin\\Debug\\net7.0\\Files\\zodynas.txt");
+				if (currentDirectory.Contains("WebApp"))
+				{
+
+					_path = Path.Combine(Directory.GetParent(currentDirectory).FullName + "\\AnagramSolver.BusinessLogic\\bin\\Debug\\net7.0");
+				}
+				else if (currentDirectory.Contains("Cli"))
+				{
+					_path = currentDirectory.Replace("Cli", "BusinessLogic");
+
+				}
+
+				_path += "\\Files\\zodynas.txt";
 			}
 			catch
 			{

@@ -4,7 +4,6 @@ using AnagramSolver.BusinessLogic.InputWordActions;
 using AnagramSolver.Cli;
 using AnagramSolver.Contracts.Interfaces;
 using AnagramSolver.Contracts.Models;
-using Microsoft.Extensions.Configuration;
 
 bool repeat = true;
 
@@ -14,6 +13,8 @@ MyConfiguration configuration = new();
 IFileReader fileReader = new FileReader();
 IWordRepository wordDictionary = new WordDictionary(fileReader);
 IAnagramGenerator anagramSolver = new AnagramGenerator(wordDictionary);
+
+HttpClient httpClient = new();
 
 renderer.ShowHeader();
 
@@ -29,9 +30,19 @@ while (repeat)
 		continue;
 	}
 
-	List<string> anagrams = anagramSolver.GetAnagrams(word);
+	string url = "http://localhost:5254/api/anagrams/" + word;
+	HttpResponseMessage response = await httpClient.GetAsync(url);
 
-	renderer.ShowAnagrams(anagrams.TrimIfTooManyItems(configuration.TotalAmount));
+	if (response.IsSuccessStatusCode)
+	{
+		string content = await response.Content.ReadAsStringAsync();
+		var anagramWordsModel = new Converter<AnagramWordsModel>().ConvertFromJson(content);
+		renderer.ShowAnagrams(anagramWordsModel.Anagrams.TrimIfTooManyItems(configuration.TotalAmount));
+	}
+	else
+	{
+		Console.WriteLine("Request failed with status code: " + response.StatusCode);
+	}
 
 	repeat = renderer.DoRepeat();
 
