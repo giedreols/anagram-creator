@@ -10,5 +10,6 @@ namespace AnagramSolver.Contracts.Interfaces
 
 		PageWordModel GetWordsByPage(int page, int totalAmount);
 
+		byte[] GetFile();
 	}
 }

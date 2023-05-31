@@ -1,5 +1,5 @@
 ﻿using AnagramSolver.Contracts.Interfaces;
-using System.IO;
+using System.Text;
 
 namespace AnagramSolver.BusinessLogic.DictionaryActions
 {
@@ -57,6 +57,22 @@ namespace AnagramSolver.BusinessLogic.DictionaryActions
 			{
 				throw new IOException("Could not write word into the dictionary.");
 			}
+		}
+
+		public byte[] GetFile()
+		{
+			byte[] fileBytes;
+
+			try
+			{
+				fileBytes = File.ReadAllBytes(_path);
+			}
+			catch
+			{
+				throw new IOException("Could not get file.");
+			}
+
+			return fileBytes;
 		}
 	}
 }

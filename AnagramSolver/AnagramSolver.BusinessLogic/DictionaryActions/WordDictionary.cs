@@ -49,6 +49,13 @@ namespace AnagramSolver.BusinessLogic.DictionaryActions
 
 		}
 
+		public byte[] GetFile()
+		{
+			var fileBytes = _fileReader.GetFile();
+
+			return fileBytes;
+		}
+
 		private List<string> ReadWords()
 		{
 			string text = _fileReader.ReadFile();

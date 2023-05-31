@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AnagramSolver.WebApp.Controllers
 {
+	[ApiController]
+	[Route("api/[controller]/[action]")]
 	public class WordListController : Controller
 	{
 		private readonly IWordRepository _dictionary;
@@ -17,6 +19,7 @@ namespace AnagramSolver.WebApp.Controllers
 			_config = congif;
 		}
 
+		[HttpGet()]
 		public IActionResult Index(int page = 1)
 		{
 			int pageSize = _config.TotalAmount;
@@ -26,6 +29,14 @@ namespace AnagramSolver.WebApp.Controllers
 			WordListModel viewModel = new(wordsPerPage.Words, page, wordsPerPage.TotalWordsCount, pageSize);
 
 			return View(viewModel);
+		}
+
+		[HttpGet()]
+		public IActionResult DownloadFile()
+		{
+			byte[] fileInBytes = _dictionary.GetFile();
+
+			return File(fileInBytes, "text/plain", "zodynas.txt");
 		}
 	}
 }

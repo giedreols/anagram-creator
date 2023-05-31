@@ -1,7 +1,6 @@
 ﻿using AnagramSolver.BusinessLogic.DictionaryActions;
 using AnagramSolver.Cli;
 using AnagramSolver.Contracts.Interfaces;
-using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
