@@ -1,7 +1,5 @@
 ﻿using AnagramSolver.Contracts.Interfaces;
 using AnagramSolver.Contracts.Models;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 
 namespace AnagramSolver.BusinessLogic.DictionaryActions
 {
@@ -46,7 +44,6 @@ namespace AnagramSolver.BusinessLogic.DictionaryActions
 			word += $"\t.\t{word}\t.";
 			_fileReader.WriteFile(word);
 			return true;
-
 		}
 
 		public byte[] GetFile()

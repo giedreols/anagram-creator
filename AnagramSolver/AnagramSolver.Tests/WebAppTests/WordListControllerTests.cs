@@ -9,7 +9,7 @@ using Moq;
 namespace AnagramSolver.Tests.WebAppTests
 {
 	[TestFixture]
-	internal class ListPageControllerTests
+	internal class WordListControllerTests
 	{
 		private WordListController _listPageController;
 		private Mock<IWordRepository> _mockWordRepository;
@@ -47,6 +47,36 @@ namespace AnagramSolver.Tests.WebAppTests
 			var model = (WordListModel)result.ViewData.Model;
 
 			Assert.That(model.CurrentPageWords[0], Is.EqualTo(word));
-		}	
+		}
+
+		[Test]
+		public void DownloadFile_ReturnsFileContentResult()
+		{
+			_mockWordRepository.Setup(p => p.GetFile()).Returns(Array.Empty<byte>());
+
+			var result = _listPageController.DownloadFile();
+
+			Assert.That(result, Is.TypeOf<FileContentResult>());
+		}
+
+		[Test]
+		public void DownloadFile_ReturnsFileTypeEqualsToTxt()
+		{
+			_mockWordRepository.Setup(p => p.GetFile()).Returns(Array.Empty<byte>());
+
+			var result = (FileContentResult)_listPageController.DownloadFile();
+
+			Assert.That(result.ContentType, Is.EqualTo("text/plain"));
+		}
+
+		[Test]
+		public void DownloadFile_ReturnsFileContentTyleIsByteArray()
+		{
+			_mockWordRepository.Setup(p => p.GetFile()).Returns(Array.Empty<byte>());
+
+			var result = (FileContentResult)_listPageController.DownloadFile();
+
+			Assert.That(result.FileContents, Is.TypeOf<byte[]>());
+		}
 	}
 }
