@@ -1,5 +1,4 @@
 ﻿using AnagramSolver.Contracts.Interfaces;
-using System.Text;
 
 namespace AnagramSolver.BusinessLogic.DictionaryActions
 {
@@ -20,6 +19,11 @@ namespace AnagramSolver.BusinessLogic.DictionaryActions
 				else if (currentDirectory.Contains("Cli"))
 				{
 					_path = currentDirectory.Replace("Cli", "BusinessLogic");
+
+				}
+				else if (currentDirectory.Contains("DbSeeding"))
+				{
+					_path = currentDirectory.Replace("DbSeeding", "BusinessLogic");
 
 				}
 

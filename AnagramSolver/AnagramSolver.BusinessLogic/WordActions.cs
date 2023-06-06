@@ -16,6 +16,29 @@ namespace AnagramSolver.BusinessLogic
 			return lines.ToList();
 		}
 
+		public static List<DictionaryWordModel> ParseDictionaryWordsFromLines(List<string> linesList)
+		{
+			List<DictionaryWordModel> wordList = new();
+
+			try
+			{
+				foreach (string line in linesList)
+				{
+					if (line.Contains('\t'))
+					{
+						string[] fields = line.Split('\t');
+						wordList.Add(new DictionaryWordModel(fields[0], fields[2], fields[1]));
+					}
+				}
+				if (wordList.Count == 0) { throw new Exception("Dictionary is empty"); }
+			}
+			catch
+			{
+				throw new IndexOutOfRangeException("Dictionary is empty of file structure is incorrect; Each line should contain at least 3 fields, separated by tabs");
+			}
+			return wordList;
+		}
+
 		public static List<string> ParseWordsFromDictionaryFile(List<string> linesList)
 		{
 			List<string> wordList = new();
