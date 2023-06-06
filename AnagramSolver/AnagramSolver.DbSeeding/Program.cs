@@ -13,7 +13,5 @@ int id = 0;
 foreach (var word in words)
 {
 	word.Id = id++;
-	var query = "INSERT INTO [dbo].[Words] ([Id], [MainForm], [OtherForm], [PartOfSpeech]) VALUES (@id, @mainForm, @otherForm, @partOfSpeech)";
-
-	DbAccess.InsertWords(query, word);
+	DbAccess.InsertWord(word);
 }
