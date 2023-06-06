@@ -12,7 +12,7 @@ namespace AnagramSolver.BusinessLogic.DictionaryActions
 			_fileReader = fileReader;
 		}
 
-		public List<AnagramWordModel> GetWords()
+		public List<WordModel> GetWords()
 		{
 			List<string> words = ReadWords();
 
@@ -31,7 +31,7 @@ namespace AnagramSolver.BusinessLogic.DictionaryActions
 
 		public bool SaveWord(string word)
 		{
-			List<AnagramWordModel> currentWords = GetWords();
+			List<WordModel> currentWords = GetWords();
 
 			foreach (var existingWord in currentWords)
 			{

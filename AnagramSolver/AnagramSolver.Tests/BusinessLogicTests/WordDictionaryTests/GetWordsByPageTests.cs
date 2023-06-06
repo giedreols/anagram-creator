@@ -22,7 +22,7 @@ namespace AnagramSolver.Tests.BusinessLogicTests.WordDictionaryTests
 			_mockConfig.SetupAllProperties();
 			_mockConfig.Object.TotalAmount = 1;
 			_mockWordRepository = new Mock<IWordRepository>(MockBehavior.Strict);
-			_mockWordRepository.Setup(p => p.GetWords()).Returns(new List<AnagramWordModel> { });
+			_mockWordRepository.Setup(p => p.GetWords()).Returns(new List<WordModel> { });
 			_listPageController = new WordListController(_mockWordRepository.Object, _mockConfig.Object);
 		}
 

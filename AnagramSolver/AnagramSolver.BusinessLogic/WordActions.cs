@@ -65,13 +65,13 @@ namespace AnagramSolver.BusinessLogic
 			return wordList;
 		}
 
-		public static List<AnagramWordModel> ConvertStringListToAnagramWordList(List<string> stringList)
+		public static List<WordModel> ConvertStringListToAnagramWordList(List<string> stringList)
 		{
-			List<AnagramWordModel> tempList = new();
+			List<WordModel> tempList = new();
 
 			foreach (var word in stringList)
 			{
-				tempList.Add(new AnagramWordModel(word));
+				tempList.Add(new WordModel(word));
 			}
 
 			return tempList.DistinctBy(word => word.LowerCaseForm).ToList().OrderByDescending(word => word.MainForm.Length).ToList();
