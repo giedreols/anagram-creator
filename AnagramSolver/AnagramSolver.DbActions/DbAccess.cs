@@ -24,11 +24,10 @@ namespace AnagramSolver.DbActions
 				new SqlParameter { ParameterName = $"@partOfSpeech", Value = $"{parameters.PartOfSpeech}" }
 			});
 
-			ExecuteConnection(command);
+			ExecuteCommand(command);
 		}
-
-		// gal reiktu sitoj vietoj ismesti pasikartojancius zodzius?
 		// ar geriau isvis - ismesti juos seedinant į db, ir db isvis nedaryt fieldo "other form", o saugot kaip atskirus visus zodzius?
+
 		public List<DictionaryWordModel> GetWords()
 		{
 			string query = "SELECT [MainForm], [PartOfSpeech], [OtherForm] FROM [AnagramSolverData].[dbo].[Words]";
@@ -39,7 +38,7 @@ namespace AnagramSolver.DbActions
 				CommandType = CommandType.Text
 			};
 
-			DataTable dataTable = ExecuteConnection(command);
+			DataTable dataTable = ExecuteCommand(command);
 
 			List<DictionaryWordModel> result = dataTable.AsEnumerable()
 				.Select(row => new DictionaryWordModel(row.Field<string>("MainForm"), row.Field<string>("OtherForm"), row.Field<string>("PartOfSpeech"))).ToList();
@@ -60,7 +59,7 @@ namespace AnagramSolver.DbActions
 
 			command.Parameters.Add(new SqlParameter { ParameterName = $"@word", Value = $"{word}" });
 
-			DataTable dataTable = ExecuteConnection(command);
+			DataTable dataTable = ExecuteCommand(command);
 
 			if (dataTable.Rows.Count > 0)
 				return true;
@@ -78,14 +77,14 @@ namespace AnagramSolver.DbActions
 				CommandType = CommandType.Text
 			};
 
-			DataTable dataTable = ExecuteConnection(command);
+			DataTable dataTable = ExecuteCommand(command);
 
 			int result = (int)dataTable.Rows[0][0];
 
 			return result;
 		}
 
-		private static DataTable ExecuteConnection(SqlCommand command)
+		private static DataTable ExecuteCommand(SqlCommand command)
 		{
 			var connstringBuilder = new SqlConnectionStringBuilder("Data Source=.\\MSSQLSERVER01;Initial Catalog=AnagramSolverData;Integrated Security=True");
 
