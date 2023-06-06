@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AnagramSolver.Contracts\AnagramSolver.Contracts.csproj" />
+    <ProjectReference Include="..\AnagramSolver.DbActions\AnagramSolver.DbActions.csproj" />
   </ItemGroup>
 
   <ItemGroup>

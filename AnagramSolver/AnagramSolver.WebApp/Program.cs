@@ -1,13 +1,17 @@
-﻿using AnagramSolver.BusinessLogic.DictionaryActions;
+﻿using AnagramSolver.BusinessLogic;
+using AnagramSolver.BusinessLogic.DictionaryActions;
 using AnagramSolver.Cli;
 using AnagramSolver.Contracts.Interfaces;
+using AnagramSolver.DbActions;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddScoped<IFileReader, FileReader>();
-builder.Services.AddScoped<IWordRepository, WordDictionary>();
+builder.Services.AddScoped<IWordRepository, WordDataBase>();
 builder.Services.AddScoped<IAnagramGenerator, AnagramSolver.BusinessLogic.AnagramActions.AnagramGenerator>();
 builder.Services.AddScoped<MyConfiguration>();
+builder.Services.AddScoped<DbAccess>();
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();

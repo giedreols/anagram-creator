@@ -76,5 +76,18 @@ namespace AnagramSolver.BusinessLogic
 
 			return tempList.DistinctBy(word => word.LowerCaseForm).ToList().OrderByDescending(word => word.MainForm.Length).ToList();
 		}
+
+		public static List<WordModel> ConvertDictionaryWordListToAnagramWordList(List<DictionaryWordModel> list)
+		{
+			List<WordModel> tempList = new();
+
+			foreach (var word in list)
+			{
+				tempList.Add(new WordModel(word.MainForm));
+				tempList.Add(new WordModel(word.OtherForm));
+			}
+
+			return tempList.DistinctBy(word => word.LowerCaseForm).ToList().OrderByDescending(word => word.MainForm.Length).ToList();
+		}
 	}
 }

@@ -13,5 +13,5 @@ int id = 0;
 foreach (var word in words)
 {
 	word.Id = id++;
-	DbAccess.InsertWord(word);
+	new DbAccess().InsertWord(word);
 }
