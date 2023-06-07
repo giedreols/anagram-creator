@@ -29,7 +29,11 @@ namespace AnagramSolver.DbActions
 
 		public List<DictionaryWordModel> GetWords()
 		{
-			string query = "SELECT [MainForm], [PartOfSpeech], [OtherForm] FROM [AnagramSolverData].[dbo].[Words]";
+			string query = "SELECT DISTINCT [MainForm] AS a " +
+				"FROM [AnagramSolverData].[dbo].[Words] " +
+				"UNION " +
+				"SELECT DISTINCT [OtherForm] AS a " +
+				"FROM [AnagramSolverData].[dbo].[Words]";
 
 			SqlCommand command = new()
 			{
@@ -40,7 +44,7 @@ namespace AnagramSolver.DbActions
 			DataTable dataTable = ExecuteCommand(command);
 
 			List<DictionaryWordModel> result = dataTable.AsEnumerable()
-				.Select(row => new DictionaryWordModel(row.Field<string>("MainForm"), row.Field<string>("OtherForm"), row.Field<string>("PartOfSpeech"))).ToList();
+				.Select(row => new DictionaryWordModel(row.Field<string>("a"))).ToList();
 
 			return result;
 		}

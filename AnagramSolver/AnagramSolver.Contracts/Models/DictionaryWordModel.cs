@@ -14,12 +14,6 @@
 			PartOfSpeech = partOfSpeech;
         }
 
-		public DictionaryWordModel(string mainForm, string otherForm)
-		{
-			MainForm = mainForm;
-			OtherForm = otherForm;
-		}
-
 		public DictionaryWordModel(int id, string mainForm)
 		{
 			Id = id;
