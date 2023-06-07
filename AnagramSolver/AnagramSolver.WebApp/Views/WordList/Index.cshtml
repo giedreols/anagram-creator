@@ -24,7 +24,7 @@
 	<ul>
 		@foreach (var word in @Model.CurrentPageWords)
 		{
-			<li><a href="@Url.Action("Index", "Home", new { inputWord = @word })">@(word)</a></li>
+			<li><a href="@Url.Action("Get", "Anagrams", new { inputWord = @word })">@(word)</a></li>
 		}
 	</ul>
 
@@ -33,7 +33,7 @@
 		{
 			@for (var page = 1; page <= Model.TotalPages; page++)
 			{
-				<a href="?page=@(page)" class="@(Model.CurrentPage == page ? "active" : "")">@(page)</a>
+				<a href="?page=@(page)&inputWord=@ViewData["CurrentWord"]" class="@(Model.CurrentPage == page ? "active" : "")">@(page)</a>
 			}
 		}
 	</div>

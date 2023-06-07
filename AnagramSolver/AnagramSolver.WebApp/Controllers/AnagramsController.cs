@@ -18,8 +18,9 @@ namespace AnagramSolver.WebApp.Controllers
 		[Microsoft.AspNetCore.Mvc.HttpGet()]
 		public IActionResult Get(string inputWord)
 		{
-			AnagramWordsModel wordWithAnagrams = new(inputWord, _anagramSolver.GetAnagrams(inputWord));
-			return Ok(wordWithAnagrams);
+			AnagramWordsModel model = new(inputWord, _anagramSolver.GetAnagrams(inputWord));
+
+			return View("../Home/WordWithAnagrams", model);
 		}
 	}
 }

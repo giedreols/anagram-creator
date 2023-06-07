@@ -23,7 +23,7 @@ namespace AnagramSolver.BusinessLogic
 
 		public PageWordModel GetMatchingWords(string inputWord, int page = 1, int pageSize = 100)
 		{
-			List<WordModel> matchingWords = WordActions.ConvertDictionaryWordListToAnagramWordList(_dbAccess.GetMatchingWords(inputWord));
+			List<WordModel> matchingWords = WordActions.ConvertDictionaryWordListToAnagramWordList(_dbAccess.GetMatchingWords(inputWord)).OrderBy(a => a.LowerCaseForm).ToList();
 
 			var totalPages = (int)Math.Ceiling(matchingWords.Count / (double)pageSize);
 

@@ -1,0 +1,28 @@
+﻿@model AnagramWordsModel
+
+@{
+	ViewData["Title"] = "Anagramos";
+}
+
+<div class="text-left">
+
+	<h2>@Model.Word</h2>
+
+	@ViewData["SavedMessage"]
+
+	@if (Model.Anagrams.Count != 0)
+	{
+		<p>Anagramos:</p>
+		<ul>
+			@foreach (var item in @Model.Anagrams)
+			{
+				<li>@item</li>
+			}
+		</ul>
+	}
+	else
+	{
+		<p> Deja, anagramų žodis neturi.</p>
+	}
+
+</div>

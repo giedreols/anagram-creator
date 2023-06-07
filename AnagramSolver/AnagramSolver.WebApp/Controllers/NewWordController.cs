@@ -4,9 +4,11 @@ using AnagramSolver.Contracts.Interfaces;
 using AnagramSolver.Contracts.Models;
 using AnagramSolver.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Web.Http;
 
 namespace AnagramSolver.WebApp.Controllers
 {
+	[RoutePrefix("[Controller]")]
 	public class NewWordController : Controller
 	{
 		private readonly IWordRepository _wordRepository;
@@ -25,11 +27,11 @@ namespace AnagramSolver.WebApp.Controllers
 			return View();
 		}
 
-		[HttpPost]
-		[ValidateAntiForgeryToken]
+		[Microsoft.AspNetCore.Mvc.HttpPost()]
 		public ActionResult Create(string newWord)
 		{
 			ViewData["CurrentWord"] = newWord;
+			ViewData["SavedMessage"] = "Žodis išsaugotas žodyne";
 
 			var validity = InputValidator.Validate(newWord, _config.MinLength, _config.MaxLength);
 
@@ -45,8 +47,7 @@ namespace AnagramSolver.WebApp.Controllers
 
 			Models.AnagramWordsModel model = new(newWord, _anagramSolver.GetAnagrams(newWord));
 
-			return View("WordCreated", model);
-
+			return View("../Home/WordWithAnagrams", model);
 		}
 	}
 }
