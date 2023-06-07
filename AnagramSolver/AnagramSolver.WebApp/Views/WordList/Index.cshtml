@@ -15,12 +15,6 @@
 		</div>
 	</form>
 
-	<form method="get" asp-action="DownloadFile">
-		<button type="submit">Atsisiųsti visus žodžius</button>
-	</form>
-
-	<p></p>
-
 	<ul>
 		@foreach (var word in @Model.CurrentPageWords)
 		{

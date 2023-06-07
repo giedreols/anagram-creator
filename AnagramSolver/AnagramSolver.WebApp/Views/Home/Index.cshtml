@@ -6,12 +6,15 @@
 
 	<header>Pasirinkite veiksmą:</header>
 
-		<ul class="navbar-nav flex-grow-1">
-			<li class="nav-item">
-				<a class="nav-link text-dark" asp-area="" asp-controller="WordList" asp-action="Index">Ieškoti anagramų</a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link text-dark" asp-area="" asp-controller="NewWord" asp-action="Index">Įtraukti naują žodį</a>
-			</li>
-		</ul>
+	<ul>
+		<li>
+			<a asp-area="" asp-controller="WordList" asp-action="Index">Žodžių sąrašas</a>
+		</li>
+		<li>
+			<a asp-area="" asp-controller="NewWord" asp-action="Index">Įtraukti naują žodį</a>
+		</li>
+		<li>
+			<a asp-area="" asp-controller="WordList" asp-action="DownloadFile">Atsisiųsti visus žodžius</a>
+		</li>
+	</ul>
 </div>
