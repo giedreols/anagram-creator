@@ -21,8 +21,18 @@ namespace AnagramSolver.BusinessLogic
 			return WordActions.ConvertDictionaryWordListToAnagramWordList(words);
 		}
 
-		// as taip isivaizduociau, kad sita logika kazkaip reiktu perkelti i queri ir netraukti kaskart visu zodziu, ane?
-		// bet gal neverta to daryt, nes ant entityframeworko perdarinėsiu vis tiek ir keisis logika?
+		public PageWordModel GetMatchingWords(string inputWord, int page = 1, int pageSize = 100)
+		{
+			List<WordModel> matchingWords = WordActions.ConvertDictionaryWordListToAnagramWordList(_dbAccess.GetMatchingWords(inputWord));
+
+			var totalPages = (int)Math.Ceiling(matchingWords.Count / (double)pageSize);
+
+			List<string> currentPageItems = matchingWords.Skip((page - 1) * pageSize).Select(w => w.LowerCaseForm).Take(pageSize).ToList();
+
+			return new PageWordModel(currentPageItems, pageSize, matchingWords.Count);
+		}
+
+
 		public PageWordModel GetWordsByPage(int page = 1, int pageSize = 100)
 		{
 			var allWords = GetWords().OrderBy(w => w.LowerCaseForm).ToList();

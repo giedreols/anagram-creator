@@ -61,5 +61,10 @@ namespace AnagramSolver.BusinessLogic.DictionaryActions
 
 			return wordList;
 		}
+
+		public PageWordModel GetMatchingWords(string inputWord, int page, int pageSize)
+		{
+			throw new NotImplementedException();
+		}
 	}
 }

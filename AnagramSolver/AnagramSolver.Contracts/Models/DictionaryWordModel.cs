@@ -25,5 +25,10 @@
 			Id = id;
 			MainForm = mainForm;
 		}
+
+		public DictionaryWordModel(string mainForm)
+		{
+			MainForm = mainForm;
+		}
 	}
 }

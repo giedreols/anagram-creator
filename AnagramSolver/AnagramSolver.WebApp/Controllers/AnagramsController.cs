@@ -5,9 +5,8 @@ using System.Web.Http;
 
 namespace AnagramSolver.WebApp.Controllers
 {
-	[ApiController]
-	[Microsoft.AspNetCore.Mvc.Route("api/[controller]")]
-	public class AnagramsController : ControllerBase
+	[RoutePrefix("[Controller]")]
+	public class AnagramsController : Controller
 	{
 		private readonly IAnagramGenerator _anagramSolver;
 
@@ -16,8 +15,8 @@ namespace AnagramSolver.WebApp.Controllers
 			_anagramSolver = anagramSolver;
 		}
 
-		[Microsoft.AspNetCore.Mvc.HttpGet("{inputWord}")]
-		public ActionResult Get(string inputWord)
+		[Microsoft.AspNetCore.Mvc.HttpGet()]
+		public IActionResult Get(string inputWord)
 		{
 			AnagramWordsModel wordWithAnagrams = new(inputWord, _anagramSolver.GetAnagrams(inputWord));
 			return Ok(wordWithAnagrams);

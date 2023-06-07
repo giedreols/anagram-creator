@@ -84,7 +84,7 @@ namespace AnagramSolver.BusinessLogic
 			foreach (var word in list)
 			{
 				tempList.Add(new WordModel(word.MainForm));
-				tempList.Add(new WordModel(word.OtherForm));
+				if (word.OtherForm != null) tempList.Add(new WordModel(word.OtherForm));
 			}
 
 			return tempList.DistinctBy(word => word.LowerCaseForm).ToList().OrderByDescending(word => word.MainForm.Length).ToList();

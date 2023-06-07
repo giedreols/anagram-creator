@@ -26,7 +26,6 @@ namespace AnagramSolver.DbActions
 
 			ExecuteCommand(command);
 		}
-		// ar geriau isvis - ismesti juos seedinant į db, ir db isvis nedaryt fieldo "other form", o saugot kaip atskirus visus zodzius?
 
 		public List<DictionaryWordModel> GetWords()
 		{
@@ -42,6 +41,33 @@ namespace AnagramSolver.DbActions
 
 			List<DictionaryWordModel> result = dataTable.AsEnumerable()
 				.Select(row => new DictionaryWordModel(row.Field<string>("MainForm"), row.Field<string>("OtherForm"), row.Field<string>("PartOfSpeech"))).ToList();
+
+			return result;
+		}
+
+
+		public List<DictionaryWordModel> GetMatchingWords(string inputWord)
+		{
+			string query = "SELECT DISTINCT [MainForm] AS a " +
+				"FROM [AnagramSolverData].[dbo].[Words] " +
+				"WHERE [MainForm] LIKE @word " +
+				"UNION " +
+				"SELECT DISTINCT [OtherForm] AS a " +
+				"FROM [AnagramSolverData].[dbo].[Words] " +
+				"WHERE [OtherForm] LIKE @word";
+
+			SqlCommand command = new()
+			{
+				CommandText = query,
+				CommandType = CommandType.Text
+			};
+
+			command.Parameters.Add(new SqlParameter { ParameterName = $"@word", Value = $"%{inputWord}%" });
+
+			DataTable dataTable = ExecuteCommand(command);
+
+			List<DictionaryWordModel> result = dataTable.AsEnumerable()
+				.Select(row => new DictionaryWordModel(row.Field<string>("a"))).ToList();
 
 			return result;
 		}
@@ -96,5 +122,6 @@ namespace AnagramSolver.DbActions
 			dataAdapter.Fill(dataTable);
 			return dataTable;
 		}
+
 	}
 }

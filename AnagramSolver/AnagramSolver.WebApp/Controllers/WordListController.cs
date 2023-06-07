@@ -3,11 +3,12 @@ using AnagramSolver.Contracts.Interfaces;
 using AnagramSolver.Contracts.Models;
 using AnagramSolver.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
+using System.Web.Http;
 
 namespace AnagramSolver.WebApp.Controllers
 {
-	[ApiController]
-	[Route("api/[controller]/[action]")]
+	[RoutePrefix("[Controller]")]
 	public class WordListController : Controller
 	{
 		private readonly IWordRepository _dictionary;
@@ -19,7 +20,7 @@ namespace AnagramSolver.WebApp.Controllers
 			_config = congif;
 		}
 
-		[HttpGet()]
+		[Microsoft.AspNetCore.Mvc.HttpGet()]
 		public IActionResult Index(int page = 1)
 		{
 			int pageSize = _config.TotalAmount;
@@ -31,7 +32,21 @@ namespace AnagramSolver.WebApp.Controllers
 			return View(viewModel);
 		}
 
-		[HttpGet()]
+		[Microsoft.AspNetCore.Mvc.HttpGet()]
+		public IActionResult Search(string inputWord, int page = 1)
+		{
+			ViewData["CurrentWord"] = inputWord;
+
+			int pageSize = _config.TotalAmount;
+
+			PageWordModel matchingWords = _dictionary.GetMatchingWords(inputWord, page, pageSize);
+
+			WordListModel viewModel = new(matchingWords.Words, page, matchingWords.TotalWordsCount, pageSize);
+
+			return View("Index", viewModel);
+		}
+
+		[Microsoft.AspNetCore.Mvc.HttpGet()]
 		public IActionResult DownloadFile()
 		{
 			byte[] fileInBytes = _dictionary.GetFile();

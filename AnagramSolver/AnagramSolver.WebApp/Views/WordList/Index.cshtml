@@ -6,7 +6,18 @@
 
 <div class="text-left">
 
-	<a href="@Url.Action("DownloadFile")">Atsisiųsti visus žodžius</a>
+	<form asp-action="Search" method="get">
+		<div class="form-actions no-color">
+			<p>
+				<input type="text" name="inputWord" placeholder="Žodis ar jo dalis" value="@ViewData["CurrentWord"]" />
+				<input type="submit" value="Ieškoti" class="btn btn-default" />
+			</p>
+		</div>
+	</form>
+
+	<form method="get" asp-action="DownloadFile">
+		<button type="submit">Atsisiųsti visus žodžius</button>
+	</form>
 
 	<p></p>
 

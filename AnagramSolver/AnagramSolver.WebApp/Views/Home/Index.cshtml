@@ -1,36 +1,17 @@
-﻿@model AnagramWordsModel;
-
-@{
-	ViewData["Title"] = "Anagramos";
+﻿@{
+	ViewData["Title"] = "Anagramų generatorius";
 }
 
 <div class="text-left">
 
-	<form asp-action="Index" method="get">
-		<div class="form-actions no-color">
-			<p>
-				Ieškomas žodis: <input type="text" name="inputWord" />
-				<input type="submit" value="Ieškoti" class="btn btn-default" />
-			</p>
-		</div>
-	</form>
+	<header>Pasirinkite veiksmą:</header>
 
-
-	<h2>@Model.Word</h2>
-
-	@if (@Model.Word != "" && Model.Anagrams.Count == 0)
-	{
-		<p>Deja, anagramų neradome :(</p>
-	}
-
-	else if (Model.Anagrams.Count != 0)
-	{
-		<p>Anagramos:</p>
-		<ul>
-			@foreach (var item in @Model.Anagrams)
-			{
-				<li>@item</li>
-			}
+		<ul class="navbar-nav flex-grow-1">
+			<li class="nav-item">
+				<a class="nav-link text-dark" asp-area="" asp-controller="WordList" asp-action="Index">Ieškoti anagramų</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link text-dark" asp-area="" asp-controller="NewWord" asp-action="Index">Įtraukti naują žodį</a>
+			</li>
 		</ul>
-	}
 </div>
