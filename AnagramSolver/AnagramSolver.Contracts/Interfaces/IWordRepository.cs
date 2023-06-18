@@ -4,14 +4,19 @@ namespace AnagramSolver.Contracts.Interfaces
 {
 	public interface IWordRepository
 	{
-		List<WordModel> GetWords();
+		List<WordWithFormsModel> GetWords();
 
 		bool SaveWord(string word);
 
-		PageWordModel GetWordsByPage(int page, int totalAmount);
+		WordsPerPageModel GetWordsByPage(int page, int totalAmount);
 
-		byte[] GetFile();
+		byte[] GetFileWithWords();
 
-		PageWordModel GetMatchingWords(string inputWord, int page, int pageSize);
+		WordsPerPageModel GetMatchingWords(string inputWord, int page, int pageSize);
+
+		CachedAnagramModel GetCachedAnagrams(string word);
+
+		void CacheAnagrams(WordWithAnagramsModel anagrams);
+
 	}
 }

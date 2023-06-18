@@ -2,6 +2,6 @@
 {
 	public interface IAnagramGenerator
 	{
-		List<string> GetAnagrams(string inputWord);
+		IList<string> GetAnagrams(string inputWord);
 	}
 }

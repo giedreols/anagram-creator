@@ -22,9 +22,9 @@ namespace AnagramSolver.Tests.BusinessLogicTests.AnagramActionsTests
 		{
 			int maxAmount = 2;
 
-			List<string> expResult = _list.Take(maxAmount).ToList();
+			IList<string> expResult = _list.Take(maxAmount).ToList();
 
-			List<string> actualResult = _list.TrimIfTooManyItems(maxAmount);
+			IList<string> actualResult = _list.TrimIfTooManyItems(maxAmount);
 
 			Assert.That(actualResult, Has.Count.EqualTo(expResult.Count));
 		}
@@ -34,7 +34,7 @@ namespace AnagramSolver.Tests.BusinessLogicTests.AnagramActionsTests
 		{
 			int maxAmount = 9;
 
-			List<string> actualResult = _list.TrimIfTooManyItems(maxAmount);
+			IList<string> actualResult = _list.TrimIfTooManyItems(maxAmount);
 
 			Assert.That(actualResult, Has.Count.EqualTo(_list.Count));
 		}
@@ -44,9 +44,9 @@ namespace AnagramSolver.Tests.BusinessLogicTests.AnagramActionsTests
 		{
 			int maxAmount = 3;
 
-			List<string> expResult = _list.Take(maxAmount).ToList();
+			IList<string> expResult = _list.Take(maxAmount).ToList();
 
-			List<string> actualResult = _list.TrimIfTooManyItems(maxAmount);
+			IList<string> actualResult = _list.TrimIfTooManyItems(maxAmount);
 
 			Assert.That(actualResult, Has.Count.EqualTo(expResult.Count));
 		}
@@ -58,7 +58,7 @@ namespace AnagramSolver.Tests.BusinessLogicTests.AnagramActionsTests
 
 			int maxAmount = 9;
 
-			List<string> actualResult = _list.TrimIfTooManyItems(maxAmount);
+			IList<string> actualResult = _list.TrimIfTooManyItems(maxAmount);
 
 			Assert.That(actualResult, Is.Empty);
 		}

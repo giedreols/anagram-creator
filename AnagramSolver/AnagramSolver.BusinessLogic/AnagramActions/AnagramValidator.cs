@@ -2,9 +2,10 @@
 {
 	public static class AnagramValidator
 	{
-		public static List<T> TrimIfTooManyItems<T>(this List<T> list, int totalAmount)
+		public static IList<T> TrimIfTooManyItems<T>(this IList<T> list, int totalAmount)
 		{
-			return list.Count > totalAmount ? list.GetRange(0, totalAmount) : list;
+			List<T> tempList = list.ToList();
+			return tempList.Count > totalAmount ? tempList.GetRange(0, totalAmount) : tempList;
 		}
 	}
 }

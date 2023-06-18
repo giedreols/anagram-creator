@@ -1,4 +1,5 @@
 ﻿using AnagramSolver.Contracts.Interfaces;
+using AnagramSolver.Contracts.Models;
 
 namespace AnagramSolver.BusinessLogic.AnagramActions
 {
@@ -11,7 +12,24 @@ namespace AnagramSolver.BusinessLogic.AnagramActions
 			_wordRepository = wordRepository;
 		}
 
-		public List<string> GetAnagrams(string inputWord)
+		public IList<string> GetAnagrams(string inputWord)
+		{
+			CachedAnagramModel cachedAnagrams = _wordRepository.GetCachedAnagrams(inputWord);
+			IList<string> anagrams;
+
+			if (cachedAnagrams.IsCached)
+			{
+				return cachedAnagrams.Anagrams;
+			}
+			anagrams = GenerateAnagrams(inputWord);
+
+			_wordRepository.CacheAnagrams(new (inputWord, anagrams));
+
+			return anagrams;
+		}
+
+
+		private IList<string> GenerateAnagrams(string inputWord)
 		{
 			var wordList = _wordRepository.GetWords();
 			List<string> anagrams = new();
@@ -25,7 +43,6 @@ namespace AnagramSolver.BusinessLogic.AnagramActions
 					anagrams.Add(word.MainForm);
 				}
 			}
-
 			return anagrams;
 		}
 	}

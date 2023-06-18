@@ -22,7 +22,7 @@ namespace AnagramSolver.Tests.BusinessLogicTests.WordDictionaryTests
 			_mockConfig.SetupAllProperties();
 			_mockConfig.Object.TotalAmount = 1;
 			_mockWordRepository = new Mock<IWordRepository>(MockBehavior.Strict);
-			_mockWordRepository.Setup(p => p.GetWords()).Returns(new List<WordModel> { });
+			_mockWordRepository.Setup(p => p.GetWords()).Returns(new List<WordWithFormsModel> { });
 			_listPageController = new WordListController(_mockWordRepository.Object, _mockConfig.Object);
 		}
 
@@ -32,14 +32,14 @@ namespace AnagramSolver.Tests.BusinessLogicTests.WordDictionaryTests
 			var page = 2;
 			var wordB = "wordB";
 
-			_mockWordRepository.Setup(p => p.GetWordsByPage(page, _mockConfig.Object.TotalAmount)).Returns(new PageWordModel(new List<string>() { wordB },
+			_mockWordRepository.Setup(p => p.GetWordsByPage(page, _mockConfig.Object.TotalAmount)).Returns(new WordsPerPageModel(new List<string>() { wordB },
 				_mockConfig.Object.TotalAmount, 2)
 			{ });
 
 			var result = (ViewResult)_listPageController.Index(page);
-			var model = (WordListModel)result.ViewData.Model;
+			var model = result.ViewData.Model as WordListModel;
 
-			Assert.That(model.CurrentPageWords[0], Is.EqualTo(wordB));
+			Assert.That(model?.CurrentPageWords[0], Is.EqualTo(wordB));
 		}
 	}
 }

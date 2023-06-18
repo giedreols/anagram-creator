@@ -5,13 +5,13 @@ using AnagramSolver.DbActions;
 
 FileReader fileReader = new();
 var stringText = fileReader.ReadFile();
-var lines = WordActions.ParseLines(stringText);
-List<DictionaryWordModel> words = WordActions.ParseDictionaryWordsFromLines(lines);
+var lines = Converter.ParseLines(stringText);
+List<FullWordModel> words = Converter.ParseDictionaryWordsFromLines(lines);
 
 int id = 0;
 
 foreach (var word in words)
 {
 	word.Id = id++;
-	new DbAccess().InsertWord(word);
+	new WordTableAccess().InsertWord(word);
 }

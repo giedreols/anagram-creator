@@ -1,9 +1,9 @@
-﻿using AnagramSolver.BusinessLogic.InputWordActions;
+﻿using AnagramSolver.BusinessLogic;
 using AnagramSolver.Contracts.Models;
 
 namespace AnagramSolver.Tests.BusinessLogicTests
 {
-	public class InputWordValidatorTests
+    public class InputWordValidatorTests
 	{
 		[Test]
 		[TestCase(".lus")]

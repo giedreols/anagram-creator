@@ -15,6 +15,11 @@
 		</div>
 	</form>
 
+	@if (Model.CurrentPageWords.Count == 0)
+	{
+		<p>Deja, žodžių neradome.</p>
+	}
+
 	<ul>
 		@foreach (var word in @Model.CurrentPageWords)
 		{

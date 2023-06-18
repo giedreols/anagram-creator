@@ -22,7 +22,7 @@ namespace AnagramSolver.Tests.BusinessLogicTests.WordDictionaryTests
 			var expectedResult = new byte[0];
 			_mockFileReader.Setup(r => r.GetFile()).Returns(expectedResult);
 
-			var actualResult = _wordDictionary.GetFile();
+			var actualResult = _wordDictionary.GetFileWithWords();
 
 			Assert.That(actualResult, Is.TypeOf<byte[]>());
 		}

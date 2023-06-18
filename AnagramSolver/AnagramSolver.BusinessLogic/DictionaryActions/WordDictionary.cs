@@ -12,26 +12,26 @@ namespace AnagramSolver.BusinessLogic.DictionaryActions
 			_fileReader = fileReader;
 		}
 
-		public List<WordModel> GetWords()
+		public List<WordWithFormsModel> GetWords()
 		{
 			List<string> words = ReadWords();
 
-			return WordActions.ConvertStringListToAnagramWordList(words);
+			return Converter.ConvertStringListToAnagramWordList(words);
 		}
 
-		public PageWordModel GetWordsByPage(int page = 1, int pageSize = 100)
+		public WordsPerPageModel GetWordsByPage(int page = 1, int pageSize = 100)
 		{
 			var allWords = GetWords().OrderBy(w => w.LowerCaseForm).ToList();
 			var totalPages = (int)Math.Ceiling(allWords.Count / (double)pageSize);
 
 			List<string> currentPageItems = allWords.Skip((page - 1) * pageSize).Select(w => w.LowerCaseForm).Take(pageSize).ToList();
 
-			return new PageWordModel(currentPageItems, pageSize, allWords.Count);
+			return new WordsPerPageModel(currentPageItems, pageSize, allWords.Count);
 		}
 
 		public bool SaveWord(string word)
 		{
-			List<WordModel> currentWords = GetWords();
+			List<WordWithFormsModel> currentWords = GetWords();
 
 			foreach (var existingWord in currentWords)
 			{
@@ -46,7 +46,7 @@ namespace AnagramSolver.BusinessLogic.DictionaryActions
 			return true;
 		}
 
-		public byte[] GetFile()
+		public byte[] GetFileWithWords()
 		{
 			var fileBytes = _fileReader.GetFile();
 
@@ -56,13 +56,28 @@ namespace AnagramSolver.BusinessLogic.DictionaryActions
 		private List<string> ReadWords()
 		{
 			string text = _fileReader.ReadFile();
-			List<string> linesList = WordActions.ParseLines(text);
-			List<string> wordList = WordActions.ParseWordsFromDictionaryFile(linesList);
+			List<string> linesList = Converter.ParseLines(text);
+			List<string> wordList = Converter.ParseWordsFromDictionaryFile(linesList);
 
 			return wordList;
 		}
 
-		public PageWordModel GetMatchingWords(string inputWord, int page, int pageSize)
+		public WordsPerPageModel GetMatchingWords(string inputWord, int page, int pageSize)
+		{
+			throw new NotImplementedException();
+		}
+
+		public WordWithAnagramsModel GetCachedAnagrams(string word)
+		{
+			throw new NotImplementedException();
+		}
+
+		public void CacheAnagrams(WordWithAnagramsModel anagrams)
+		{
+			throw new NotImplementedException();
+		}
+
+		CachedAnagramModel IWordRepository.GetCachedAnagrams(string word)
 		{
 			throw new NotImplementedException();
 		}

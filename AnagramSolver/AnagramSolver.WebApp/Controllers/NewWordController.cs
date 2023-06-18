@@ -1,4 +1,4 @@
-﻿using AnagramSolver.BusinessLogic.InputWordActions;
+﻿using AnagramSolver.BusinessLogic;
 using AnagramSolver.Cli;
 using AnagramSolver.Contracts.Interfaces;
 using AnagramSolver.Contracts.Models;
@@ -33,7 +33,7 @@ namespace AnagramSolver.WebApp.Controllers
 			ViewData["CurrentWord"] = newWord;
 			ViewData["SavedMessage"] = "Žodis išsaugotas žodyne";
 
-			var validity = InputValidator.Validate(newWord, _config.MinLength, _config.MaxLength);
+			var validity = InputWordValidator.Validate(newWord, _config.MinLength, _config.MaxLength);
 
 			if (validity != null)
 			{
@@ -45,7 +45,7 @@ namespace AnagramSolver.WebApp.Controllers
 				return View("Index", new WordFailedToSaveModel(WordRejectionReasons.AlreadyExists));
 			}
 
-			Models.AnagramWordsModel model = new(newWord, _anagramSolver.GetAnagrams(newWord));
+			AnagramWordsModel model = new(newWord, _anagramSolver.GetAnagrams(newWord));
 
 			return View("../Home/WordWithAnagrams", model);
 		}

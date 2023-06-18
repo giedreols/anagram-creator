@@ -1,6 +1,6 @@
-﻿using AnagramSolver.BusinessLogic.AnagramActions;
+﻿using AnagramSolver.BusinessLogic;
+using AnagramSolver.BusinessLogic.AnagramActions;
 using AnagramSolver.BusinessLogic.DictionaryActions;
-using AnagramSolver.BusinessLogic.InputWordActions;
 using AnagramSolver.Cli;
 using AnagramSolver.Contracts.Interfaces;
 using AnagramSolver.Contracts.Models;
@@ -11,7 +11,6 @@ IRenderer renderer = new CommandLineView();
 MyConfiguration configuration = new();
 
 IFileReader fileReader = new FileReader();
-IWordRepository wordDictionary = new WordDictionary(fileReader);
 
 renderer.ShowHeader();
 
@@ -27,17 +26,17 @@ while (repeat)
 		continue;
 	}
 
-	Task<AnagramWordsModel?> response = new Client().ExecuteGetAnagramsAsync(word);
+	Task<WordWithAnagramsModel?> response = new Client().ExecuteGetAnagramsAsync(word);
 
 	response.Wait();
 
-	if (response != null)
+	if (response == null || response.Result == null)
 	{
-		renderer.ShowAnagrams(response.Result.Anagrams.TrimIfTooManyItems(configuration.TotalAmount));
+		renderer.ShowError("Anagramų parodyti nepavyko");
 	}
 	else
 	{
-		renderer.ShowError("Anagramų parodyti nepavyko");
+		renderer.ShowAnagrams(response.Result.Anagrams.TrimIfTooManyItems(configuration.TotalAmount));
 	}
 
 	repeat = renderer.DoRepeat();

@@ -24,7 +24,7 @@ namespace AnagramSolver.WebApp.Controllers
 		{
 			int pageSize = _config.TotalAmount;
 
-			PageWordModel wordsPerPage = _dictionary.GetWordsByPage(page, pageSize);
+			WordsPerPageModel wordsPerPage = _dictionary.GetWordsByPage(page, pageSize);
 
 			WordListModel viewModel = new(wordsPerPage.Words, page, wordsPerPage.TotalWordsCount, pageSize);
 
@@ -38,7 +38,7 @@ namespace AnagramSolver.WebApp.Controllers
 
 			int pageSize = _config.TotalAmount;
 
-			PageWordModel matchingWords = _dictionary.GetMatchingWords(inputWord, page, pageSize);
+			WordsPerPageModel matchingWords = _dictionary.GetMatchingWords(inputWord, page, pageSize);
 
 			WordListModel viewModel = new(matchingWords.Words, page, matchingWords.TotalWordsCount, pageSize);
 
@@ -48,7 +48,7 @@ namespace AnagramSolver.WebApp.Controllers
 		[Microsoft.AspNetCore.Mvc.HttpGet()]
 		public IActionResult DownloadFile()
 		{
-			byte[] fileInBytes = _dictionary.GetFile();
+			byte[] fileInBytes = _dictionary.GetFileWithWords();
 
 			return File(fileInBytes, "text/plain", "zodynas.txt");
 		}

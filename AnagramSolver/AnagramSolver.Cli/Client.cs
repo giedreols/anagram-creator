@@ -11,7 +11,7 @@ namespace AnagramSolver.Cli
 			httpClient = new HttpClient();
 		}
 
-		internal async Task<AnagramWordsModel?> ExecuteGetAnagramsAsync(string word)
+		internal async Task<WordWithAnagramsModel?> ExecuteGetAnagramsAsync(string word)
 		{
 			string url = "http://localhost:5254/api/anagrams/" + word;
 			HttpResponseMessage response = await httpClient.GetAsync(url);
@@ -19,7 +19,7 @@ namespace AnagramSolver.Cli
 			if (response.IsSuccessStatusCode)
 			{
 				string content = await response.Content.ReadAsStringAsync();
-				var result = new Converter<AnagramWordsModel>().ConvertFromJson(content);
+				var result = new Converter<WordWithAnagramsModel>().ConvertFromJson(content);
 
 				return result;
 			}

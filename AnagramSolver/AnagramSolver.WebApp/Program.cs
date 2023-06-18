@@ -8,10 +8,14 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddScoped<IFileReader, FileReader>();
-builder.Services.AddScoped<IWordRepository, WordDataBase>();
+builder.Services.AddScoped<IWordRepository, DataBaseActions>();
 builder.Services.AddScoped<IAnagramGenerator, AnagramSolver.BusinessLogic.AnagramActions.AnagramGenerator>();
 builder.Services.AddScoped<MyConfiguration>();
-builder.Services.AddScoped<DbAccess>();
+
+// ar situr reikia?
+builder.Services.AddScoped<WordTableAccess>();
+builder.Services.AddScoped<CachedWordTableAccess>();
+
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
