@@ -6,6 +6,8 @@ using System.Text;
 
 namespace AnagramSolver.BusinessLogic
 {
+	// nėra testų, bet kadangi paskui perdarinėsiu su EntityFramework, tai gal ir nereikia, nes keisis
+
 	public class DataBaseActions : IWordRepository
 	{
 		private readonly WordTableAccess _dbWordTableAccess;
@@ -94,9 +96,13 @@ namespace AnagramSolver.BusinessLogic
 			return new CachedAnagramModel(true, anagrams);
 		}
 
-		public void CacheAnagrams(WordWithAnagramsModel anagrams)
+		public bool CacheAnagrams(WordWithAnagramsModel anagrams)
 		{
-			_dbCachedWordTableAccess.InsertAnagrams(anagrams);
+			int rowsAffected = _dbCachedWordTableAccess.InsertAnagrams(anagrams);
+
+			if (rowsAffected == anagrams.Anagrams.Count) return true;
+			
+			return false;
 		}
 	}
 }

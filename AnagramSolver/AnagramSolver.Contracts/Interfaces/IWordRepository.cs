@@ -16,7 +16,7 @@ namespace AnagramSolver.Contracts.Interfaces
 
 		CachedAnagramModel GetCachedAnagrams(string word);
 
-		void CacheAnagrams(WordWithAnagramsModel anagrams);
+		bool CacheAnagrams(WordWithAnagramsModel anagrams);
 
 	}
 }

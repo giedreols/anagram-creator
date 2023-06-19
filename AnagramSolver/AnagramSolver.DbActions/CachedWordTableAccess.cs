@@ -6,6 +6,8 @@ namespace AnagramSolver.DbActions
 {
 	public class CachedWordTableAccess : DbAccess
 	{
+		// nėra testų, bet kadangi paskui perdarinėsiu su EntityFramework, tai gal ir nereikia, nes keisis daug kas
+
 		public int InsertAnagrams(WordWithAnagramsModel wordAndAnagrams)
 		{
 			var connectionString = "Data Source=.\\MSSQLSERVER01;Initial Catalog=AnagramSolverData;Integrated Security=True";

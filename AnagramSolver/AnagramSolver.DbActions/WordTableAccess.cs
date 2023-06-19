@@ -4,6 +4,8 @@ using System.Data.SqlClient;
 
 namespace AnagramSolver.DbActions
 {
+	// nėra testų, bet kadangi paskui perdarinėsiu su EntityFramework, tai gal ir nereikia, nes keisis daug kas
+
 	public class WordTableAccess : DbAccess
 	{
 		public void InsertWord(FullWordModel parameters)
