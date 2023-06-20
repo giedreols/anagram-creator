@@ -1,0 +1,48 @@
+﻿@model UserInfoModel
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+@{
+	ViewData["Title"] = "Info apie tave";
+}
+
+<div class="text-left">
+
+	@{
+		string ipAddress = HttpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString();
+	}
+
+	<header>Šiek tiek apie tave:</header>
+	<p></p>
+
+	<ul>
+		<li>
+			<p>IP adresas: @ipAddress</p>
+		</li>
+		<li>
+			<p>Paieškos data ir laikas: @Model.SearchDateTime</p>
+		</li>
+		<li>
+			<p>Paskutinis ieškotas žodis: @Model.LastWord</p>
+		</li>
+		<li>
+			@if (Model.Anagrams == null)
+			{
+				<p> Nėra žodžio, tai nėra ir anagramų.</p>
+			}
+			else if (Model.Anagrams.Count > 0)
+			{
+				<p>Jo anagramos:</p>
+				<ul>
+					@foreach (var item in @Model.Anagrams)
+					{
+						<li>@item</li>
+					}
+				</ul>
+			}
+			else
+			{
+				<p> Anagramų žodis neturi.</p>
+			}
+		</li>
+	</ul>
+</div>

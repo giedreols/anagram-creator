@@ -3,6 +3,7 @@ using AnagramSolver.Contracts.Interfaces;
 using AnagramSolver.Contracts.Models;
 using AnagramSolver.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using System.Web.Http;
 
 namespace AnagramSolver.WebApp.Controllers
@@ -28,12 +29,17 @@ namespace AnagramSolver.WebApp.Controllers
 
 			WordListModel viewModel = new(wordsPerPage.Words, page, wordsPerPage.TotalWordsCount, pageSize);
 
-			return View(viewModel);
+			return View("Index", viewModel);
 		}
 
 		[Microsoft.AspNetCore.Mvc.HttpGet()]
 		public IActionResult Search(string inputWord, int page = 1)
 		{
+			if(inputWord.IsNullOrEmpty())
+			{
+				return Index();
+			}
+
 			ViewData["CurrentWord"] = inputWord;
 
 			int pageSize = _config.TotalAmount;
@@ -41,6 +47,9 @@ namespace AnagramSolver.WebApp.Controllers
 			WordsPerPageModel matchingWords = _dictionary.GetMatchingWords(inputWord, page, pageSize);
 
 			WordListModel viewModel = new(matchingWords.Words, page, matchingWords.TotalWordsCount, pageSize);
+
+			HttpContext.Session.SetString("SearchDateTime", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+			HttpContext.Session.SetString("LastWord", inputWord);
 
 			return View("Index", viewModel);
 		}

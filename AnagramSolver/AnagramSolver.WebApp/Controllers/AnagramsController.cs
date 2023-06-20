@@ -20,6 +20,9 @@ namespace AnagramSolver.WebApp.Controllers
 		{
 			AnagramWordsModel model = new(inputWord, _anagramSolver.GetAnagrams(inputWord));
 
+			HttpContext.Session.SetString("SearchDateTime", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+			HttpContext.Session.SetString("LastWord", inputWord);
+
 			return View("../Home/WordWithAnagrams", model);
 		}
 	}
