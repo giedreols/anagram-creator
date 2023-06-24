@@ -22,9 +22,10 @@ namespace AnagramSolver.Tests.WebAppTests
 		[Test]
 		public void Index_ReturnsAnagramWordsModel()
 		{
-			_mockAnagramSolver.Setup(p => p.GetAnagrams("x")).Returns(new List<string>());
+			var word = "a";
+			_mockAnagramSolver.Setup(p => p.GetAnagrams(word)).Returns(new List<string>());
 
-			var result = (ViewResult)_anagramsController.Get("");
+			var result = (ViewResult)_anagramsController.Get(word);
 
 			Assert.That(result, Is.Not.Null);
 			Assert.That(result.Model, Is.InstanceOf<AnagramWordsModel>());
@@ -35,7 +36,7 @@ namespace AnagramSolver.Tests.WebAppTests
 		{
 			var word = "liepa";
 			var anagram = "palei";
-			_mockAnagramSolver.Setup(p => p.GetAnagrams(word)).Returns(new List<string>() { anagram });
+			_mockAnagramSolver.Setup(p => p.GetAnagrams(word)).Returns(new List<string> { anagram });
 
 			var result = (ViewResult)_anagramsController.Get(word);
 			var model = (AnagramWordsModel)result.Model;

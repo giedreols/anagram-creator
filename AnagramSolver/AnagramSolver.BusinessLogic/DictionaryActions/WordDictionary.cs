@@ -62,22 +62,22 @@ namespace AnagramSolver.BusinessLogic.DictionaryActions
 			return wordList;
 		}
 
+		IEnumerable<WordWithFormsModel> IWordRepository.GetWords()
+		{
+			throw new NotImplementedException();
+		}
+
 		public WordsPerPageModel GetMatchingWords(string inputWord, int page, int pageSize)
 		{
 			throw new NotImplementedException();
 		}
 
-		public WordWithAnagramsModel GetCachedAnagrams(string word)
+		public CachedAnagramModel GetCachedAnagrams(string word)
 		{
 			throw new NotImplementedException();
 		}
 
-		public bool CacheAnagrams(WordWithAnagramsModel anagrams)
-		{
-			throw new NotImplementedException();
-		}
-
-		CachedAnagramModel IWordRepository.GetCachedAnagrams(string word)
+		public bool CacheAnagrams(IQueryable<string> anagrams)
 		{
 			throw new NotImplementedException();
 		}

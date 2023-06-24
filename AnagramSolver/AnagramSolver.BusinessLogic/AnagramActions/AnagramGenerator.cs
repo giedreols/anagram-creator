@@ -24,7 +24,8 @@ namespace AnagramSolver.BusinessLogic.AnagramActions
 
 			anagrams = GenerateAnagrams(inputWord);
 
-			_wordRepository.CacheAnagrams(new WordWithAnagramsModel(inputWord, anagrams));
+			IQueryable<string> tempAnagrams = anagrams.AsQueryable().Append(inputWord);
+			_wordRepository.CacheAnagrams(tempAnagrams);
 
 			return anagrams.OrderBy(a => a).ToList();
 		}

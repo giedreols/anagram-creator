@@ -5,7 +5,7 @@ namespace AnagramSolver.DbActions
 {
 	public class DbAccess
 	{
-        public static DataTable ExecuteCommand(SqlCommand command)
+		public static DataTable ExecuteCommand(SqlCommand command)
 		{
 			var connstringBuilder = new SqlConnectionStringBuilder("Data Source=.\\MSSQLSERVER01;Initial Catalog=AnagramSolverData;Integrated Security=True");
 			DataTable dataTable = new();

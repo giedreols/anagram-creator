@@ -6,7 +6,7 @@ using AnagramSolver.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 
-namespace AnagramSolver.Tests.BusinessLogicTests.WordDictionaryTests
+namespace AnagramSolver.Tests.BusinessLogicTests.DictionaryTests
 {
 	public class GetWordsByPageTests
 	{

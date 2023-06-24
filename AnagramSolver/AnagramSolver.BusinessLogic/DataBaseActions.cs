@@ -6,28 +6,27 @@ using System.Text;
 
 namespace AnagramSolver.BusinessLogic
 {
-	// nėra testų, bet kadangi paskui perdarinėsiu su EntityFramework, tai gal ir nereikia, nes keisis
-
 	public class DataBaseActions : IWordRepository
 	{
-		private readonly WordTableAccess _dbWordTableAccess;
-		private readonly CachedWordTableAccess _dbCachedWordTableAccess;
+		private readonly WordsActions _dbWordTableAccess;
+		private readonly CacheActions _dbCachedWordTableAccess;
 
-		public DataBaseActions(WordTableAccess dbWordTableAccess, CachedWordTableAccess dbCachedWordTableAccess)
+		public DataBaseActions(WordsActions dbWordTableAccess, CacheActions dbCachedWordTableAccess)
 		{
 			_dbWordTableAccess = dbWordTableAccess;
 			_dbCachedWordTableAccess = dbCachedWordTableAccess;
 		}
 
-		public List<WordWithFormsModel> GetWords()
+		public IEnumerable<WordWithFormsModel> GetWords()
 		{
-			List<FullWordModel> words = _dbWordTableAccess.GetWords();
+			List<FullWordModel> words = _dbWordTableAccess.GetWords().ToList();
 			return Converter.ConvertDictionaryWordListToAnagramWordList(words);
 		}
 
 		public WordsPerPageModel GetMatchingWords(string inputWord, int page = 1, int pageSize = 100)
 		{
-			IList<WordWithFormsModel> matchingWords = Converter.ConvertDictionaryWordListToAnagramWordList(_dbWordTableAccess.GetMatchingWords(inputWord)).OrderBy(a => a.LowerCaseForm).ToList();
+			IList<WordWithFormsModel> matchingWords = Converter.ConvertDictionaryWordListToAnagramWordList(_dbWordTableAccess.
+				GetMatchingWords(inputWord).ToList()).OrderBy(a => a.LowerCaseForm).ToList();
 
 			var totalPages = (int)Math.Ceiling(matchingWords.Count / (double)pageSize);
 
@@ -54,8 +53,7 @@ namespace AnagramSolver.BusinessLogic
 			}
 			else
 			{
-				int id = _dbWordTableAccess.GetMaxId() + 1;
-				_dbWordTableAccess.InsertWord(new FullWordModel(id, word));
+				_dbWordTableAccess.InsertWord(new FullWordModel(word));
 			}
 
 			return true;
@@ -69,7 +67,7 @@ namespace AnagramSolver.BusinessLogic
 
 			foreach (var word in wordList)
 			{
-				stringList.Add($"{word.MainForm}\t{word.PartOfSpeech}\t{word.OtherForm}");
+				stringList.Add($"{word.MainForm}\t{word.PartOfSpeechAbbreviation}\t{word.OtherForm}");
 			}
 
 			string concatenatedString = string.Join("\n", stringList);
@@ -83,25 +81,25 @@ namespace AnagramSolver.BusinessLogic
 		{
 			var anagrams = _dbCachedWordTableAccess.GetCachedAnagrams(word);
 
-			if (anagrams.Count == 0)
+			if (!anagrams.Any())
 			{
 				return new CachedAnagramModel(false, new List<string>());
 			}
 
-			if (anagrams[0] == null)
+			if (anagrams.Count() == 1)
 			{
 				return new CachedAnagramModel(true, new List<string>());
 			}
 
-			return new CachedAnagramModel(true, anagrams);
+			return new CachedAnagramModel(true, anagrams.ToList());
 		}
 
-		public bool CacheAnagrams(WordWithAnagramsModel anagrams)
+		public bool CacheAnagrams(IQueryable<string> anagrams)
 		{
 			int rowsAffected = _dbCachedWordTableAccess.InsertAnagrams(anagrams);
 
-			if (rowsAffected == anagrams.Anagrams.Count) return true;
-			
+			if (rowsAffected == anagrams.Count()) return true;
+
 			return false;
 		}
 	}

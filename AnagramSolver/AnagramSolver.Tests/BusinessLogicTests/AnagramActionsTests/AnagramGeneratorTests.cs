@@ -22,7 +22,7 @@ namespace AnagramSolver.Tests.BusinessLogicTests.AnagramActionsTests
 		public void GetAnagrams_ReturnsAnagrams_IfAnagramsAreCachedAndPresent()
 		{
 			string word = "liepa";
-			IList<string> expectedResult = new List<string>() {"palei", "pelai"};
+			IList<string> expectedResult = new List<string>() { "palei", "pelai" };
 
 			_mockWordRepository.Setup(p => p.GetCachedAnagrams(word)).Returns(new CachedAnagramModel(true, expectedResult));
 

@@ -2,27 +2,22 @@
 {
 	public class FullWordModel
 	{
-		public int Id { get; set; }
+		public int? Id { get; set; }
 		public string MainForm { get; set; }
 		public string OtherForm { get; set; }
-		public string PartOfSpeech { get; set; }
+		public string? PartOfSpeechAbbreviation { get; set; }
 
-        public FullWordModel(string mainForm, string otherForm, string partOfSpeech)
-        {
+		public FullWordModel(string mainForm, string otherForm, string partOfSpeechAbbreviation)
+		{
 			MainForm = mainForm;
 			OtherForm = otherForm;
-			PartOfSpeech = partOfSpeech;
-        }
-
-		public FullWordModel(int id, string mainForm)
-		{
-			Id = id;
-			MainForm = mainForm;
+			PartOfSpeechAbbreviation = partOfSpeechAbbreviation;
 		}
 
-		public FullWordModel(string mainForm)
+		public FullWordModel(string anyForm)
 		{
-			MainForm = mainForm;
+			MainForm = anyForm;
+			OtherForm = anyForm;
 		}
 	}
 }

@@ -26,27 +26,26 @@ namespace AnagramSolver.Tests.WebAppTests
 			_listPageController = new WordListController(_mockWordRepository.Object, _mockConfig.Object);
 		}
 
-		// niekaip nesuprantu, kodel sitas testas feilina.....
 		[Test]
 		public void Search_ReturnsWordListModel()
 		{
-			_mockWordRepository.Setup(p => p.GetMatchingWords("", 1, 1)).Returns(new WordsPerPageModel(new List<string>(), 1, 1));
+			var word = "a";
+			_mockWordRepository.Setup(p => p.GetMatchingWords(word, 1, 1)).Returns(new WordsPerPageModel(new List<string> { word }, 1, 1));
 
-			var result = (ViewResult)_listPageController.Search("a");
+			var result = (ViewResult)_listPageController.Search(word);
 
 			Assert.That(result, Is.Not.Null);
 			Assert.That(result.Model, Is.InstanceOf<WordListModel>());
 		}
 
-		// niekaip nesuprantu, kodel sitas testas feilina.....
 		[Test]
-		public void Search_ReturnsmatchingWords_IfTheyExist()
+		public void Search_ReturnsMatchingWords_IfTheyExist()
 		{
+			var word = "a";
 			var expectedResult = new List<string>() { "aa", "kva", "la" };
-			
-			_mockWordRepository.Setup(p => p.GetMatchingWords("", 1, 1)).Returns(new WordsPerPageModel(expectedResult, 1, 1));
+			_mockWordRepository.Setup(p => p.GetMatchingWords(word, 1, 1)).Returns(new WordsPerPageModel(expectedResult, 1, 1));
 
-			var result = (ViewResult)_listPageController.Search("a");
+			var result = (ViewResult)_listPageController.Search(word);
 			var model = result.Model as WordListModel;
 
 			Assert.That(model.CurrentPageWords, Is.EqualTo(expectedResult));

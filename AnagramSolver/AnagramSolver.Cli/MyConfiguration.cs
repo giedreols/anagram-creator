@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
 using System.Configuration;
-using System.Reflection;
 
 namespace AnagramSolver.Cli
 {
@@ -33,7 +32,7 @@ namespace AnagramSolver.Cli
 				: throw new ConfigurationErrorsException($"{settings} is not set correctly in configuration");
 		}
 
-		static string GetProjectName(string baseDirectory)
+		private static string GetProjectName(string baseDirectory)
 		{
 			int lastSeparatorIndex = baseDirectory.TrimEnd('\\').LastIndexOf('\\');
 			return baseDirectory.Substring(lastSeparatorIndex + 1);

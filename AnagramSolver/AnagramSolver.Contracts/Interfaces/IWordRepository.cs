@@ -4,7 +4,7 @@ namespace AnagramSolver.Contracts.Interfaces
 {
 	public interface IWordRepository
 	{
-		List<WordWithFormsModel> GetWords();
+		IEnumerable<WordWithFormsModel> GetWords();
 
 		bool SaveWord(string word);
 
@@ -16,7 +16,7 @@ namespace AnagramSolver.Contracts.Interfaces
 
 		CachedAnagramModel GetCachedAnagrams(string word);
 
-		bool CacheAnagrams(WordWithAnagramsModel anagrams);
+		bool CacheAnagrams(IQueryable<string> anagrams);
 
 	}
 }

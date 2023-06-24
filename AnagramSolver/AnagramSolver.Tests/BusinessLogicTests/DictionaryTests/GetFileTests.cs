@@ -2,7 +2,7 @@
 using AnagramSolver.Contracts.Interfaces;
 using Moq;
 
-namespace AnagramSolver.Tests.BusinessLogicTests.WordDictionaryTests
+namespace AnagramSolver.Tests.BusinessLogicTests.DictionaryTests
 {
 	public class GetFileTests
 	{

@@ -13,8 +13,8 @@ builder.Services.AddScoped<IAnagramGenerator, AnagramSolver.BusinessLogic.Anagra
 builder.Services.AddScoped<MyConfiguration>();
 
 // ar situr reikia?
-builder.Services.AddScoped<WordTableAccess>();
-builder.Services.AddScoped<CachedWordTableAccess>();
+builder.Services.AddScoped<WordsActions>();
+builder.Services.AddScoped<CacheActions>();
 
 
 builder.Services.AddControllersWithViews();

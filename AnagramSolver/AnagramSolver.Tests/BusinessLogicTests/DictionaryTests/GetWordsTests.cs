@@ -3,7 +3,7 @@ using AnagramSolver.Contracts.Interfaces;
 using AnagramSolver.Contracts.Models;
 using Moq;
 
-namespace AnagramSolver.Tests.BusinessLogicTests.WordDictionaryTests
+namespace AnagramSolver.Tests.BusinessLogicTests.DictionaryTests
 {
 	public class GetWordsTests
 	{
@@ -55,7 +55,7 @@ namespace AnagramSolver.Tests.BusinessLogicTests.WordDictionaryTests
 			_text = "siela\tdkt.\tsiela\r\nsiela\tdkt.\tsielas";
 			_mockFileReader.Setup(p => p.ReadFile()).Returns(_text);
 
-			IList<WordWithFormsModel> result = _wordRepository.GetWords();
+			IList<WordWithFormsModel> result = _wordRepository.GetWords().ToList();
 
 			Assert.That(result, Has.Count.EqualTo(2));
 		}
@@ -66,7 +66,7 @@ namespace AnagramSolver.Tests.BusinessLogicTests.WordDictionaryTests
 			_text = "jūra\tdkt.\tJūra\r\nJŪRA\tdkt.\tjūra";
 			_mockFileReader.Setup(p => p.ReadFile()).Returns(_text);
 
-			IList<WordWithFormsModel> result = _wordRepository.GetWords();
+			IList<WordWithFormsModel> result = _wordRepository.GetWords().ToList();
 
 			Assert.That(result, Has.Count.EqualTo(1));
 		}
@@ -79,7 +79,7 @@ namespace AnagramSolver.Tests.BusinessLogicTests.WordDictionaryTests
 			_text = $"{expectedResult}\tdkt.\tJūra";
 			_mockFileReader.Setup(p => p.ReadFile()).Returns(_text);
 
-			IList<WordWithFormsModel> result = _wordRepository.GetWords();
+			IList<WordWithFormsModel> result = _wordRepository.GetWords().ToList();
 
 			Assert.That(result[0].MainForm, Is.EqualTo(expectedResult));
 		}
@@ -92,7 +92,7 @@ namespace AnagramSolver.Tests.BusinessLogicTests.WordDictionaryTests
 			_text = $"{word}\tdkt.\tJūra";
 			_mockFileReader.Setup(p => p.ReadFile()).Returns(_text);
 
-			IList<WordWithFormsModel> result = _wordRepository.GetWords();
+			IList<WordWithFormsModel> result = _wordRepository.GetWords().ToList();
 
 			Assert.That(result[0].LowerCaseForm, Is.EqualTo(wordLowerCase));
 		}
@@ -105,7 +105,7 @@ namespace AnagramSolver.Tests.BusinessLogicTests.WordDictionaryTests
 			_text = $"{word}\tdkt.\tJūra";
 			_mockFileReader.Setup(p => p.ReadFile()).Returns(_text);
 
-			IList<WordWithFormsModel> result = _wordRepository.GetWords();
+			IList<WordWithFormsModel> result = _wordRepository.GetWords().ToList();
 
 			Assert.That(result[0].OrderedForm, Is.EqualTo(sortedWord));
 		}
@@ -120,7 +120,7 @@ namespace AnagramSolver.Tests.BusinessLogicTests.WordDictionaryTests
 			_text = $"{word3Chars}\tdkt.\t{word1Char}\r\n{word4Chars}\tdkt.\t{word2Chars}";
 			_mockFileReader.Setup(p => p.ReadFile()).Returns(_text);
 
-			IList<WordWithFormsModel> result = _wordRepository.GetWords();
+			IList<WordWithFormsModel> result = _wordRepository.GetWords().ToList();
 
 			Assert.Multiple(() =>
 			{

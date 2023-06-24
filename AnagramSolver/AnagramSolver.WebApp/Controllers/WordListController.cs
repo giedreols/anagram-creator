@@ -35,7 +35,7 @@ namespace AnagramSolver.WebApp.Controllers
 		[Microsoft.AspNetCore.Mvc.HttpGet()]
 		public IActionResult Search(string inputWord, int page = 1)
 		{
-			if(inputWord.IsNullOrEmpty())
+			if (inputWord.IsNullOrEmpty())
 			{
 				return Index();
 			}
