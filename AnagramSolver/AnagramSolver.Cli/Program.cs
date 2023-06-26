@@ -36,7 +36,7 @@ while (repeat)
 	}
 	else
 	{
-		renderer.ShowAnagrams(response.Result.Anagrams.TrimIfTooManyItems(configuration.TotalAmount));
+		renderer.ShowAnagrams(response.Result.Anagrams.ToList().TrimIfTooManyItems(configuration.TotalAmount));
 	}
 
 	repeat = renderer.DoRepeat();

@@ -1,4 +1,6 @@
 ﻿using AnagramSolver.Contracts.Interfaces;
+using AnagramSolver.Contracts.Models;
+using Microsoft.IdentityModel.Tokens;
 using System.Data;
 using System.Data.SqlClient;
 
@@ -6,54 +8,84 @@ namespace AnagramSolver.DbActions
 {
 	public class CacheActions : DbAccess, ICacheActions
 	{
-
-		// NEVEIKIA (IR FRONTE NERA FUNKCIONALUMO), JEI REIKIA SURASTI ZODYNE NESANCIO ZODZIO ANAGRAMAS
-		// jeigu is naujo iesko tos pacios anagramos - atnaujinti cache data? ar daryti log lentele, o cia neloginti datos isvis?
-		public int InsertAnagrams(IQueryable<string> anagrams)
+		public int InsertAnagrams(WordWithAnagramsModel anagrams)
 		{
 			var connectionString = "Data Source=.\\MSSQLSERVER01;Initial Catalog=AnagramSolverData;Integrated Security=True";
 
 			using SqlConnection connection = new(connectionString);
 			connection.Open();
 
-			string executeProcedureCode = @"USE [AnagramSolverData];
-												EXEC dbo.CacheAnagrams @table;";
+			SqlCommand command;
 
-			DataTable anagramsTable = new();
-
-			anagramsTable.Columns.AddRange(new DataColumn[] {
-					new DataColumn("OtherForm", typeof(string)) ,
-					new DataColumn("MainForm", typeof(string)) ,
-					new DataColumn("PartOfSpeechId", typeof(int)) ,
-					new DataColumn("AnagramId", typeof(int))
-				});
-
-			foreach (var word in anagrams)
+			switch (anagrams.Anagrams.IsNullOrEmpty())
 			{
-				anagramsTable.Rows.Add(word);
+				case true:
+					command = CreateConnectionForWordWithoutAnagrams(connection, anagrams.Word);
+					break;
+
+				case false:
+					command = CreateConnectionForWordWithAnagrams(connection, anagrams);
+					break;
 			}
 
-			SqlCommand command = new(executeProcedureCode, connection)
+			return command.ExecuteNonQuery();
+		}
+
+		private static SqlCommand CreateConnectionForWordWithoutAnagrams(SqlConnection connection, string word)
+		{
+			var query = "INSERT INTO [dbo].[Anagrams] (SearchWord) VALUES (@MainWord)";
+
+			SqlCommand command = new(query, connection)
 			{
 				CommandType = CommandType.Text
 			};
 
-			SqlParameter parameter = command.Parameters.AddWithValue("@table", anagramsTable);
+			SqlParameter mainWordParam = command.Parameters.AddWithValue("@MainWord", word);
+			mainWordParam.SqlDbType = SqlDbType.NVarChar;
+
+			return command;
+		}
+
+		private static SqlCommand CreateConnectionForWordWithAnagrams(SqlConnection connection, WordWithAnagramsModel anagrams)
+		{
+			DataTable anagramsTable = new();
+
+			anagramsTable.Columns.AddRange(new DataColumn[] {
+					new DataColumn("OtherForm", typeof(string))
+			});
+
+			foreach (var word in anagrams.Anagrams)
+			{
+				anagramsTable.Rows.Add(word);
+			}
+
+			SqlCommand command = new("dbo.CacheAnagrams", connection)
+			{
+				CommandType = CommandType.StoredProcedure
+			};
+
+			SqlParameter parameter = command.Parameters.AddWithValue("@myTable", anagramsTable);
 			parameter.TypeName = "dbo.Words";
+			parameter.SqlDbType = SqlDbType.Structured;
 
-			int rowsAffected = command.ExecuteNonQuery();
+			SqlParameter mainWordParam = command.Parameters.AddWithValue("@MainWord", anagrams.Word);
+			mainWordParam.SqlDbType = SqlDbType.NVarChar;
 
-			return rowsAffected;
+			return command;
 		}
 
 		public IEnumerable<string> GetCachedAnagrams(string word)
 		{
-			string query = @"DECLARE @anagramId INT;
-				SELECT @anagramId = AnagramId FROM[AnagramSolverData].[dbo].[Words] 
-				WHERE OtherForm = @word 
-				SELECT DISTINCT 
-				OtherForm FROM[AnagramSolverData].[dbo].[Words] 
-				WHERE AnagramId = @anagramId; ";
+			string query = @"
+							DECLARE @count INT;
+							set @count = (SELECT COUNT(*) from Anagrams where SearchWord = @word)
+
+							IF (@count = 0)
+							BEGIN
+								SELECT null as a
+							END
+							ELSE 
+								SELECT OtherForm as a from Words JOIN Anagrams ON Words.Id = Anagrams.WordId where Anagrams.SearchWord = @word";
 
 			SqlCommand command = new()
 			{
@@ -65,7 +97,9 @@ namespace AnagramSolver.DbActions
 
 			DataTable dataTable = ExecuteCommand(command);
 
-			return dataTable.AsEnumerable().Select(row => row.Field<string>("OtherForm"));
+			var result = dataTable.AsEnumerable().Select(row => row.Field<string>("a"));
+
+			return result;
 		}
 	}
 }

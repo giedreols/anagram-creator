@@ -1,6 +1,7 @@
 ﻿using AnagramSolver.Contracts.Interfaces;
 using AnagramSolver.Contracts.Models;
 using AnagramSolver.DbActions;
+using Microsoft.IdentityModel.Tokens;
 using System.Data;
 using System.Text;
 
@@ -79,28 +80,24 @@ namespace AnagramSolver.BusinessLogic
 
 		public CachedAnagramModel GetCachedAnagrams(string word)
 		{
-			var anagrams = _dbCachedWordTableAccess.GetCachedAnagrams(word);
+			List<string> anagrams = _dbCachedWordTableAccess.GetCachedAnagrams(word).ToList();
 
-			if (!anagrams.Any())
-			{
-				return new CachedAnagramModel(false, new List<string>());
-			}
-
-			if (anagrams.Count() == 1)
+			if(anagrams.IsNullOrEmpty())
 			{
 				return new CachedAnagramModel(true, new List<string>());
+			}
+
+			if (anagrams[0] == null)
+			{
+				return new CachedAnagramModel(false, new List<string>());
 			}
 
 			return new CachedAnagramModel(true, anagrams.ToList());
 		}
 
-		public bool CacheAnagrams(IQueryable<string> anagrams)
+		public void CacheAnagrams(WordWithAnagramsModel anagrams)
 		{
-			int rowsAffected = _dbCachedWordTableAccess.InsertAnagrams(anagrams);
-
-			if (rowsAffected == anagrams.Count()) return true;
-
-			return false;
+			_dbCachedWordTableAccess.InsertAnagrams(anagrams);
 		}
 	}
 }

@@ -1,8 +1,10 @@
-﻿namespace AnagramSolver.Contracts.Interfaces
+﻿using AnagramSolver.Contracts.Models;
+
+namespace AnagramSolver.Contracts.Interfaces
 {
 	public interface ICacheActions
 	{
-		int InsertAnagrams(IQueryable<string> anagrams);
+		int InsertAnagrams(WordWithAnagramsModel anagrams);
 		IEnumerable<string> GetCachedAnagrams(string word);
 	}
 }

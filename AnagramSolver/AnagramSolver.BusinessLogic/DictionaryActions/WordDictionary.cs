@@ -77,7 +77,7 @@ namespace AnagramSolver.BusinessLogic.DictionaryActions
 			throw new NotImplementedException();
 		}
 
-		public bool CacheAnagrams(IQueryable<string> anagrams)
+		public void CacheAnagrams(WordWithAnagramsModel anagrams)
 		{
 			throw new NotImplementedException();
 		}

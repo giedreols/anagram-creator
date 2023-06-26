@@ -6,7 +6,6 @@
 
 	<header>Šitoj nuostabioj programoj jūs galite atlikti šiuos ypatingus veiksmus:</header>
 	<p></p>
-
 	<ul>
 		<li>
 			<a asp-area="" asp-controller="WordList" asp-action="Index">Peržiūrėti žodžius ir jų anagramas</a><span style="color: red;">  Dabar ir su paieška </span><span style="color: red; font-weight: bold;">!</span>
@@ -21,4 +20,15 @@
 			<a asp-area="" asp-controller="UserInfo" asp-action="Index">Info apie tave</a>
 		</li>
 	</ul>
+
+
+	<form asp-controller="Anagrams" asp-action="Get" method="get">
+		<div class="form-actions no-color">
+			<p>
+				<input type="text" name="inputWord" placeholder="Žodis" />
+				<input type="submit" value="Surask anagramas ir viskas" class="btn btn-default" />
+			</p>
+		</div>
+	</form>
+
 </div>
