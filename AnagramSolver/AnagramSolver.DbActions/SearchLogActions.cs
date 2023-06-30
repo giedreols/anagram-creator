@@ -10,8 +10,7 @@ namespace AnagramSolver.DbActions
 	{
 		public void Add(SearchLogModel item)
 		{
-			var query = @"USE [AnagramSolverData] GO 
-						DECLARE @AnagramId INT; 
+			var query = @"DECLARE @AnagramId INT; 
 						SELECT @AnagramId = Id 
 						FROM [dbo].[Anagrams]
 						WHERE SearchWord = @word; 
@@ -22,8 +21,7 @@ namespace AnagramSolver.DbActions
 						VALUES
 								(@userIp
 								,@timeStamp
-								,@AnagramId);
-						GO";
+								,@AnagramId);";
 
 			SqlCommand command = new()
 			{

@@ -80,7 +80,10 @@ namespace AnagramSolver.DbActions
 							DECLARE @count INT;
 							set @count = (SELECT COUNT(*) from Anagrams where SearchWord = @word)
 
-							IF (@count = 0)
+							DECLARE @timestamp datetime;
+							set @timestamp = (SELECT TOP 1 TimeStamp from Anagrams where SearchWord = @word order by TimeStamp DESC)
+
+							IF (@count = 0 OR @timestamp < (SELECT DATEADD(MONTH, -1, GETDATE())))
 							BEGIN
 								SELECT null as a
 							END

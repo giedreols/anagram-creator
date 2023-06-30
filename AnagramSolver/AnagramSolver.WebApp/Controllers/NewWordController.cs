@@ -14,12 +14,14 @@ namespace AnagramSolver.WebApp.Controllers
 		private readonly IWordRepository _wordRepository;
 		private readonly IAnagramGenerator _anagramSolver;
 		private readonly MyConfiguration _config;
+		private readonly Helpers _helpers;
 
-		public NewWordController(IWordRepository wordRepository, IAnagramGenerator anagramSolver, MyConfiguration config)
+		public NewWordController(IWordRepository wordRepository, IAnagramGenerator anagramSolver, MyConfiguration config, Helpers helpers)
 		{
 			_wordRepository = wordRepository;
 			_anagramSolver = anagramSolver;
 			_config = config;
+			_helpers = helpers;
 		}
 
 		public ActionResult Index()
@@ -46,6 +48,8 @@ namespace AnagramSolver.WebApp.Controllers
 			}
 
 			AnagramWordsModel model = new(newWord, _anagramSolver.GetAnagrams(newWord));
+
+			_helpers.LogSearch(newWord);
 
 			return View("../Home/WordWithAnagrams", model);
 		}

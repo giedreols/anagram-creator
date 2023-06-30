@@ -70,7 +70,7 @@ namespace AnagramSolver.DbActions
 		public IEnumerable<FullWordModel> GetWords()
 		{
 			string query = @"SELECT Words.MainForm, Words.OtherForm, PartsOfSpeech.Abbreviation
-							from Words JOIN PartsOfSpeech ON PartOfSpeechId = PartsOfSpeech.Id";
+							from Words LEFT JOIN PartsOfSpeech ON PartOfSpeechId = PartsOfSpeech.Id";
 
 			SqlCommand command = new()
 			{

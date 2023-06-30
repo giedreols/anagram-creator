@@ -1,6 +1,5 @@
 ﻿using AnagramSolver.Contracts.Interfaces;
 using AnagramSolver.Contracts.Models;
-using AnagramSolver.DbActions;
 using Microsoft.IdentityModel.Tokens;
 using System.Data;
 using System.Text;
@@ -9,11 +8,11 @@ namespace AnagramSolver.BusinessLogic
 {
 	public class DataBaseActions : IWordRepository
 	{
-		private readonly WordsActions _dbWordTableAccess;
-		private readonly CacheActions _dbCachedWordTableAccess;
-		private readonly SearchLogActions _dbSearchLogActions;
+		private readonly IWordsActions _dbWordTableAccess;
+		private readonly ICacheActions _dbCachedWordTableAccess;
+		private readonly ISearchLogActions _dbSearchLogActions;
 
-		public DataBaseActions(CacheActions dbCachedWordTableAccess, WordsActions dbWordTableAccess, SearchLogActions searchLogActions)
+		public DataBaseActions(ICacheActions dbCachedWordTableAccess, IWordsActions dbWordTableAccess, ISearchLogActions searchLogActions)
 		{
 			_dbWordTableAccess = dbWordTableAccess;
 			_dbCachedWordTableAccess = dbCachedWordTableAccess;
@@ -64,7 +63,7 @@ namespace AnagramSolver.BusinessLogic
 
 		public byte[] GetFileWithWords()
 		{
-			var wordList = _dbWordTableAccess.GetWords();
+			IEnumerable<FullWordModel> wordList = _dbWordTableAccess.GetWords();
 
 			IList<string> stringList = new List<string>();
 

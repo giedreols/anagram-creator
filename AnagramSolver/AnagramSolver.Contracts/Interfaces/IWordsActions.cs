@@ -7,5 +7,6 @@ namespace AnagramSolver.Contracts.Interfaces
 		void InsertWord(FullWordModel parameters);
 		IEnumerable<FullWordModel> GetWords();
 		IEnumerable<FullWordModel> GetMatchingWords(string inputWord);
+		bool IsWordExists(string inputWord);
 	}
 }

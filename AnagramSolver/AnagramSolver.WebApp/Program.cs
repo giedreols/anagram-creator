@@ -3,6 +3,7 @@ using AnagramSolver.BusinessLogic.DictionaryActions;
 using AnagramSolver.Cli;
 using AnagramSolver.Contracts.Interfaces;
 using AnagramSolver.DbActions;
+using AnagramSolver.WebApp.Controllers;
 using Microsoft.AspNetCore.Http;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,12 +14,9 @@ builder.Services.AddScoped<IAnagramGenerator, AnagramSolver.BusinessLogic.Anagra
 builder.Services.AddScoped<IWordRepository, DataBaseActions>();
 builder.Services.AddScoped<MyConfiguration>();
 builder.Services.AddScoped<DbAccess>();
+builder.Services.AddScoped<Helpers>();
 
-
-
-// ar situr reikia?
 builder.Services.AddScoped<ICacheActions, CacheActions>();
-//builder.Services.AddScoped<IFileReader, FileReader>();
 builder.Services.AddScoped<ISearchLogActions, SearchLogActions>();
 builder.Services.AddScoped<IWordsActions, WordsActions>();
 
