@@ -81,5 +81,10 @@ namespace AnagramSolver.BusinessLogic.DictionaryActions
 		{
 			throw new NotImplementedException();
 		}
+
+		public void LogSearch(SearchLogModel model)
+		{
+			throw new NotImplementedException();
+		}
 	}
 }

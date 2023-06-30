@@ -19,12 +19,13 @@ namespace AnagramSolver.BusinessLogic.AnagramActions
 
 			if (cachedAnagrams.IsCached)
 			{
-				return cachedAnagrams.Anagrams.OrderBy(a => a).ToList();
+				anagrams = cachedAnagrams.Anagrams.OrderBy(a => a).ToList();
 			}
-
-			anagrams = GenerateAnagrams(inputWord);
-
-			_wordRepository.CacheAnagrams(new WordWithAnagramsModel(inputWord, anagrams));
+			else
+			{
+				anagrams = GenerateAnagrams(inputWord);
+				_wordRepository.CacheAnagrams(new WordWithAnagramsModel(inputWord, anagrams));
+			}
 
 			return anagrams.OrderBy(a => a).ToList();
 		}

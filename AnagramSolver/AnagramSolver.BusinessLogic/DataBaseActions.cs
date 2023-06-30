@@ -11,11 +11,13 @@ namespace AnagramSolver.BusinessLogic
 	{
 		private readonly WordsActions _dbWordTableAccess;
 		private readonly CacheActions _dbCachedWordTableAccess;
+		private readonly SearchLogActions _dbSearchLogActions;
 
-		public DataBaseActions(WordsActions dbWordTableAccess, CacheActions dbCachedWordTableAccess)
+		public DataBaseActions(CacheActions dbCachedWordTableAccess, WordsActions dbWordTableAccess, SearchLogActions searchLogActions)
 		{
 			_dbWordTableAccess = dbWordTableAccess;
 			_dbCachedWordTableAccess = dbCachedWordTableAccess;
+			_dbSearchLogActions = searchLogActions;
 		}
 
 		public IEnumerable<WordWithFormsModel> GetWords()
@@ -98,6 +100,11 @@ namespace AnagramSolver.BusinessLogic
 		public void CacheAnagrams(WordWithAnagramsModel anagrams)
 		{
 			_dbCachedWordTableAccess.InsertAnagrams(anagrams);
+		}
+		
+		public void LogSearch(SearchLogModel model)
+		{
+			_dbSearchLogActions.Add(model);
 		}
 	}
 }

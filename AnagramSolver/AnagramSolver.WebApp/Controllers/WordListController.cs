@@ -48,9 +48,6 @@ namespace AnagramSolver.WebApp.Controllers
 
 			WordListModel viewModel = new(matchingWords.Words, page, matchingWords.TotalWordsCount, pageSize);
 
-			HttpContext.Session.SetString("SearchDateTime", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
-			HttpContext.Session.SetString("LastWord", inputWord);
-
 			return View("Index", viewModel);
 		}
 

@@ -18,5 +18,7 @@ namespace AnagramSolver.Contracts.Interfaces
 
 		void CacheAnagrams(WordWithAnagramsModel anagrams);
 
+		void LogSearch(SearchLogModel model);
+
 	}
 }

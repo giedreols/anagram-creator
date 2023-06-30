@@ -1,5 +1,4 @@
 ﻿@model UserInfoModel
-@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 
 @{
 	ViewData["Title"] = "Info apie tave";
@@ -7,16 +6,12 @@
 
 <div class="text-left">
 
-	@{
-		string ipAddress = HttpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString();
-	}
-
 	<header>Šiek tiek apie tave:</header>
 	<p></p>
 
 	<ul>
 		<li>
-			<p>IP adresas: @ipAddress</p>
+			<p>IP adresas: Model.Ip</p>
 		</li>
 		<li>
 			<p>Paieškos data ir laikas: @Model.SearchDateTime</p>
