@@ -14,6 +14,7 @@ namespace AnagramSolver.Tests.WebAppTests
 		private Mock<IAnagramGenerator> _mockAnagramSolver;
 		private Mock<IHttpContextAccessor> _mockHttpContextAncessor;
 		private Mock<IWordRepository> _mockWordRepository;
+		private Mock<Helpers> _mockHelpers;
 
 
 		[SetUp]
@@ -22,7 +23,8 @@ namespace AnagramSolver.Tests.WebAppTests
 			_mockAnagramSolver = new Mock<IAnagramGenerator>(MockBehavior.Default);
 			_mockHttpContextAncessor = new Mock<IHttpContextAccessor>(MockBehavior.Strict);
 			_mockWordRepository = new Mock<IWordRepository>(MockBehavior.Strict);
-			_anagramsController = new AnagramsController(_mockAnagramSolver.Object, _mockHttpContextAncessor.Object, _mockWordRepository.Object);
+			_mockHelpers = new Mock<Helpers>(MockBehavior.Strict);
+			_anagramsController = new AnagramsController(_mockAnagramSolver.Object, _mockHelpers.Object);
 		}
 
 		[Test]

@@ -1,28 +1,31 @@
 ﻿using AnagramSolver.Contracts.Interfaces;
 using AnagramSolver.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
-using System.Text;
+using Microsoft.IdentityModel.Tokens;
 
 namespace AnagramSolver.WebApp.Controllers
 {
 	public class UserInfoController : Controller
 	{
-		private readonly IAnagramGenerator _anagramGenerator;
+		private readonly IWordRepository _databaseActions;
 
-		public UserInfoController(IAnagramGenerator anagramGenerator)
+		public UserInfoController(IWordRepository databaseActions)
 		{
-			_anagramGenerator = anagramGenerator;
+			_databaseActions = databaseActions;
+
 		}
 
 		public IActionResult Index()
 		{
-			var lastWord = HttpContext.Session.GetString("LastWord");
+			var data = _databaseActions.GetLastSearchInfo();
+
 
 			UserInfoModel model = new()
 			{
-				LastWord = lastWord ?? "-",
-				SearchDateTime = HttpContext.Session.GetString("SearchDateTime") ?? "-",
-				Anagrams = lastWord != null ? _anagramGenerator.GetAnagrams(lastWord) : null
+				LastWord = string.IsNullOrEmpty(data.Word) ? "nėra" : data.Word,
+				SearchDateTime = data.TimeStamp.Equals(DateTime.MinValue) ? "nėra" : data.TimeStamp.ToString(),
+				Ip = string.IsNullOrEmpty(data.UserIp) ? "nėra" : data.UserIp,
+				Anagrams = !string.IsNullOrEmpty(data.Word) && data.Anagrams.Count() == 1 && data.Anagrams[0].IsNullOrEmpty() ? new List<string> { "nėra" } : data.Anagrams,
 			};
 
 			return View(model);

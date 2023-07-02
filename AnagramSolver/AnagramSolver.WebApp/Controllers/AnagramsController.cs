@@ -1,6 +1,7 @@
 ﻿using AnagramSolver.Contracts.Interfaces;
 using AnagramSolver.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using System.Web.Http;
 
 namespace AnagramSolver.WebApp.Controllers
@@ -18,9 +19,16 @@ namespace AnagramSolver.WebApp.Controllers
 			_helpers = helpers;
 		}
 
+		// logint is cia ar tiesiai is GetAnagrams?
+
 		[Microsoft.AspNetCore.Mvc.HttpGet()]
 		public IActionResult Get(string inputWord)
 		{
+			if (inputWord.IsNullOrEmpty())
+			{
+				return View("../Home/Index");
+			}
+
 			AnagramWordsModel model = new(inputWord, _anagramSolver.GetAnagrams(inputWord));
 
 			_helpers.LogSearch(inputWord);

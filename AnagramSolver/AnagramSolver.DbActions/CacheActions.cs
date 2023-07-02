@@ -88,7 +88,7 @@ namespace AnagramSolver.DbActions
 								SELECT null as a
 							END
 							ELSE 
-								SELECT OtherForm as a from Words JOIN Anagrams ON Words.Id = Anagrams.WordId where Anagrams.SearchWord = @word";
+								SELECT OtherForm as a from Words JOIN Anagrams ON Words.Id = Anagrams.WordId where Anagrams.SearchWord = @word AND timestamp > (SELECT DATEADD(MONTH, -1, GETDATE()))";
 
 			SqlCommand command = new()
 			{
@@ -102,7 +102,7 @@ namespace AnagramSolver.DbActions
 
 			var result = dataTable.AsEnumerable().Select(row => row.Field<string>("a"));
 
-			return result;
+			return result.ToList();
 		}
 	}
 }

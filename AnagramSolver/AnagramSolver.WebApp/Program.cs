@@ -1,10 +1,8 @@
 ﻿using AnagramSolver.BusinessLogic;
-using AnagramSolver.BusinessLogic.DictionaryActions;
 using AnagramSolver.Cli;
 using AnagramSolver.Contracts.Interfaces;
 using AnagramSolver.DbActions;
 using AnagramSolver.WebApp.Controllers;
-using Microsoft.AspNetCore.Http;
 
 var builder = WebApplication.CreateBuilder(args);
 

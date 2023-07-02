@@ -81,9 +81,9 @@ namespace AnagramSolver.BusinessLogic
 
 		public CachedAnagramModel GetCachedAnagrams(string word)
 		{
-			List<string> anagrams = _dbCachedWordTableAccess.GetCachedAnagrams(word).ToList();
+			IList<string> anagrams = _dbCachedWordTableAccess.GetCachedAnagrams(word).ToList();
 
-			if(anagrams.IsNullOrEmpty())
+			if (anagrams.IsNullOrEmpty())
 			{
 				return new CachedAnagramModel(true, new List<string>());
 			}
@@ -93,17 +93,22 @@ namespace AnagramSolver.BusinessLogic
 				return new CachedAnagramModel(false, new List<string>());
 			}
 
-			return new CachedAnagramModel(true, anagrams.ToList());
+			return new CachedAnagramModel(true, anagrams);
 		}
 
 		public void CacheAnagrams(WordWithAnagramsModel anagrams)
 		{
 			_dbCachedWordTableAccess.InsertAnagrams(anagrams);
 		}
-		
-		public void LogSearch(SearchLogModel model)
+
+		public void LogSearchInfo(SearchLogModel model)
 		{
 			_dbSearchLogActions.Add(model);
+		}
+
+		public SearchLogModel GetLastSearchInfo()
+		{
+			return _dbSearchLogActions.GetLastSearch();
 		}
 	}
 }

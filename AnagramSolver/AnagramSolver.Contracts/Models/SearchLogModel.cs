@@ -10,11 +10,18 @@
 
 		public string Word { get; set; }
 
-        public SearchLogModel(string userIp, DateTime timeStamp, string word)
-        {
+		public IList<string> Anagrams { get; set; }
+
+		public SearchLogModel()
+		{
+
+		}
+
+		public SearchLogModel(string userIp, DateTime timeStamp, string word)
+		{
 			UserIp = userIp;
 			TimeStamp = timeStamp;
 			Word = word;
-        }
-    }
+		}
+	}
 }

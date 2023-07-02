@@ -1,6 +1,4 @@
-﻿using AnagramSolver.Cli;
-using AnagramSolver.Contracts.Interfaces;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Web.Http;
 
 namespace AnagramSolver.WebApp.Controllers
@@ -9,7 +7,7 @@ namespace AnagramSolver.WebApp.Controllers
 	[Microsoft.AspNetCore.Mvc.Route("{action=Index}")]
 	public class HomeController : Controller
 	{
-        [Microsoft.AspNetCore.Mvc.HttpGet()]
+		[Microsoft.AspNetCore.Mvc.HttpGet()]
 		public ActionResult Index()
 		{
 			return View();

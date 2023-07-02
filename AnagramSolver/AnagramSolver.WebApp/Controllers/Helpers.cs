@@ -18,7 +18,7 @@ namespace AnagramSolver.WebApp.Controllers
 		{
 			string ipAddress = _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString();
 
-			_wordRepository.LogSearch(new SearchLogModel(ipAddress, DateTime.Now, inputWord));
+			_wordRepository.LogSearchInfo(new SearchLogModel(ipAddress, DateTime.Now, inputWord));
 		}
 	}
 }
