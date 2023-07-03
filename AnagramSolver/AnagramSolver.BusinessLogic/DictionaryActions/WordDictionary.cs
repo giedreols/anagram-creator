@@ -12,7 +12,7 @@ namespace AnagramSolver.BusinessLogic.DictionaryActions
 			_fileReader = fileReader;
 		}
 
-		public List<WordWithFormsDto> GetWords()
+		public IEnumerable<WordWithFormsDto> GetWords()
 		{
 			List<string> words = ReadWords();
 
@@ -31,7 +31,7 @@ namespace AnagramSolver.BusinessLogic.DictionaryActions
 
 		public bool SaveWord(string word)
 		{
-			List<WordWithFormsDto> currentWords = GetWords();
+			IEnumerable<WordWithFormsDto> currentWords = GetWords();
 
 			foreach (var existingWord in currentWords)
 			{
@@ -60,11 +60,6 @@ namespace AnagramSolver.BusinessLogic.DictionaryActions
 			List<string> wordList = Converter.ParseWordsFromDictionaryFile(linesList);
 
 			return wordList;
-		}
-
-		IEnumerable<WordWithFormsDto> IWordRepository.GetWords()
-		{
-			throw new NotImplementedException();
 		}
 
 		public WordsPerPageDto GetMatchingWords(string inputWord, int page, int pageSize)

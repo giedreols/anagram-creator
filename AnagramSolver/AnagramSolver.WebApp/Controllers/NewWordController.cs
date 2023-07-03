@@ -13,9 +13,9 @@ namespace AnagramSolver.WebApp.Controllers
 		private readonly IWordRepository _wordRepository;
 		private readonly IAnagramGenerator _anagramSolver;
 		private readonly MyConfiguration _config;
-		private readonly Helpers _helpers;
+		private readonly IHelpers _helpers;
 
-		public NewWordController(IWordRepository wordRepository, IAnagramGenerator anagramSolver, MyConfiguration config, Helpers helpers)
+		public NewWordController(IWordRepository wordRepository, IAnagramGenerator anagramSolver, MyConfiguration config, IHelpers helpers)
 		{
 			_wordRepository = wordRepository;
 			_anagramSolver = anagramSolver;

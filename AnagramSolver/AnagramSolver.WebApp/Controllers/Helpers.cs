@@ -3,7 +3,7 @@ using AnagramSolver.Contracts.Dtos;
 
 namespace AnagramSolver.WebApp.Controllers
 {
-	public class Helpers
+	public class Helpers : IHelpers
 	{
 		private readonly IWordRepository _wordRepository;
 		private readonly IHttpContextAccessor _httpContextAccessor;

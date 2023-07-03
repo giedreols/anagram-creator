@@ -12,7 +12,7 @@ builder.Services.AddScoped<IAnagramGenerator, AnagramSolver.BusinessLogic.Anagra
 builder.Services.AddScoped<IWordRepository, DataBaseActions>();
 builder.Services.AddScoped<MyConfiguration>();
 builder.Services.AddScoped<DbAccess>();
-builder.Services.AddScoped<Helpers>();
+builder.Services.AddScoped<IHelpers, Helpers>();
 
 builder.Services.AddScoped<ICacheActions, CacheActions>();
 builder.Services.AddScoped<ISearchLogActions, SearchLogActions>();

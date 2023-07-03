@@ -15,7 +15,7 @@ namespace AnagramSolver.Tests.WebAppTests
 		private Mock<IWordRepository> _mockWordRepository;
 		private Mock<IAnagramGenerator> _mockAnagramSolver;
 		private Mock<MyConfiguration> _mockConfig;
-		private Mock<Helpers> _mockHelpers;
+		private Mock<IHelpers> _mockHelpers;
 
 		[SetUp]
 		public void SetUp()
@@ -23,7 +23,13 @@ namespace AnagramSolver.Tests.WebAppTests
 			_mockWordRepository = new Mock<IWordRepository>(MockBehavior.Strict);
 			_mockAnagramSolver = new Mock<IAnagramGenerator>(MockBehavior.Strict);
 			_mockConfig = new Mock<MyConfiguration>(MockBehavior.Strict);
-			_mockHelpers = new Mock<Helpers>(MockBehavior.Strict);
+			_mockHelpers = new Mock<IHelpers>(MockBehavior.Strict);
+			_mockHelpers.Setup(m => m.LogSearch(It.IsAny<string>()))
+						.Callback<string>(inputWord =>
+						{
+							string ipAddress = "127.0.0.1";
+							DateTime now = DateTime.Now;
+						});
 			_mockConfig.SetupAllProperties();
 			_mockConfig.Object.TotalAmount = 1;
 
