@@ -1,4 +1,4 @@
-﻿using AnagramSolver.Contracts.Models;
+﻿using AnagramSolver.Contracts.Dtos;
 
 namespace AnagramSolver.BusinessLogic
 {

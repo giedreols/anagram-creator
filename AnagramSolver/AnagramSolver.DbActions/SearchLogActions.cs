@@ -1,5 +1,5 @@
-﻿using AnagramSolver.Contracts.Interfaces;
-using AnagramSolver.Contracts.Models;
+﻿using AnagramSolver.Contracts.Dtos;
+using AnagramSolver.Contracts.Interfaces;
 using System.Data;
 using System.Data.SqlClient;
 
@@ -7,7 +7,7 @@ namespace AnagramSolver.DbActions
 {
 	public class SearchLogActions : DbAccess, ISearchLogActions
 	{
-		public void Add(SearchLogModel item)
+		public void Add(SearchLogDto item)
 		{
 			var query = @"INSERT INTO [dbo].[SearchLog]
 							([UserIp]
@@ -34,7 +34,7 @@ namespace AnagramSolver.DbActions
 			ExecuteCommand(command);
 		}
 
-		public SearchLogModel GetLastSearch()
+		public SearchLogDto GetLastSearch()
 		{
 			string queryLog = @"select top 1 
 								SearchWord as word, UserIp as ip, TimeStamp as time from SearchLog 
@@ -50,10 +50,10 @@ namespace AnagramSolver.DbActions
 
 			if (dataTableLog.Rows.Count == 0)
 			{
-				return new SearchLogModel();
+				return new SearchLogDto();
 			}
 
-			SearchLogModel result = new(
+			SearchLogDto result = new(
 				dataTableLog.Rows[0].Field<string>("ip"), dataTableLog.Rows[0].Field<DateTime>("time"), dataTableLog.Rows[0].Field<string>("word"));
 
 			string queryAnagrams = @"Declare @word nvarchar(50);

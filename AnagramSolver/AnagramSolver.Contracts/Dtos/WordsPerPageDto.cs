@@ -1,6 +1,6 @@
-﻿namespace AnagramSolver.Contracts.Models
+﻿namespace AnagramSolver.Contracts.Dtos
 {
-	public class WordsPerPageModel
+	public class WordsPerPageDto
 	{
 		public List<string> Words { get; private set; }
 
@@ -8,7 +8,7 @@
 
 		public int TotalWordsCount { get; private set; }
 
-		public WordsPerPageModel(List<string> words, int pageSize, int totalWordsCount)
+		public WordsPerPageDto(List<string> words, int pageSize, int totalWordsCount)
 		{
 			Words = words;
 			PageSize = pageSize;

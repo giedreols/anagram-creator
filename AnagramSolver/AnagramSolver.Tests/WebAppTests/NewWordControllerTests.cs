@@ -1,6 +1,6 @@
 ﻿using AnagramSolver.Cli;
 using AnagramSolver.Contracts.Interfaces;
-using AnagramSolver.Contracts.Models;
+using AnagramSolver.Contracts.Dtos;
 using AnagramSolver.WebApp.Controllers;
 using AnagramSolver.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -52,7 +52,7 @@ namespace AnagramSolver.Tests.WebAppTests
 
 			_mockWordRepository.Setup(p => p.SaveWord(word)).Returns(true);
 			_mockAnagramSolver.Setup(p => p.GetAnagrams(word)).Returns(expectedResult);
-			_mockWordRepository.Setup(p => p.GetWordsByPage(1, 1)).Returns(new WordsPerPageModel(expectedResult, 1, 1));
+			_mockWordRepository.Setup(p => p.GetWordsByPage(1, 1)).Returns(new WordsPerPageDto(expectedResult, 1, 1));
 
 			var result = (ViewResult)_newWordController.Create(word);
 			var model = result.Model as AnagramWordsModel;
@@ -67,7 +67,7 @@ namespace AnagramSolver.Tests.WebAppTests
 
 			_mockWordRepository.Setup(p => p.SaveWord(word)).Returns(true);
 			_mockAnagramSolver.Setup(p => p.GetAnagrams(word)).Returns(new List<string>());
-			_mockWordRepository.Setup(p => p.GetWordsByPage(1, 1)).Returns(new WordsPerPageModel(new List<string>(), 1, 1));
+			_mockWordRepository.Setup(p => p.GetWordsByPage(1, 1)).Returns(new WordsPerPageDto(new List<string>(), 1, 1));
 
 			var result = (ViewResult)_newWordController.Create(word);
 			var model = result.Model as AnagramWordsModel;

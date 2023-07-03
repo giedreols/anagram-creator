@@ -1,14 +1,14 @@
-﻿namespace AnagramSolver.Contracts.Models
+﻿namespace AnagramSolver.Contracts.Dtos
 
 
 {
-	public class InputWordModel
+	public class InputWordDto
 	{
 		public string Word { get; set; }
 
 		public string? InvalidityReason { get; set; }
 
-		public InputWordModel(string word)
+		public InputWordDto(string word)
 		{
 			Word = word;
 		}

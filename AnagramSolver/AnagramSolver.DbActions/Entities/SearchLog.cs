@@ -1,4 +1,4 @@
-﻿namespace AnagramSolver.DbActions.Models
+﻿namespace AnagramSolver.DbActions.Entities
 {
 	public class SearchLog
 	{

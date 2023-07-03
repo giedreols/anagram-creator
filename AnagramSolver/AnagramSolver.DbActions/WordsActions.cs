@@ -1,5 +1,5 @@
-﻿using AnagramSolver.Contracts.Interfaces;
-using AnagramSolver.Contracts.Models;
+﻿using AnagramSolver.Contracts.Dtos;
+using AnagramSolver.Contracts.Interfaces;
 using Microsoft.IdentityModel.Tokens;
 using System.Data;
 using System.Data.SqlClient;
@@ -8,7 +8,7 @@ namespace AnagramSolver.DbActions
 {
 	public class WordsActions : DbAccess, IWordsActions
 	{
-		public void InsertWord(FullWordModel parameters)
+		public void InsertWord(FullWordDto parameters)
 		{
 			string query;
 
@@ -67,7 +67,7 @@ namespace AnagramSolver.DbActions
 			ExecuteCommand(command);
 		}
 
-		public IEnumerable<FullWordModel> GetWords()
+		public IEnumerable<FullWordDto> GetWords()
 		{
 			string query = @"SELECT Words.MainForm, Words.OtherForm, PartsOfSpeech.Abbreviation
 							from Words LEFT JOIN PartsOfSpeech ON PartOfSpeechId = PartsOfSpeech.Id";
@@ -80,13 +80,13 @@ namespace AnagramSolver.DbActions
 
 			DataTable dataTable = ExecuteCommand(command);
 
-			IEnumerable<FullWordModel> result = dataTable.AsEnumerable()
-				.Select(row => new FullWordModel(row.Field<string>("MainForm"), row.Field<string>("OtherForm"), row.Field<string>("Abbreviation")));
+			IEnumerable<FullWordDto> result = dataTable.AsEnumerable()
+				.Select(row => new FullWordDto(row.Field<string>("MainForm"), row.Field<string>("OtherForm"), row.Field<string>("Abbreviation")));
 
 			return result;
 		}
 
-		public IEnumerable<FullWordModel> GetMatchingWords(string inputWord)
+		public IEnumerable<FullWordDto> GetMatchingWords(string inputWord)
 		{
 			string query = @"SELECT DISTINCT [OtherForm] AS a 
 				FROM [AnagramSolverData].[dbo].[Words] 
@@ -102,8 +102,8 @@ namespace AnagramSolver.DbActions
 
 			DataTable dataTable = ExecuteCommand(command);
 
-			List<FullWordModel> result = dataTable.AsEnumerable()
-				.Select(row => new FullWordModel(row.Field<string>("a"))).ToList();
+			List<FullWordDto> result = dataTable.AsEnumerable()
+				.Select(row => new FullWordDto(row.Field<string>("a"))).ToList();
 
 			return result;
 		}

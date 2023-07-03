@@ -1,4 +1,5 @@
-﻿using AnagramSolver.Contracts.Interfaces;
+﻿using AnagramSolver.Contracts.Dtos;
+using AnagramSolver.Contracts.Interfaces;
 using AnagramSolver.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -17,8 +18,7 @@ namespace AnagramSolver.WebApp.Controllers
 
 		public IActionResult Index()
 		{
-			var data = _databaseActions.GetLastSearchInfo();
-
+			SearchLogDto data = _databaseActions.GetLastSearchInfo();
 
 			UserInfoModel model = new()
 			{

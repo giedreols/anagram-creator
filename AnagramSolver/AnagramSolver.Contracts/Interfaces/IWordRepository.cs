@@ -1,25 +1,25 @@
-﻿using AnagramSolver.Contracts.Models;
+﻿using AnagramSolver.Contracts.Dtos;
 
 namespace AnagramSolver.Contracts.Interfaces
 {
 	public interface IWordRepository
 	{
-		IEnumerable<WordWithFormsModel> GetWords();
+		IEnumerable<WordWithFormsDto> GetWords();
 
 		bool SaveWord(string word);
 
-		WordsPerPageModel GetWordsByPage(int page, int totalAmount);
+		WordsPerPageDto GetWordsByPage(int page, int totalAmount);
 
 		byte[] GetFileWithWords();
 
-		WordsPerPageModel GetMatchingWords(string inputWord, int page, int pageSize);
+		WordsPerPageDto GetMatchingWords(string inputWord, int page, int pageSize);
 
-		CachedAnagramModel GetCachedAnagrams(string word);
+		CachedAnagramDto GetCachedAnagrams(string word);
 
-		void CacheAnagrams(WordWithAnagramsModel anagrams);
+		void CacheAnagrams(WordWithAnagramsDto anagrams);
 
-		void LogSearchInfo(SearchLogModel model);
+		void LogSearchInfo(SearchLogDto model);
 
-		SearchLogModel GetLastSearchInfo();
+		SearchLogDto GetLastSearchInfo();
 	}
 }

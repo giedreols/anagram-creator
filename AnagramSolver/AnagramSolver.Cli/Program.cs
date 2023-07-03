@@ -2,8 +2,8 @@
 using AnagramSolver.BusinessLogic.AnagramActions;
 using AnagramSolver.BusinessLogic.DictionaryActions;
 using AnagramSolver.Cli;
+using AnagramSolver.Contracts.Dtos;
 using AnagramSolver.Contracts.Interfaces;
-using AnagramSolver.Contracts.Models;
 
 bool repeat = true;
 
@@ -26,7 +26,7 @@ while (repeat)
 		continue;
 	}
 
-	Task<WordWithAnagramsModel?> response = new Client().ExecuteGetAnagramsAsync(word);
+	Task<WordWithAnagramsDto?> response = new Client().ExecuteGetAnagramsAsync(word);
 
 	response.Wait();
 

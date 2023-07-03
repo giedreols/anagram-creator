@@ -1,4 +1,4 @@
-﻿using AnagramSolver.DbActions.Models;
+﻿using AnagramSolver.Contracts.Dtos;
 using System.Data;
 using System.Data.SqlClient;
 
@@ -6,7 +6,7 @@ namespace AnagramSolver.DbActions
 {
 	public class PartOfSpeechActions : DbAccess
 	{
-		public void Add(PartOfSpeech item)
+		public void Add(PartOfSpeechDto item)
 		{
 			var query = "INSERT INTO [dbo].[PartsOfSpeech] ([Abbreviation]) VALUES (@abbreviation)";
 

@@ -1,5 +1,5 @@
-﻿using AnagramSolver.Contracts.Interfaces;
-using AnagramSolver.Contracts.Models;
+﻿using AnagramSolver.Contracts.Dtos;
+using AnagramSolver.Contracts.Interfaces;
 
 namespace AnagramSolver.BusinessLogic.AnagramActions
 {
@@ -14,7 +14,7 @@ namespace AnagramSolver.BusinessLogic.AnagramActions
 
 		public IList<string> GetAnagrams(string inputWord)
 		{
-			CachedAnagramModel cachedAnagrams = _wordRepository.GetCachedAnagrams(inputWord);
+			CachedAnagramDto cachedAnagrams = _wordRepository.GetCachedAnagrams(inputWord);
 			IList<string> anagrams;
 
 			if (cachedAnagrams.IsCached)
@@ -24,7 +24,7 @@ namespace AnagramSolver.BusinessLogic.AnagramActions
 			else
 			{
 				anagrams = GenerateAnagrams(inputWord);
-				_wordRepository.CacheAnagrams(new WordWithAnagramsModel(inputWord, anagrams));
+				_wordRepository.CacheAnagrams(new WordWithAnagramsDto(inputWord, anagrams));
 			}
 
 			return anagrams.OrderBy(a => a).ToList();

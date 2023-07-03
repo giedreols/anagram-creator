@@ -1,4 +1,4 @@
-﻿using AnagramSolver.Contracts.Models;
+﻿using AnagramSolver.Contracts.Dtos;
 
 namespace AnagramSolver.BusinessLogic
 {
@@ -11,9 +11,9 @@ namespace AnagramSolver.BusinessLogic
 			return lines.ToList();
 		}
 
-		public static List<FullWordModel> ParseDictionaryWordsFromLines(List<string> linesList)
+		public static List<FullWordDto> ParseDictionaryWordsFromLines(List<string> linesList)
 		{
-			List<FullWordModel> wordList = new();
+			List<FullWordDto> wordList = new();
 
 			try
 			{
@@ -22,7 +22,7 @@ namespace AnagramSolver.BusinessLogic
 					if (line.Contains('\t'))
 					{
 						string[] fields = line.Split('\t');
-						wordList.Add(new FullWordModel(fields[0], fields[2], fields[1]));
+						wordList.Add(new FullWordDto(fields[0], fields[2], fields[1]));
 					}
 				}
 				if (wordList.Count == 0) { throw new Exception("Dictionary is empty"); }
@@ -60,26 +60,26 @@ namespace AnagramSolver.BusinessLogic
 			return wordList;
 		}
 
-		public static List<WordWithFormsModel> ConvertStringListToAnagramWordList(List<string> stringList)
+		public static List<WordWithFormsDto> ConvertStringListToAnagramWordList(List<string> stringList)
 		{
-			List<WordWithFormsModel> tempList = new();
+			List<WordWithFormsDto> tempList = new();
 
 			foreach (var word in stringList)
 			{
-				tempList.Add(new WordWithFormsModel(word));
+				tempList.Add(new WordWithFormsDto(word));
 			}
 
 			return tempList.DistinctBy(word => word.LowerCaseForm).ToList().OrderByDescending(word => word.MainForm.Length).ToList();
 		}
 
-		public static List<WordWithFormsModel> ConvertDictionaryWordListToAnagramWordList(List<FullWordModel> list)
+		public static List<WordWithFormsDto> ConvertDictionaryWordListToAnagramWordList(List<FullWordDto> list)
 		{
-			List<WordWithFormsModel> tempList = new();
+			List<WordWithFormsDto> tempList = new();
 
 			foreach (var word in list)
 			{
-				tempList.Add(new WordWithFormsModel(word.MainForm));
-				if (word.OtherForm != null) tempList.Add(new WordWithFormsModel(word.OtherForm));
+				tempList.Add(new WordWithFormsDto(word.MainForm));
+				if (word.OtherForm != null) tempList.Add(new WordWithFormsDto(word.OtherForm));
 			}
 
 			return tempList.DistinctBy(word => word.LowerCaseForm).ToList().OrderByDescending(word => word.MainForm.Length).ToList();

@@ -1,5 +1,5 @@
 ﻿using AnagramSolver.BusinessLogic;
-using AnagramSolver.Contracts.Models;
+using AnagramSolver.Contracts.Dtos;
 
 namespace AnagramSolver.Tests.BusinessLogicTests
 {

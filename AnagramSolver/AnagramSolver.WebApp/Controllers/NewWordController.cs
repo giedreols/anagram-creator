@@ -1,7 +1,6 @@
 ﻿using AnagramSolver.BusinessLogic;
 using AnagramSolver.Cli;
 using AnagramSolver.Contracts.Interfaces;
-using AnagramSolver.Contracts.Models;
 using AnagramSolver.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Web.Http;

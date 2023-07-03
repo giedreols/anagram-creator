@@ -1,5 +1,5 @@
-﻿using AnagramSolver.Contracts.Interfaces;
-using AnagramSolver.Contracts.Models;
+﻿using AnagramSolver.Contracts.Dtos;
+using AnagramSolver.Contracts.Interfaces;
 using Microsoft.IdentityModel.Tokens;
 using Moq;
 
@@ -24,7 +24,7 @@ namespace AnagramSolver.Tests.BusinessLogicTests.AnagramActionsTests
 			string word = "liepa";
 			IList<string> expectedResult = new List<string>() { "palei", "pelai" };
 
-			_mockWordRepository.Setup(p => p.GetCachedAnagrams(word)).Returns(new CachedAnagramModel(true, expectedResult));
+			_mockWordRepository.Setup(p => p.GetCachedAnagrams(word)).Returns(new CachedAnagramDto(true, expectedResult));
 
 			IList<string> anagrams = _anagramGenerator.GetAnagrams(word);
 
@@ -36,7 +36,7 @@ namespace AnagramSolver.Tests.BusinessLogicTests.AnagramActionsTests
 		{
 			string word = "liepa";
 
-			_mockWordRepository.Setup(p => p.GetCachedAnagrams(word)).Returns(new CachedAnagramModel(true, new List<string>()));
+			_mockWordRepository.Setup(p => p.GetCachedAnagrams(word)).Returns(new CachedAnagramDto(true, new List<string>()));
 
 			IList<string> anagrams = _anagramGenerator.GetAnagrams(word);
 
@@ -50,16 +50,16 @@ namespace AnagramSolver.Tests.BusinessLogicTests.AnagramActionsTests
 
 			IList<string> expectedResult = new List<string>() { "palei", "pelai" };
 
-			List<WordWithFormsModel> list = new() {
-				new WordWithFormsModel("siela"),
-				new WordWithFormsModel("liepa"),
-				new WordWithFormsModel("upė"),
-				new WordWithFormsModel("pelai"),
-				new WordWithFormsModel("liepa"),
-				new WordWithFormsModel("palei") };
+			List<WordWithFormsDto> list = new() {
+				new WordWithFormsDto("siela"),
+				new WordWithFormsDto("liepa"),
+				new WordWithFormsDto("upė"),
+				new WordWithFormsDto("pelai"),
+				new WordWithFormsDto("liepa"),
+				new WordWithFormsDto("palei") };
 
 			_mockWordRepository = new Mock<IWordRepository>(MockBehavior.Default);
-			_mockWordRepository.Setup(p => p.GetCachedAnagrams(word)).Returns(new CachedAnagramModel(false, new List<string>()));
+			_mockWordRepository.Setup(p => p.GetCachedAnagrams(word)).Returns(new CachedAnagramDto(false, new List<string>()));
 			_mockWordRepository.Setup(p => p.GetWords()).Returns(list);
 
 			_anagramGenerator = new BusinessLogic.AnagramActions.AnagramGenerator(_mockWordRepository.Object);
@@ -75,8 +75,8 @@ namespace AnagramSolver.Tests.BusinessLogicTests.AnagramActionsTests
 			string word = "pieva";
 
 			_mockWordRepository = new Mock<IWordRepository>(MockBehavior.Default);
-			_mockWordRepository.Setup(p => p.GetCachedAnagrams(word)).Returns(new CachedAnagramModel(false, new List<string>()));
-			_mockWordRepository.Setup(p => p.GetWords()).Returns(new List<WordWithFormsModel>());
+			_mockWordRepository.Setup(p => p.GetCachedAnagrams(word)).Returns(new CachedAnagramDto(false, new List<string>()));
+			_mockWordRepository.Setup(p => p.GetWords()).Returns(new List<WordWithFormsDto>());
 
 			_anagramGenerator = new BusinessLogic.AnagramActions.AnagramGenerator(_mockWordRepository.Object);
 

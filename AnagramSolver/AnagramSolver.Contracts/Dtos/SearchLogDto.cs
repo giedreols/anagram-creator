@@ -1,6 +1,6 @@
-﻿namespace AnagramSolver.Contracts.Models
+﻿namespace AnagramSolver.Contracts.Dtos
 {
-	public class SearchLogModel
+	public class SearchLogDto
 	{
 		public int Id { get; set; }
 
@@ -12,12 +12,12 @@
 
 		public IList<string> Anagrams { get; set; }
 
-		public SearchLogModel()
+		public SearchLogDto()
 		{
 
 		}
 
-		public SearchLogModel(string userIp, DateTime timeStamp, string word)
+		public SearchLogDto(string userIp, DateTime timeStamp, string word)
 		{
 			UserIp = userIp;
 			TimeStamp = timeStamp;

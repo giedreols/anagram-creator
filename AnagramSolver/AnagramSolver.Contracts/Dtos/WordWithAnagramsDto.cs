@@ -1,13 +1,13 @@
-﻿namespace AnagramSolver.Contracts.Models
+﻿namespace AnagramSolver.Contracts.Dtos
 
 {
-	public class WordWithAnagramsModel
+	public class WordWithAnagramsDto
 	{
 		public string Word { get; set; }
 
 		public IEnumerable<string> Anagrams { get; set; }
 
-		public WordWithAnagramsModel(string word, IEnumerable<string> anagrams)
+		public WordWithAnagramsDto(string word, IEnumerable<string> anagrams)
 		{
 			Word = word;
 			Anagrams = anagrams;

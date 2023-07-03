@@ -1,12 +1,12 @@
-﻿using AnagramSolver.Contracts.Models;
+﻿using AnagramSolver.Contracts.Dtos;
 
 namespace AnagramSolver.Contracts.Interfaces
 {
 	public interface IWordsActions
 	{
-		void InsertWord(FullWordModel parameters);
-		IEnumerable<FullWordModel> GetWords();
-		IEnumerable<FullWordModel> GetMatchingWords(string inputWord);
+		void InsertWord(FullWordDto parameters);
+		IEnumerable<FullWordDto> GetWords();
+		IEnumerable<FullWordDto> GetMatchingWords(string inputWord);
 		bool IsWordExists(string inputWord);
 	}
 }

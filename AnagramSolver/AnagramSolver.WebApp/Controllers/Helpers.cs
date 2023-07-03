@@ -1,5 +1,5 @@
 ﻿using AnagramSolver.Contracts.Interfaces;
-using AnagramSolver.Contracts.Models;
+using AnagramSolver.Contracts.Dtos;
 
 namespace AnagramSolver.WebApp.Controllers
 {
@@ -18,7 +18,7 @@ namespace AnagramSolver.WebApp.Controllers
 		{
 			string ipAddress = _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString();
 
-			_wordRepository.LogSearchInfo(new SearchLogModel(ipAddress, DateTime.Now, inputWord));
+			_wordRepository.LogSearchInfo(new SearchLogDto(ipAddress, DateTime.Now, inputWord));
 		}
 	}
 }

@@ -1,20 +1,20 @@
-﻿namespace AnagramSolver.Contracts.Models
+﻿namespace AnagramSolver.Contracts.Dtos
 {
-	public class FullWordModel
+	public class FullWordDto
 	{
 		public int? Id { get; set; }
 		public string MainForm { get; set; }
 		public string OtherForm { get; set; }
 		public string? PartOfSpeechAbbreviation { get; set; }
 
-		public FullWordModel(string mainForm, string otherForm, string partOfSpeechAbbreviation)
+		public FullWordDto(string mainForm, string otherForm, string partOfSpeechAbbreviation)
 		{
 			MainForm = mainForm;
 			OtherForm = otherForm;
 			PartOfSpeechAbbreviation = partOfSpeechAbbreviation;
 		}
 
-		public FullWordModel(string anyForm)
+		public FullWordDto(string anyForm)
 		{
 			MainForm = anyForm;
 			OtherForm = anyForm;

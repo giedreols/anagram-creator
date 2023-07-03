@@ -1,6 +1,6 @@
 ﻿using AnagramSolver.Cli;
 using AnagramSolver.Contracts.Interfaces;
-using AnagramSolver.Contracts.Models;
+using AnagramSolver.Contracts.Dtos;
 using AnagramSolver.WebApp.Controllers;
 using AnagramSolver.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -30,7 +30,7 @@ namespace AnagramSolver.Tests.WebAppTests
 		public void Search_ReturnsWordListModel()
 		{
 			var word = "a";
-			_mockWordRepository.Setup(p => p.GetMatchingWords(word, 1, 1)).Returns(new WordsPerPageModel(new List<string> { word }, 1, 1));
+			_mockWordRepository.Setup(p => p.GetMatchingWords(word, 1, 1)).Returns(new WordsPerPageDto(new List<string> { word }, 1, 1));
 
 			var result = (ViewResult)_listPageController.Search(word);
 
@@ -43,7 +43,7 @@ namespace AnagramSolver.Tests.WebAppTests
 		{
 			var word = "a";
 			var expectedResult = new List<string>() { "aa", "kva", "la" };
-			_mockWordRepository.Setup(p => p.GetMatchingWords(word, 1, 1)).Returns(new WordsPerPageModel(expectedResult, 1, 1));
+			_mockWordRepository.Setup(p => p.GetMatchingWords(word, 1, 1)).Returns(new WordsPerPageDto(expectedResult, 1, 1));
 
 			var result = (ViewResult)_listPageController.Search(word);
 			var model = result.Model as WordListModel;
@@ -54,7 +54,7 @@ namespace AnagramSolver.Tests.WebAppTests
 		[Test]
 		public void Index_ReturnsWordListModel()
 		{
-			_mockWordRepository.Setup(p => p.GetWordsByPage(1, 1)).Returns(new WordsPerPageModel(new List<string>(), 1, 1));
+			_mockWordRepository.Setup(p => p.GetWordsByPage(1, 1)).Returns(new WordsPerPageDto(new List<string>(), 1, 1));
 
 			var result = (ViewResult)_listPageController.Index();
 
@@ -66,7 +66,7 @@ namespace AnagramSolver.Tests.WebAppTests
 		public void Index_ReturnsCurrentPageWordsInFirstPage()
 		{
 			var word = "liepa";
-			_mockWordRepository.Setup(p => p.GetWordsByPage(1, 1)).Returns(new WordsPerPageModel(new List<string>() { word }, 1, 1));
+			_mockWordRepository.Setup(p => p.GetWordsByPage(1, 1)).Returns(new WordsPerPageDto(new List<string>() { word }, 1, 1));
 
 			var result = (ViewResult)_listPageController.Index();
 			var model = result.ViewData.Model as WordListModel;

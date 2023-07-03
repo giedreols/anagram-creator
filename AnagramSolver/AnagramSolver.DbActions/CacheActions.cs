@@ -1,5 +1,5 @@
-﻿using AnagramSolver.Contracts.Interfaces;
-using AnagramSolver.Contracts.Models;
+﻿using AnagramSolver.Contracts.Dtos;
+using AnagramSolver.Contracts.Interfaces;
 using Microsoft.IdentityModel.Tokens;
 using System.Data;
 using System.Data.SqlClient;
@@ -8,7 +8,7 @@ namespace AnagramSolver.DbActions
 {
 	public class CacheActions : DbAccess, ICacheActions
 	{
-		public int InsertAnagrams(WordWithAnagramsModel anagrams)
+		public int InsertAnagrams(WordWithAnagramsDto anagrams)
 		{
 			var connectionString = "Data Source=.\\MSSQLSERVER01;Initial Catalog=AnagramSolverData;Integrated Security=True";
 
@@ -46,7 +46,7 @@ namespace AnagramSolver.DbActions
 			return command;
 		}
 
-		private static SqlCommand CreateConnectionForWordWithAnagrams(SqlConnection connection, WordWithAnagramsModel anagrams)
+		private static SqlCommand CreateConnectionForWordWithAnagrams(SqlConnection connection, WordWithAnagramsDto anagrams)
 		{
 			DataTable anagramsTable = new();
 

@@ -1,6 +1,6 @@
 ﻿using AnagramSolver.Cli;
+using AnagramSolver.Contracts.Dtos;
 using AnagramSolver.Contracts.Interfaces;
-using AnagramSolver.Contracts.Models;
 using AnagramSolver.WebApp.Controllers;
 using AnagramSolver.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -22,7 +22,7 @@ namespace AnagramSolver.Tests.BusinessLogicTests.DictionaryTests
 			_mockConfig.SetupAllProperties();
 			_mockConfig.Object.TotalAmount = 1;
 			_mockWordRepository = new Mock<IWordRepository>(MockBehavior.Strict);
-			_mockWordRepository.Setup(p => p.GetWords()).Returns(new List<WordWithFormsModel> { });
+			_mockWordRepository.Setup(p => p.GetWords()).Returns(new List<WordWithFormsDto> { });
 			_listPageController = new WordListController(_mockWordRepository.Object, _mockConfig.Object);
 		}
 
@@ -32,7 +32,7 @@ namespace AnagramSolver.Tests.BusinessLogicTests.DictionaryTests
 			var page = 2;
 			var wordB = "wordB";
 
-			_mockWordRepository.Setup(p => p.GetWordsByPage(page, _mockConfig.Object.TotalAmount)).Returns(new WordsPerPageModel(new List<string>() { wordB },
+			_mockWordRepository.Setup(p => p.GetWordsByPage(page, _mockConfig.Object.TotalAmount)).Returns(new WordsPerPageDto(new List<string>() { wordB },
 				_mockConfig.Object.TotalAmount, 2)
 			{ });
 
