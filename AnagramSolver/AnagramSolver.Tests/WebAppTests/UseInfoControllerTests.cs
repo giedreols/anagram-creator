@@ -1,4 +1,5 @@
-﻿using AnagramSolver.Contracts.Interfaces;
+﻿using AnagramSolver.Contracts.Dtos;
+using AnagramSolver.Contracts.Interfaces;
 using AnagramSolver.WebApp.Controllers;
 using AnagramSolver.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -10,28 +11,19 @@ namespace AnagramSolver.Tests.WebAppTests
 	internal class UseInfoControllerTests
 	{
 		private UserInfoController _userInfoController;
-		private Mock<IAnagramGenerator> _mockAnagramSolver;
-		private Mock<ControllerContext> _mockSession;
+		private Mock<IWordRepository> _mockDatabaseActions;
 
 		[SetUp]
 		public void SetUp()
 		{
-			_mockAnagramSolver = new Mock<IAnagramGenerator>(MockBehavior.Strict);
-			_mockSession = new Mock<ControllerContext>(MockBehavior.Strict);
-
-			//MockHttpSession httpcontext = new MockHttpSession();
-			//httpcontext.Set<string>("UserEmail", "unittest@mycompany.com");
-
-
-			//_mockSession.SetupAllProperties();
-			//_mockSession.Object["key"] = "value";
-
+			_mockDatabaseActions = new Mock<IWordRepository>(MockBehavior.Strict);
+			_userInfoController = new UserInfoController(_mockDatabaseActions.Object);
 		}
 
 		[Test]
 		public void Index_ReturnsUserInfoModel()
 		{
-			_mockAnagramSolver.Setup(p => p.GetAnagrams("x")).Returns(new List<string>());
+			_mockDatabaseActions.Setup(p => p.GetLastSearchInfo()).Returns(new SearchLogDto());
 
 			var result = (ViewResult)_userInfoController.Index();
 
@@ -42,67 +34,97 @@ namespace AnagramSolver.Tests.WebAppTests
 		[Test]
 		public void Index_ReturnsLastSearchWord_IfItIsExists()
 		{
-			//_mockAnagramSolver.Setup(p => p.GetAnagrams("x")).Returns(new List<string>());
+			SearchLogDto expectedResult = new()
+			{
+				Word = "makaronas",
+				UserIp = "",
+				TimeStamp = DateTime.Now,
+				Anagrams = new List<string>()
+			};
 
-			//var result = (ViewResult)_userInfoController.Index();
+			_mockDatabaseActions.Setup(p => p.GetLastSearchInfo()).Returns(expectedResult);
 
-			//Assert.That(result, Is.Not.Null);
-			//Assert.That(result.Model, Is.InstanceOf<AnagramWordsModel>());
+			var result = (ViewResult)_userInfoController.Index();
+
+			UserInfoModel model = result.Model as UserInfoModel;
+
+			Assert.That(model.LastWord, Is.EqualTo(expectedResult.Word));
 		}
 
 		[Test]
 		public void Index_ReturnsLastSearchDateTime_IfItIsExists()
 		{
-			//_mockAnagramSolver.Setup(p => p.GetAnagrams("x")).Returns(new List<string>());
+			SearchLogDto expectedResult = new()
+			{
+				Word = "makaronas",
+				UserIp = "",
+				TimeStamp = DateTime.Now,
+				Anagrams = new List<string>()
+			};
 
-			//var result = (ViewResult)_userInfoController.Index();
+			_mockDatabaseActions.Setup(p => p.GetLastSearchInfo()).Returns(expectedResult);
 
-			//Assert.That(result, Is.Not.Null);
-			//Assert.That(result.Model, Is.InstanceOf<AnagramWordsModel>());
+			var result = (ViewResult)_userInfoController.Index();
+
+			UserInfoModel model = result.Model as UserInfoModel;
+
+			Assert.That(model.SearchDateTime, Is.EqualTo(expectedResult.TimeStamp.ToString()));
 		}
 
 		[Test]
 		public void Index_ReturnsAnagramsOfLastWord_IfTheyExist()
 		{
-			//_mockAnagramSolver.Setup(p => p.GetAnagrams("x")).Returns(new List<string>());
+			SearchLogDto expectedResult = new()
+			{
+				Word = "",
+				UserIp = "",
+				TimeStamp = DateTime.Now,
+				Anagrams = new List<string>() { "lanka" }
+			};
 
-			//var result = (ViewResult)_userInfoController.Index();
+			_mockDatabaseActions.Setup(p => p.GetLastSearchInfo()).Returns(expectedResult);
 
-			//Assert.That(result, Is.Not.Null);
-			//Assert.That(result.Model, Is.InstanceOf<AnagramWordsModel>());
+			var result = (ViewResult)_userInfoController.Index();
+
+			UserInfoModel model = result.Model as UserInfoModel;
+
+			Assert.That(model.Anagrams[0], Is.EqualTo(expectedResult.Anagrams[0]));
 		}
 
 		[Test]
-		public void Index_DoesNotThrowError_IfNoLastSearchWord()
+		public void Index_DoesNotThrowError_IfNoLastSearchInfo()
 		{
-			//_mockAnagramSolver.Setup(p => p.GetAnagrams("x")).Returns(new List<string>());
+			SearchLogDto expectedResult = new();
 
-			//var result = (ViewResult)_userInfoController.Index();
+			_mockDatabaseActions.Setup(p => p.GetLastSearchInfo()).Returns(expectedResult);
 
-			//Assert.That(result, Is.Not.Null);
-			//Assert.That(result.Model, Is.InstanceOf<AnagramWordsModel>());
+			var result = (ViewResult)_userInfoController.Index();
+
+			Assert.DoesNotThrow(() =>
+			{
+				ViewResult result = (ViewResult)_userInfoController.Index();
+			});
+
+			UserInfoModel model = result.Model as UserInfoModel;
 		}
 
 		[Test]
-		public void Index_DoesNotThrowError_IfNoLastSearchDateTime()
+		public void Index_DoesNotThrowError_IfNoAnagramsInLastSearch()
 		{
-			//_mockAnagramSolver.Setup(p => p.GetAnagrams("x")).Returns(new List<string>());
+			SearchLogDto expectedResult = new()
+			{
+				Word = "tu",
+				UserIp = "111",
+				TimeStamp = DateTime.Now,
+				Anagrams = new List<string>()
+			};
 
-			//var result = (ViewResult)_userInfoController.Index();
+			_mockDatabaseActions.Setup(p => p.GetLastSearchInfo()).Returns(expectedResult);
 
-			//Assert.That(result, Is.Not.Null);
-			//Assert.That(result.Model, Is.InstanceOf<AnagramWordsModel>());
-		}
-
-		[Test]
-		public void Index_DoesNotThrowError_IfNoLastSearchAnagrams()
-		{
-			//_mockAnagramSolver.Setup(p => p.GetAnagrams("x")).Returns(new List<string>());
-
-			//var result = (ViewResult)_userInfoController.Index();
-
-			//Assert.That(result, Is.Not.Null);
-			//Assert.That(result.Model, Is.InstanceOf<AnagramWordsModel>());
+			Assert.DoesNotThrow(() =>
+			{
+				ViewResult result = (ViewResult)_userInfoController.Index();
+			});
 		}
 	}
 }

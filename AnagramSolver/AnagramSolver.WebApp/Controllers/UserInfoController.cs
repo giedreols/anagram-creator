@@ -13,7 +13,6 @@ namespace AnagramSolver.WebApp.Controllers
 		public UserInfoController(IWordRepository databaseActions)
 		{
 			_databaseActions = databaseActions;
-
 		}
 
 		public IActionResult Index()
