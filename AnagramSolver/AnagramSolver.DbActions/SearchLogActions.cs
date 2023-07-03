@@ -16,23 +16,7 @@ namespace AnagramSolver.DbActions
 					   VALUES
 					     (@userIp
 						  ,@word
-						  ,@timeStamp);
-
-						DECLARE @LatestSearchLogId INT;
-						DECLARE @AnagramIds TABLE (anagramId INT);
-
-						SELECT TOP 1 @LatestSearchLogId = Id 
-						FROM SearchLog
-						ORDER BY Id DESC;
-
-						INSERT INTO @AnagramIds (anagramId)
-						SELECT Id FROM Anagrams 
-						WHERE SearchWord = @word AND timestamp > (SELECT DATEADD(MONTH, -1, GETDATE()));
-
-						INSERT INTO [dbo].[SearchedAnagramsLog]
-						([AnagramId], [SearchLogId])
-						SELECT anagramId, @LatestSearchLogId
-						FROM @AnagramIds;";
+						  ,@timeStamp);";
 
 			SqlCommand command = new()
 			{
@@ -52,34 +36,47 @@ namespace AnagramSolver.DbActions
 
 		public SearchLogModel GetLastSearch()
 		{
-			string query = @"declare @SearchId INT
-							select TOP 1 @SearchId = Id from SearchLog order by Id desc
-							SELECT s.UserIp as ip, s.TimeStamp as time, s.SearchWord as word, w.OtherForm as anagram
-							from SearchLog as s
-							left join SearchedAnagramsLog as sa on s.Id = sa.SearchLogId
-							left join Anagrams as a on a.Id = sa.AnagramId
-							left join Words as w on a.WordId = w.Id
-							where s.Id = @SearchId 
-							AND
-							s.TimeStamp > (SELECT DATEADD(MONTH, -1, GETDATE()))";
+			string queryLog = @"select top 1 
+								SearchWord as word, UserIp as ip, TimeStamp as time from SearchLog 
+								where TimeStamp > (SELECT DATEADD(MONTH, -1, GETDATE())) order by Id desc";
 
-			SqlCommand command = new()
+			SqlCommand commandLog = new()
 			{
-				CommandText = query,
+				CommandText = queryLog,
 				CommandType = CommandType.Text
 			};
 
-			DataTable dataTable = ExecuteCommand(command);
+			DataTable dataTableLog = ExecuteCommand(commandLog);
 
-			if (dataTable.Rows.Count == 0)
+			if (dataTableLog.Rows.Count == 0)
 			{
 				return new SearchLogModel();
 			}
 
 			SearchLogModel result = new(
-				dataTable.Rows[0].Field<string>("ip"), dataTable.Rows[0].Field<DateTime>("time"), dataTable.Rows[0].Field<string>("word"));
+				dataTableLog.Rows[0].Field<string>("ip"), dataTableLog.Rows[0].Field<DateTime>("time"), dataTableLog.Rows[0].Field<string>("word"));
 
-			result.Anagrams = dataTable.AsEnumerable().Select(row => row.Field<string>("anagram")).ToList();
+			string queryAnagrams = @"Declare @word nvarchar(50);
+							select top 1 @word = SearchWord from SearchLog 
+							where TimeStamp > (SELECT DATEADD(MONTH, -1, GETDATE()))
+							order by Id desc
+
+							SELECT w.OtherForm as anagram from Words as w
+							right JOIN Anagrams as a ON w.Id = a.WordId 
+
+							where (a.SearchWord = @word)
+							and
+							a.TimeStamp > (SELECT DATEADD(MINUTE, -1, GETDATE()))";
+
+			SqlCommand commandAnagrams = new()
+			{
+				CommandText = queryAnagrams,
+				CommandType = CommandType.Text
+			};
+
+			DataTable dataTableAnagrams = ExecuteCommand(commandAnagrams);
+				
+			result.Anagrams = dataTableAnagrams.AsEnumerable().Select(row => row.Field<string>("anagram")).ToList();
 
 			return result;
 		}

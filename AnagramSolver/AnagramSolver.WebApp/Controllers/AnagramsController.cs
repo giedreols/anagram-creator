@@ -19,8 +19,6 @@ namespace AnagramSolver.WebApp.Controllers
 			_helpers = helpers;
 		}
 
-		// logint is cia ar tiesiai is GetAnagrams?
-
 		[Microsoft.AspNetCore.Mvc.HttpGet()]
 		public IActionResult Get(string inputWord)
 		{
