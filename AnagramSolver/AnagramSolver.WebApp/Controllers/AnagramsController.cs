@@ -2,11 +2,11 @@
 using AnagramSolver.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
-using System.Web.Http;
 
 namespace AnagramSolver.WebApp.Controllers
 {
-	[RoutePrefix("[Controller]")]
+	[ApiController]
+	[Route("[Controller]/[Action]")]
 	public class AnagramsController : Controller
 	{
 		private readonly IAnagramGenerator _anagramSolver;
@@ -19,7 +19,7 @@ namespace AnagramSolver.WebApp.Controllers
 			_helpers = helpers;
 		}
 
-		[Microsoft.AspNetCore.Mvc.HttpGet()]
+		[HttpGet]
 		public IActionResult Get(string inputWord)
 		{
 			if (inputWord.IsNullOrEmpty())

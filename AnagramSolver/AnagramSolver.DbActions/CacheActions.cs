@@ -83,12 +83,13 @@ namespace AnagramSolver.DbActions
 							DECLARE @timestamp datetime;
 							set @timestamp = (SELECT TOP 1 TimeStamp from Anagrams where SearchWord = @word order by TimeStamp DESC)
 
-							IF (@count = 0 OR @timestamp < (SELECT DATEADD(MONTH, -1, GETDATE())))
+							IF (@count = 0 OR @timestamp < (SELECT DATEADD(MINUTE, -5, GETDATE())))
 							BEGIN
 								SELECT null as a
 							END
 							ELSE 
-								SELECT OtherForm as a from Words JOIN Anagrams ON Words.Id = Anagrams.WordId where Anagrams.SearchWord = @word AND timestamp > (SELECT DATEADD(MONTH, -1, GETDATE()))";
+								SELECT OtherForm as a from Words JOIN Anagrams ON Words.Id = Anagrams.WordId 
+								where Anagrams.SearchWord = @word AND timestamp >= (SELECT DATEADD(MINUTE, -5, GETDATE()))";
 
 			SqlCommand command = new()
 			{

@@ -10,8 +10,6 @@
 
 		public string Word { get; set; }
 
-		public IList<string> Anagrams { get; set; }
-
 		public SearchLogDto()
 		{
 

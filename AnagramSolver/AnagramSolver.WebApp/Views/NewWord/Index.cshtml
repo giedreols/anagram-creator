@@ -6,18 +6,17 @@
 
 <div class="text-left">
 
-	<form asp-action="Create">
-		<div class="form-actions no-color">
-			<p>
-				Įrašykite žodį: <input type="text" name="newWord" value="@ViewData["CurrentWord"]"  />
-				<input type="submit" value="Išsaugoti" class="btn btn-default" />
-			</p>
-		</div>
+    <form asp-action="Create" method="post">
+        <div class="form-actions no-color">
+            <p>
+                Įrašykite žodį: <input type="text" name="newWord" value="@ViewData["CurrentWord"]" />
+                <input type="submit" value="Išsaugoti" class="btn btn-default" />
+            </p>
+        </div>
 
-		@if (Model != null)
-		{
-			<p>@Model.Message</p>
-		}
-		
-	</form>
+        @if (Model != null)
+        {
+            <p>@Model.Message</p>
+        }
+    </form>
 </div>

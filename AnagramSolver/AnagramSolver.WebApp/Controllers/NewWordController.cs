@@ -3,11 +3,11 @@ using AnagramSolver.Cli;
 using AnagramSolver.Contracts.Interfaces;
 using AnagramSolver.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
-using System.Web.Http;
 
 namespace AnagramSolver.WebApp.Controllers
 {
-	[RoutePrefix("[Controller]")]
+	[ApiController]
+	[Route("[Controller]")]
 	public class NewWordController : Controller
 	{
 		private readonly IWordRepository _wordRepository;
@@ -23,14 +23,15 @@ namespace AnagramSolver.WebApp.Controllers
 			_helpers = helpers;
 		}
 
+		[HttpGet]
 		public ActionResult Index()
 		{
 			return View();
 		}
 
-		[Microsoft.AspNetCore.Mvc.HttpPost()]
-		public ActionResult Create(string newWord)
-		{
+        [HttpPost]
+        public ActionResult Create([FromForm] string newWord)
+        {
 			ViewData["CurrentWord"] = newWord;
 			ViewData["SavedMessage"] = "Žodis išsaugotas žodyne";
 
