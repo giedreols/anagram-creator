@@ -1,3 +1,7 @@
 ﻿using AnagramSolver.DbSeeding;
+using AnagramSolver.EF.DbFirst;
 
-SeedOneLineDictionary.Seed();
+new DbFirstWordsActions().AddOrderedFormForWords();
+
+
+//SeedOneLineDictionary.Seed();

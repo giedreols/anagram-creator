@@ -2,6 +2,7 @@
 using AnagramSolver.Contracts.Interfaces;
 using AnagramSolver.EF.DbFirst.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Migrations.Operations;
 
 namespace AnagramSolver.EF.DbFirst
 {
@@ -42,7 +43,7 @@ namespace AnagramSolver.EF.DbFirst
 			return FullWordList.AsEnumerable();
 		}
 
-		// o kaip santrumpa ideti? ja reikia rasyt i kita lentele, o cia tik id?
+		// o kaip santrumpa irasyti???????????
 
 		public void InsertWord(FullWordDto parameters)
 		{
@@ -52,6 +53,7 @@ namespace AnagramSolver.EF.DbFirst
 			{
 				MainForm = parameters.MainForm,
 				OtherForm = parameters.OtherForm,
+				OrderedForm = parameters.OtherForm.ToLower(System.Globalization.CultureInfo.CurrentCulture).OrderByDescending(a => a).ToString(),
 			};
 
 			context.Words.Add(newWord);
@@ -63,6 +65,22 @@ namespace AnagramSolver.EF.DbFirst
 			using var context = new AnagramSolverDataContext();
 
 			return context.Words.Any(w => w.OtherForm.ToLower().Equals(inputWord.ToLower()));
+		}
+
+
+		public void AddOrderedFormForWords()
+		{
+			using var context = new AnagramSolverDataContext();
+
+			var words = context.Words.ToList();
+
+			words.Select(w =>
+			{
+				w.OrderedForm = new string(w.OtherForm.ToLower().OrderByDescending(c => c).ToArray());
+				return w;
+			}).ToList();
+
+			context.SaveChanges();
 		}
 	}
 }

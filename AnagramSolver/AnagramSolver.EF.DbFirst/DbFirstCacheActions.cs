@@ -14,17 +14,13 @@ namespace AnagramSolver.EF.DbFirst
 		public IEnumerable<string> GetCachedAnagrams(string word)
 		{
 			using var context = new AnagramSolverDataContext();
-			//throw new NotImplementedException();
 
-			return new List<string>();
-
+			throw new NotImplementedException();
 		}
 
 		public int InsertAnagrams(WordWithAnagramsDto anagrams)
 		{
-			//throw new NotImplementedException();
-
-			return 1;
+			throw new NotImplementedException();
 		}
 	}
 }

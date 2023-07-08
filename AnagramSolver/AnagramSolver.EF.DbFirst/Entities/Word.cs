@@ -11,7 +11,9 @@ public partial class Word
 
     public string OtherForm { get; set; } = null!;
 
-    public int? PartOfSpeechId { get; set; }
+	public string OrderedForm { get; set; }
+
+	public int? PartOfSpeechId { get; set; }
 
     public virtual ICollection<Anagram> Anagrams { get; set; } = new List<Anagram>();
 

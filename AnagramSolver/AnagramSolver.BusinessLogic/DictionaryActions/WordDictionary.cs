@@ -55,7 +55,7 @@ namespace AnagramSolver.BusinessLogic.DictionaryActions
 
 		private List<string> ReadWords()
 		{
-			string text = _fileReader.ReadFile();
+			string text = _fileReader.ReadFile("zodynas.txt");
 			List<string> linesList = Converter.ParseLinesWithTabs(text);
 			List<string> wordList = Converter.ParseWordsFromDictionaryFile(linesList);
 

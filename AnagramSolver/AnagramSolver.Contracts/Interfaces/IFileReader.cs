@@ -4,7 +4,7 @@
 	{
 		byte[] GetFile();
 
-		string ReadFile();
+		string ReadFile(string path);
 
 		void WriteFile(string lines);
 	}
