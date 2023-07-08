@@ -27,7 +27,7 @@ namespace AnagramSolver.BusinessLogic.DictionaryActions
 
 				}
 
-				_path += "\\Files\\zodynas.txt";
+				_path += "\\Files\\";
 			}
 			catch
 			{
@@ -35,9 +35,11 @@ namespace AnagramSolver.BusinessLogic.DictionaryActions
 			}
 		}
 
-		public string ReadFile()
+		public string ReadFile(string fileName)
 		{
 			string text;
+
+			_path += fileName;
 
 			try
 			{

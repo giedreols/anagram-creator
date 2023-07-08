@@ -19,6 +19,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Files\lithuanian-words-list.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Files\zodynas.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

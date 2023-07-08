@@ -56,7 +56,7 @@ namespace AnagramSolver.BusinessLogic.DictionaryActions
 		private List<string> ReadWords()
 		{
 			string text = _fileReader.ReadFile();
-			List<string> linesList = Converter.ParseLines(text);
+			List<string> linesList = Converter.ParseLinesWithTabs(text);
 			List<string> wordList = Converter.ParseWordsFromDictionaryFile(linesList);
 
 			return wordList;

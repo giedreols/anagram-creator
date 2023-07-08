@@ -4,9 +4,17 @@ namespace AnagramSolver.BusinessLogic
 {
 	public static class Converter
 	{
-		public static List<string> ParseLines(string text)
+		public static List<string> ParseLinesWithTabs(string text)
 		{
 			string[] lines = text.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+
+			return lines.ToList();
+		}
+
+
+		public static List<string> ParseSingleLines(string text)
+		{
+			string[] lines = text.Split('\n');
 
 			return lines.ToList();
 		}
