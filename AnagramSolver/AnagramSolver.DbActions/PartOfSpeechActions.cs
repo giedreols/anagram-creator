@@ -1,10 +1,11 @@
 ﻿using AnagramSolver.Contracts.Dtos;
+using AnagramSolver.Contracts.Interfaces;
 using System.Data;
 using System.Data.SqlClient;
 
 namespace AnagramSolver.DbActions
 {
-	public class PartOfSpeechActions : DbAccess
+	public class PartOfSpeechActions : DbAccess, IPartOfSpeechActions
 	{
 		public void Add(PartOfSpeechDto item)
 		{

@@ -57,7 +57,6 @@ namespace AnagramSolver.BusinessLogic
 			{
 				_dbWordTableAccess.InsertWord(new FullWordDto(word));
 			}
-
 			return true;
 		}
 

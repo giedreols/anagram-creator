@@ -6,7 +6,7 @@
 
 		public string UserIp { get; set; }
 
-		public DateTime TimeStamp { get; set; }
+		public DateTime? TimeStamp { get; set; }
 
 		public string Word { get; set; }
 
@@ -15,7 +15,7 @@
 
 		}
 
-		public SearchLogDto(string userIp, DateTime timeStamp, string word)
+		public SearchLogDto(string userIp, DateTime? timeStamp, string word)
 		{
 			UserIp = userIp;
 			TimeStamp = timeStamp;
