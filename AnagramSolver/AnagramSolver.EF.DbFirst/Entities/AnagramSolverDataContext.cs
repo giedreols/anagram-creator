@@ -72,8 +72,9 @@ public partial class AnagramSolverDataContext : DbContext
 
             entity.Property(e => e.MainForm).HasMaxLength(50);
             entity.Property(e => e.OtherForm).HasMaxLength(50);
+			entity.Property(e => e.OrderedForm).HasMaxLength(50);
 
-            entity.HasOne(d => d.PartOfSpeech).WithMany(p => p.Words)
+			entity.HasOne(d => d.PartOfSpeech).WithMany(p => p.Words)
                 .HasForeignKey(d => d.PartOfSpeechId)
                 .HasConstraintName("FK__Words__AnagramId__60A75C0F");
         });

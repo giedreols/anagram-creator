@@ -3,6 +3,7 @@ using AnagramSolver.Contracts.Interfaces;
 using AnagramSolver.EF.DbFirst.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations.Operations;
+using Microsoft.IdentityModel.Tokens;
 
 namespace AnagramSolver.EF.DbFirst
 {
@@ -17,15 +18,15 @@ namespace AnagramSolver.EF.DbFirst
 		{
 			using var context = new AnagramSolverDataContext();
 
-			var matchingItems = context.Words
+			IQueryable<Word> matchingItems = context.Words
 						.Where(item => item.OtherForm.Contains(inputWord));
 
-			List<FullWordDto> convertedWords = new List<FullWordDto>();
+			List<FullWordDto> convertedWords = new();
 
-			matchingItems.ForEachAsync(item =>
+			foreach (Word word in matchingItems)
 			{
-				convertedWords.Add(new FullWordDto(item.OtherForm));
-			});
+				convertedWords.Add(new FullWordDto(word.OtherForm));
+			}
 
 			return convertedWords;
 		}
@@ -36,9 +37,9 @@ namespace AnagramSolver.EF.DbFirst
 
 			using var context = new AnagramSolverDataContext();
 
-			var words = context.Words.AsEnumerable();
+			var words = context.Words.Select(w => w.OtherForm).ToList();
 
-			FullWordList.AddRange(words.Select(w => new FullWordDto(w.OtherForm)).ToList());
+			FullWordList.AddRange(words.Select(w => new FullWordDto(w)));
 
 			return FullWordList.AsEnumerable();
 		}
@@ -53,7 +54,7 @@ namespace AnagramSolver.EF.DbFirst
 			{
 				MainForm = parameters.MainForm,
 				OtherForm = parameters.OtherForm,
-				OrderedForm = parameters.OtherForm.ToLower(System.Globalization.CultureInfo.CurrentCulture).OrderByDescending(a => a).ToString(),
+				OrderedForm = new(parameters.OtherForm.ToLower(System.Globalization.CultureInfo.CurrentCulture).OrderByDescending(a => a).ToArray()),
 			};
 
 			context.Words.Add(newWord);
@@ -64,21 +65,21 @@ namespace AnagramSolver.EF.DbFirst
 		{
 			using var context = new AnagramSolverDataContext();
 
-			return context.Words.Any(w => w.OtherForm.ToLower().Equals(inputWord.ToLower()));
+			return context.Words.Any(w => w.OtherForm.Equals(inputWord));
 		}
 
 
-		public void AddOrderedFormForWords()
+		public void AddOrderedFormForAllWords()
 		{
 			using var context = new AnagramSolverDataContext();
 
-			var words = context.Words.ToList();
+			List<Word> words = context.Words.ToList();
 
-			words.Select(w =>
+			foreach (Word word in words)
 			{
-				w.OrderedForm = new string(w.OtherForm.ToLower().OrderByDescending(c => c).ToArray());
-				return w;
-			}).ToList();
+				word.OrderedForm = new string(word.OtherForm.ToLower().OrderByDescending(c => c).ToArray());
+				context.Update(word);
+			}
 
 			context.SaveChanges();
 		}

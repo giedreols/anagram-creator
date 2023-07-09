@@ -1,11 +1,6 @@
 ﻿using AnagramSolver.Contracts.Dtos;
 using AnagramSolver.Contracts.Interfaces;
 using AnagramSolver.EF.DbFirst.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AnagramSolver.EF.DbFirst
 {
@@ -15,12 +10,19 @@ namespace AnagramSolver.EF.DbFirst
 		{
 			using var context = new AnagramSolverDataContext();
 
-			throw new NotImplementedException();
+			string orderedWord = new (word.OrderByDescending(w => w).ToArray());
+
+			IEnumerable<string> anagrams = context.Words
+													.Where(w => w.OrderedForm == orderedWord && w.OtherForm != word)
+													.Select(x => x.OtherForm)
+													.ToList();
+
+			return anagrams;
 		}
 
 		public int InsertAnagrams(WordWithAnagramsDto anagrams)
 		{
-			throw new NotImplementedException();
+			return 1;
 		}
 	}
 }

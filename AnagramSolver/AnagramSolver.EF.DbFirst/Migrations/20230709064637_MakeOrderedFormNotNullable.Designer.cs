@@ -4,6 +4,7 @@ using AnagramSolver.EF.DbFirst.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AnagramSolver.EF.DbFirst.Migrations
 {
     [DbContext(typeof(AnagramSolverDataContext))]
-    partial class AnagramSolverDataContextModelSnapshot : ModelSnapshot
+    [Migration("20230709064637_MakeOrderedFormNotNullable")]
+    partial class MakeOrderedFormNotNullable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -14,7 +14,8 @@ namespace AnagramSolver.BusinessLogic.AnagramActions
 
 		public IList<string> GetAnagrams(string inputWord)
 		{
-			CachedAnagramDto cachedAnagrams = _wordRepository.GetCachedAnagrams(inputWord);
+			CachedAnagramDto cachedAnagrams = _wordRepository.GetCachedAnagrams(inputWord.ToLower().Replace(" ", ""));
+
 			IList<string> anagrams;
 
 			if (cachedAnagrams.IsCached)
@@ -27,7 +28,7 @@ namespace AnagramSolver.BusinessLogic.AnagramActions
 				_wordRepository.CacheAnagrams(new WordWithAnagramsDto(inputWord, anagrams));
 			}
 
-			return anagrams.OrderBy(a => a).ToList();
+			return cachedAnagrams.Anagrams.OrderBy(a => a).ToList();
 		}
 
 		private IList<string> GenerateAnagrams(string inputWord)

@@ -24,7 +24,7 @@ namespace AnagramSolver.Tests.BusinessLogicTests.DictionaryTests
 		[Test]
 		public void GetWords_ThrowsError_IfFileIsEmpty()
 		{
-			_mockFileReader.Setup(p => p.ReadFile()).Returns(_text);
+			_mockFileReader.Setup(p => p.ReadFile("")).Returns(_text);
 
 			Assert.Throws<IndexOutOfRangeException>(() => _wordRepository.GetWords());
 		}
@@ -33,7 +33,7 @@ namespace AnagramSolver.Tests.BusinessLogicTests.DictionaryTests
 		public void GetWords_ThrowsError_IfLinesInFileContainsLessThan3Fields()
 		{
 			_text = _text = "siela\tdkt.";
-			_mockFileReader.Setup(p => p.ReadFile()).Returns(_text);
+			_mockFileReader.Setup(p => p.ReadFile("")).Returns(_text);
 
 			Assert.Throws<IndexOutOfRangeException>(() => _wordRepository.GetWords());
 		}
@@ -42,7 +42,7 @@ namespace AnagramSolver.Tests.BusinessLogicTests.DictionaryTests
 		public void GetWords_ReturnsImmutableList()
 		{
 			_text = "siela\tdkt.\tsiena";
-			_mockFileReader.Setup(p => p.ReadFile()).Returns(_text);
+			_mockFileReader.Setup(p => p.ReadFile("")).Returns(_text);
 
 			var result = _wordRepository.GetWords();
 
@@ -53,7 +53,7 @@ namespace AnagramSolver.Tests.BusinessLogicTests.DictionaryTests
 		public void GetWords_ReturnsOnlyUniqueWords()
 		{
 			_text = "siela\tdkt.\tsiela\r\nsiela\tdkt.\tsielas";
-			_mockFileReader.Setup(p => p.ReadFile()).Returns(_text);
+			_mockFileReader.Setup(p => p.ReadFile("")).Returns(_text);
 
 			IList<WordWithFormsDto> result = _wordRepository.GetWords().ToList();
 
@@ -64,7 +64,7 @@ namespace AnagramSolver.Tests.BusinessLogicTests.DictionaryTests
 		public void GetWords_ReturnsOnlyUniqueWordsCaseInsensitive()
 		{
 			_text = "jūra\tdkt.\tJūra\r\nJŪRA\tdkt.\tjūra";
-			_mockFileReader.Setup(p => p.ReadFile()).Returns(_text);
+			_mockFileReader.Setup(p => p.ReadFile("")).Returns(_text);
 
 			IList<WordWithFormsDto> result = _wordRepository.GetWords().ToList();
 
@@ -77,7 +77,7 @@ namespace AnagramSolver.Tests.BusinessLogicTests.DictionaryTests
 		{
 			string expectedResult = "Jūra";
 			_text = $"{expectedResult}\tdkt.\tJūra";
-			_mockFileReader.Setup(p => p.ReadFile()).Returns(_text);
+			_mockFileReader.Setup(p => p.ReadFile("")).Returns(_text);
 
 			IList<WordWithFormsDto> result = _wordRepository.GetWords().ToList();
 
@@ -90,7 +90,7 @@ namespace AnagramSolver.Tests.BusinessLogicTests.DictionaryTests
 			string word = "Jūra";
 			string wordLowerCase = word.ToLower();
 			_text = $"{word}\tdkt.\tJūra";
-			_mockFileReader.Setup(p => p.ReadFile()).Returns(_text);
+			_mockFileReader.Setup(p => p.ReadFile("")).Returns(_text);
 
 			IList<WordWithFormsDto> result = _wordRepository.GetWords().ToList();
 
@@ -103,7 +103,7 @@ namespace AnagramSolver.Tests.BusinessLogicTests.DictionaryTests
 			string word = "jūra";
 			string sortedWord = new(word.OrderByDescending(c => c).ToArray());
 			_text = $"{word}\tdkt.\tJūra";
-			_mockFileReader.Setup(p => p.ReadFile()).Returns(_text);
+			_mockFileReader.Setup(p => p.ReadFile("")).Returns(_text);
 
 			IList<WordWithFormsDto> result = _wordRepository.GetWords().ToList();
 
@@ -118,7 +118,7 @@ namespace AnagramSolver.Tests.BusinessLogicTests.DictionaryTests
 			string word3Chars = "aaa";
 			string word4Chars = "4444";
 			_text = $"{word3Chars}\tdkt.\t{word1Char}\r\n{word4Chars}\tdkt.\t{word2Chars}";
-			_mockFileReader.Setup(p => p.ReadFile()).Returns(_text);
+			_mockFileReader.Setup(p => p.ReadFile("")).Returns(_text);
 
 			IList<WordWithFormsDto> result = _wordRepository.GetWords().ToList();
 
