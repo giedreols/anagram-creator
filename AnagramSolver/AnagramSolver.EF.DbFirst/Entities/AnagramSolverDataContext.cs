@@ -17,7 +17,7 @@ public partial class AnagramSolverDataContext : DbContext
 
     public virtual DbSet<Anagram> Anagrams { get; set; }
 
-    public virtual DbSet<PartsOfSpeech> PartsOfSpeech{ get; set; }
+    public virtual DbSet<PartOfSpeech> PartsOfSpeech{ get; set; }
 
     public virtual DbSet<SearchLog> SearchLog { get; set; }
 
@@ -43,7 +43,7 @@ public partial class AnagramSolverDataContext : DbContext
                 .HasConstraintName("FK__Anagrams__WordId__05D8E0BE");
         });
 
-        modelBuilder.Entity<PartsOfSpeech>(entity =>
+        modelBuilder.Entity<PartOfSpeech>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__PartsOfS__3214EC07BCBFAD36");
 

@@ -47,15 +47,15 @@ namespace AnagramSolver.BusinessLogic
 			return new WordsPerPageDto(currentPageItems, pageSize, allWords.Count);
 		}
 
-		public bool SaveWord(string word)
+		public bool SaveWord(FullWordDto word)
 		{
-			if (_dbWordTableAccess.IsWordExists(word))
+			if (_dbWordTableAccess.IsWordExists(word.OtherForm))
 			{
 				return false;
 			}
 			else
 			{
-				_dbWordTableAccess.InsertWord(new FullWordDto(word));
+				_dbWordTableAccess.InsertWord(word);
 			}
 			return true;
 		}

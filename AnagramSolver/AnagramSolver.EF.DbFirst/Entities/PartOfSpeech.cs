@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace AnagramSolver.EF.DbFirst.Entities;
 
-public partial class PartsOfSpeech
+public partial class PartOfSpeech
 {
     public int Id { get; set; }
 

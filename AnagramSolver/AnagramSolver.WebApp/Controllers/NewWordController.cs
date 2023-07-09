@@ -30,10 +30,12 @@ namespace AnagramSolver.WebApp.Controllers
 		}
 
         [HttpPost]
-        public ActionResult Create([FromForm] string newWord)
+        public ActionResult Create([FromForm] string newWord, [FromForm] string newAbbreviation)
         {
 			ViewData["CurrentWord"] = newWord;
-			ViewData["SavedMessage"] = "Žodis išsaugotas žodyne";
+            ViewData["Abbreviation"] = newAbbreviation;
+
+            ViewData["SavedMessage"] = "Žodis išsaugotas žodyne";
 
 			var validity = InputWordValidator.Validate(newWord, _config.MinLength, _config.MaxLength);
 
@@ -42,7 +44,7 @@ namespace AnagramSolver.WebApp.Controllers
 				return View("Index", new WordFailedToSaveModel(validity));
 			}
 
-			if (!_wordRepository.SaveWord(newWord))
+			if (!_wordRepository.SaveWord(new Contracts.Dtos.FullWordDto(newWord) { PartOfSpeechAbbreviation = newAbbreviation}))
 			{
 				return View("Index", new WordFailedToSaveModel(WordRejectionReasons.AlreadyExists));
 			}

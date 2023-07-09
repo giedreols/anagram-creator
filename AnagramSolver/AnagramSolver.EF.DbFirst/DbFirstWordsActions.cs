@@ -1,87 +1,100 @@
 ﻿using AnagramSolver.Contracts.Dtos;
 using AnagramSolver.Contracts.Interfaces;
 using AnagramSolver.EF.DbFirst.Entities;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Migrations.Operations;
-using Microsoft.IdentityModel.Tokens;
 
 namespace AnagramSolver.EF.DbFirst
 {
-	public class DbFirstWordsActions : IWordsActions
-	{
-		public DbFirstWordsActions()
-		{
+    public class DbFirstWordsActions : IWordsActions
+    {
+        public DbFirstWordsActions()
+        {
 
-		}
+        }
 
-		public IEnumerable<FullWordDto> GetMatchingWords(string inputWord)
-		{
-			using var context = new AnagramSolverDataContext();
+        public IEnumerable<FullWordDto> GetMatchingWords(string inputWord)
+        {
+            using var context = new AnagramSolverDataContext();
 
-			IQueryable<Word> matchingItems = context.Words
-						.Where(item => item.OtherForm.Contains(inputWord));
+            IQueryable<string> matchingItems = context.Words
+                        .Where(item => item.OtherForm.Contains(inputWord))
+                        .Select(w => w.OtherForm);
 
-			List<FullWordDto> convertedWords = new();
+            List<FullWordDto> convertedWords = new();
 
-			foreach (Word word in matchingItems)
-			{
-				convertedWords.Add(new FullWordDto(word.OtherForm));
-			}
+            foreach (string word in matchingItems)
+            {
+                convertedWords.Add(new FullWordDto(word));
+            }
 
-			return convertedWords;
-		}
+            return convertedWords;
+        }
 
-		public IEnumerable<FullWordDto> GetWords()
-		{
-			var FullWordList = new List<FullWordDto>();
+        public IEnumerable<FullWordDto> GetWords()
+        {
+            var FullWordList = new List<FullWordDto>();
 
-			using var context = new AnagramSolverDataContext();
+            using var context = new AnagramSolverDataContext();
 
-			var words = context.Words.Select(w => w.OtherForm).ToList();
+            var words = context.Words.Select(w => w.OtherForm).ToList();
 
-			FullWordList.AddRange(words.Select(w => new FullWordDto(w)));
+            FullWordList.AddRange(words.Select(w => new FullWordDto(w)));
 
-			return FullWordList.AsEnumerable();
-		}
+            return FullWordList.AsEnumerable();
+        }
 
-		// o kaip santrumpa irasyti???????????
+        public void InsertWord(FullWordDto parameters)
+        {
+            using var context = new AnagramSolverDataContext();
 
-		public void InsertWord(FullWordDto parameters)
-		{
-			using var context = new AnagramSolverDataContext();
+            var isPartOfSpeechExists = context.PartsOfSpeech
+                                    .FirstOrDefault(x => x.Abbreviation.Equals(parameters.PartOfSpeechAbbreviation));
 
-			var newWord = new Word
-			{
-				MainForm = parameters.MainForm,
-				OtherForm = parameters.OtherForm,
-				OrderedForm = new(parameters.OtherForm.ToLower(System.Globalization.CultureInfo.CurrentCulture).OrderByDescending(a => a).ToArray()),
-			};
+            if (isPartOfSpeechExists == null)
+            {
+                context.PartsOfSpeech.Add(new()
+                {
+                    Abbreviation = parameters.PartOfSpeechAbbreviation
+                });
+                context.SaveChanges();
+            }
 
-			context.Words.Add(newWord);
-			context.SaveChanges();
-		}
+            var partOfSpeechId = context.PartsOfSpeech
+                                .First(x => x.Abbreviation.Equals(parameters.PartOfSpeechAbbreviation))
+                                .Id;
 
-		public bool IsWordExists(string inputWord)
-		{
-			using var context = new AnagramSolverDataContext();
+            var newWord = new Word
+            {
+                MainForm = parameters.MainForm,
+                OtherForm = parameters.OtherForm,
+                OrderedForm = new(parameters.OtherForm.ToLower(System.Globalization.CultureInfo.CurrentCulture).OrderByDescending(a => a).ToArray()),
+                PartOfSpeechId = partOfSpeechId
+            };
 
-			return context.Words.Any(w => w.OtherForm.Equals(inputWord));
-		}
+            context.Words.Add(newWord);
+            context.SaveChanges();
+        }
+
+        public bool IsWordExists(string inputWord)
+        {
+            using var context = new AnagramSolverDataContext();
+
+            return context.Words.Any(w => w.OtherForm.Equals(inputWord));
+        }
 
 
-		public void AddOrderedFormForAllWords()
-		{
-			using var context = new AnagramSolverDataContext();
+        public void AddOrderedFormForAllWords()
+        {
+            using var context = new AnagramSolverDataContext();
 
-			List<Word> words = context.Words.ToList();
+            List<Word> words = context.Words.ToList();
 
-			foreach (Word word in words)
-			{
-				word.OrderedForm = new string(word.OtherForm.ToLower().OrderByDescending(c => c).ToArray());
-				context.Update(word);
-			}
+            foreach (Word word in words)
+            {
+                word.OrderedForm = new string(word.OtherForm.ToLower().OrderByDescending(c => c).ToArray());
+                context.Update(word);
+            }
 
-			context.SaveChanges();
-		}
-	}
+            context.SaveChanges();
+        }
+    }
 }

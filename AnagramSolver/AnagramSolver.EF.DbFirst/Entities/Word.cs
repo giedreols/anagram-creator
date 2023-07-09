@@ -17,5 +17,5 @@ public partial class Word
 
     public virtual ICollection<Anagram> Anagrams { get; set; } = new List<Anagram>();
 
-    public virtual PartsOfSpeech? PartOfSpeech { get; set; }
+    public virtual PartOfSpeech? PartOfSpeech { get; set; }
 }

@@ -10,7 +10,7 @@ namespace AnagramSolver.EF.DbFirst
 		{
 			using var context = new AnagramSolverDataContext();
 
-			PartsOfSpeech partsOfSpeech = new()
+			PartOfSpeech partsOfSpeech = new()
 			{
 				FullWord = item.FullWord,
 				Abbreviation = item.Abbreviation,

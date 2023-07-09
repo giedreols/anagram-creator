@@ -6,7 +6,7 @@ namespace AnagramSolver.Contracts.Interfaces
 	{
 		IEnumerable<WordWithFormsDto> GetWords();
 
-		bool SaveWord(string word);
+		bool SaveWord(FullWordDto word);
 
 		WordsPerPageDto GetWordsByPage(int page, int totalAmount);
 

@@ -86,5 +86,10 @@ namespace AnagramSolver.BusinessLogic.DictionaryActions
 		{
 			throw new NotImplementedException();
 		}
-	}
+
+        public bool SaveWord(FullWordDto word)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }
