@@ -5,17 +5,18 @@ using AnagramSolver.WebApp.Controllers;
 using AnagramSolver.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using AnagramSolver.WebApp;
 
 namespace AnagramSolver.Tests.WebAppTests
 {
-	[TestFixture]
+    [TestFixture]
 	internal class NewWordControllerTests
 	{
 		private NewWordController _newWordController;
 		private Mock<IWordRepository> _mockWordRepository;
 		private Mock<IAnagramGenerator> _mockAnagramSolver;
 		private Mock<MyConfiguration> _mockConfig;
-		private Mock<IHelpers> _mockHelpers;
+		private Mock<ILogHelper> _mockHelpers;
 
 		[SetUp]
 		public void SetUp()
@@ -23,7 +24,7 @@ namespace AnagramSolver.Tests.WebAppTests
 			_mockWordRepository = new Mock<IWordRepository>(MockBehavior.Strict);
 			_mockAnagramSolver = new Mock<IAnagramGenerator>(MockBehavior.Strict);
 			_mockConfig = new Mock<MyConfiguration>(MockBehavior.Strict);
-			_mockHelpers = new Mock<IHelpers>(MockBehavior.Strict);
+			_mockHelpers = new Mock<ILogHelper>(MockBehavior.Strict);
 			_mockHelpers.Setup(m => m.LogSearch(It.IsAny<string>()))
 						.Callback<string>(inputWord =>
 						{

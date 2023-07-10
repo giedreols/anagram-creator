@@ -1,6 +1,6 @@
 ﻿namespace AnagramSolver.Contracts.Interfaces
 {
-	public interface IHelpers
+	public interface ILogHelper
 	{
 		void LogSearch(string inputWord);
 	}

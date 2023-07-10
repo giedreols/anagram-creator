@@ -11,13 +11,13 @@ namespace AnagramSolver.Tests.WebAppTests
 	{
 		private AnagramsController _anagramsController;
 		private Mock<IAnagramGenerator> _mockAnagramSolver;
-		private Mock<IHelpers> _mockHelpers;
+		private Mock<ILogHelper> _mockHelpers;
 
 		[SetUp]
 		public void SetUp()
 		{
 			_mockAnagramSolver = new Mock<IAnagramGenerator>(MockBehavior.Default);
-			_mockHelpers = new Mock<IHelpers>(MockBehavior.Strict);
+			_mockHelpers = new Mock<ILogHelper>(MockBehavior.Strict);
 			_mockHelpers.Setup(m => m.LogSearch(It.IsAny<string>()))
 						.Callback<string>(inputWord =>
 						{

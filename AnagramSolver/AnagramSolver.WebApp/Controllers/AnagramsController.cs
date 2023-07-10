@@ -10,10 +10,10 @@ namespace AnagramSolver.WebApp.Controllers
 	public class AnagramsController : Controller
 	{
 		private readonly IAnagramGenerator _anagramSolver;
-		private readonly IHelpers _helpers;
+		private readonly ILogHelper _helpers;
 
 
-		public AnagramsController(IAnagramGenerator anagramSolver, IHelpers helpers)
+		public AnagramsController(IAnagramGenerator anagramSolver, ILogHelper helpers)
 		{
 			_anagramSolver = anagramSolver;
 			_helpers = helpers;

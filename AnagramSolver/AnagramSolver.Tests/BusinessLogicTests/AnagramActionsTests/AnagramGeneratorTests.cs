@@ -24,7 +24,7 @@ namespace AnagramSolver.Tests.BusinessLogicTests.AnagramActionsTests
 			string word = "liepa";
 			IList<string> expectedResult = new List<string>() { "palei", "pelai" };
 
-			_mockWordRepository.Setup(p => p.GetCachedAnagrams(word)).Returns(new CachedAnagramDto(true, expectedResult));
+			_mockWordRepository.Setup(p => p.GetAnagrams(word)).Returns(new CachedAnagramDto(true, expectedResult));
 
 			IList<string> anagrams = _anagramGenerator.GetAnagrams(word);
 
@@ -36,7 +36,7 @@ namespace AnagramSolver.Tests.BusinessLogicTests.AnagramActionsTests
 		{
 			string word = "liepa";
 
-			_mockWordRepository.Setup(p => p.GetCachedAnagrams(word)).Returns(new CachedAnagramDto(true, new List<string>()));
+			_mockWordRepository.Setup(p => p.GetAnagrams(word)).Returns(new CachedAnagramDto(true, new List<string>()));
 
 			IList<string> anagrams = _anagramGenerator.GetAnagrams(word);
 
@@ -59,7 +59,7 @@ namespace AnagramSolver.Tests.BusinessLogicTests.AnagramActionsTests
 				new WordWithFormsDto("palei") };
 
 			_mockWordRepository = new Mock<IWordRepository>(MockBehavior.Default);
-			_mockWordRepository.Setup(p => p.GetCachedAnagrams(word)).Returns(new CachedAnagramDto(false, new List<string>()));
+			_mockWordRepository.Setup(p => p.GetAnagrams(word)).Returns(new CachedAnagramDto(false, new List<string>()));
 			_mockWordRepository.Setup(p => p.GetWords()).Returns(list);
 
 			_anagramGenerator = new BusinessLogic.AnagramActions.AnagramGenerator(_mockWordRepository.Object);
@@ -75,7 +75,7 @@ namespace AnagramSolver.Tests.BusinessLogicTests.AnagramActionsTests
 			string word = "pieva";
 
 			_mockWordRepository = new Mock<IWordRepository>(MockBehavior.Default);
-			_mockWordRepository.Setup(p => p.GetCachedAnagrams(word)).Returns(new CachedAnagramDto(false, new List<string>()));
+			_mockWordRepository.Setup(p => p.GetAnagrams(word)).Returns(new CachedAnagramDto(false, new List<string>()));
 			_mockWordRepository.Setup(p => p.GetWords()).Returns(new List<WordWithFormsDto>());
 
 			_anagramGenerator = new BusinessLogic.AnagramActions.AnagramGenerator(_mockWordRepository.Object);

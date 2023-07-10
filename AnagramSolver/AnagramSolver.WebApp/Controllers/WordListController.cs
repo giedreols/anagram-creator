@@ -1,5 +1,4 @@
-﻿using AnagramSolver.Cli;
-using AnagramSolver.Contracts.Dtos;
+﻿using AnagramSolver.Contracts.Dtos;
 using AnagramSolver.Contracts.Interfaces;
 using AnagramSolver.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -7,7 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace AnagramSolver.WebApp.Controllers
 {
-	[ApiController]
+    [ApiController]
 	[Route("[Controller]/[Action]")]
 	public class WordListController : Controller
 	{
@@ -23,7 +22,7 @@ namespace AnagramSolver.WebApp.Controllers
 		[HttpGet]
 		public IActionResult Index(int page = 1)
 		{
-			int pageSize = _config.TotalAmount;
+			int pageSize = _config.ConfigOptions.TotalAmount;
 
 			WordsPerPageDto wordsPerPage = _dictionary.GetWordsByPage(page, pageSize);
 
@@ -42,7 +41,7 @@ namespace AnagramSolver.WebApp.Controllers
 
 			ViewData["CurrentWord"] = inputWord;
 
-			int pageSize = _config.TotalAmount;
+			int pageSize = _config.ConfigOptions.TotalAmount;
 
 			WordsPerPageDto matchingWords = _dictionary.GetMatchingWords(inputWord, page, pageSize);
 

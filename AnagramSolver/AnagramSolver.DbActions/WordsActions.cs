@@ -127,5 +127,10 @@ namespace AnagramSolver.DbActions
 
 			return false;
 		}
-	}
+
+        bool IWordsActions.InsertWord(FullWordDto parameters)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

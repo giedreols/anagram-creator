@@ -5,10 +5,11 @@ using AnagramSolver.WebApp.Controllers;
 using AnagramSolver.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using AnagramSolver.WebApp;
 
 namespace AnagramSolver.Tests.WebAppTests
 {
-	[TestFixture]
+    [TestFixture]
 	internal class WordListControllerTests
 	{
 		private WordListController _listPageController;

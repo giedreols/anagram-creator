@@ -1,13 +1,12 @@
 ﻿using Microsoft.Extensions.Configuration;
 using System.Configuration;
+using AnagramSolver.Contracts.Dtos;
 
 namespace AnagramSolver.Cli
 {
 	public class MyConfiguration
 	{
-		public int TotalAmount { get; set; }
-		public int MinLength { get; set; }
-		public int MaxLength { get; set; }
+		public ConfigOptionsDto configOptions { get; set; }
 
 		private IConfigurationRoot _config { get; set; }
 
@@ -20,9 +19,11 @@ namespace AnagramSolver.Cli
 
 			_config = builder.Build();
 
-			TotalAmount = ReadConfiguration("AnagramSettings:TotalAmount");
-			MinLength = ReadConfiguration("AnagramSettings:MinLength");
-			MaxLength = ReadConfiguration("AnagramSettings:MaxLength");
+			configOptions = new ConfigOptionsDto();
+
+            configOptions.TotalAmount = ReadConfiguration("AnagramSettings:TotalAmount");
+            configOptions.MinLength = ReadConfiguration("AnagramSettings:MinLength");
+            configOptions.MaxLength = ReadConfiguration("AnagramSettings:MaxLength");
 		}
 
 		private int ReadConfiguration(string settings)

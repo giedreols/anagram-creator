@@ -10,13 +10,14 @@ namespace AnagramSolver.EF.DbFirst
 		{
 			using var context = new AnagramSolverDataContext();
 
-			string orderedWord = new (word.OrderByDescending(w => w).ToArray());
+			string orderedWord = new (word.Replace(" ", "").OrderByDescending(w => w).ToArray());
 
 			IEnumerable<string> anagrams = context.Words
 													.Where(w => w.OrderedForm == orderedWord && w.OtherForm != word)
 													.Select(x => x.OtherForm)
+													.Distinct()
+													.OrderBy(w => w)
 													.ToList();
-
 			return anagrams;
 		}
 

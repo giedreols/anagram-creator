@@ -1,4 +1,4 @@
-﻿@model WordFailedToSaveModel
+﻿@model NewWordModel
 
 @{
 	ViewData["Title"] = "Naujas žodis";
@@ -17,9 +17,9 @@
             </p>
         </div>
 
-        @if (Model != null)
+        @if (Model != null && !Model.IsSaved)
         {
-            <p>@Model.Message</p>
+            <p>@Model.ErrorMessage</p>
         }
     </form>
 </div>

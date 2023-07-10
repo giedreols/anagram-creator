@@ -8,22 +8,22 @@ namespace AnagramSolver.BusinessLogic
 		{
 			if (word == null)
 			{
-				return WordRejectionReasons.Empty;
+				return ErrorMessages.Empty;
 			}
 
 			if (!IsValidChars(word))
 			{
-				return WordRejectionReasons.InvalidChars;
+				return ErrorMessages.InvalidChars;
 			}
 
 			if (!(word.Length >= minLength))
 			{
-				return WordRejectionReasons.TooShort;
+				return ErrorMessages.TooShort;
 			}
 
 			if (!(word.Length <= maxLength))
 			{
-				return WordRejectionReasons.TooLong;
+				return ErrorMessages.TooLong;
 			}
 
 			return null;

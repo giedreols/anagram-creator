@@ -1,9 +1,8 @@
 ﻿using AnagramSolver.BusinessLogic;
-using AnagramSolver.Cli;
 using AnagramSolver.Contracts.Interfaces;
-using AnagramSolver.DbActions;
 using AnagramSolver.EF.DbFirst;
 using AnagramSolver.WebApp.Controllers;
+using MyConfiguration = AnagramSolver.WebApp.MyConfiguration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,13 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddScoped<IAnagramGenerator, AnagramSolver.BusinessLogic.AnagramActions.AnagramGenerator>();
 builder.Services.AddScoped<IWordRepository, DataBaseActions>();
 builder.Services.AddScoped<MyConfiguration>();
-builder.Services.AddScoped<IHelpers, Helpers>();
-
-//builder.Services.AddScoped<DbAccess>();
-//builder.Services.AddScoped<ICacheActions, CacheActions>();
-//builder.Services.AddScoped<ISearchLogActions, SearchLogActions>();
-//builder.Services.AddScoped<IWordsActions, WordsActions>();
-
+builder.Services.AddScoped<ILogHelper, LogHelper>();
 
 builder.Services.AddScoped<ICacheActions, DbFirstCacheActions>();
 builder.Services.AddScoped<ISearchLogActions, DbFirstSearchLogActions>();

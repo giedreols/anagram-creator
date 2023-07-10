@@ -6,11 +6,6 @@ namespace AnagramSolver.EF.DbFirst
 {
     public class DbFirstWordsActions : IWordsActions
     {
-        public DbFirstWordsActions()
-        {
-
-        }
-
         public IEnumerable<FullWordDto> GetMatchingWords(string inputWord)
         {
             using var context = new AnagramSolverDataContext();
@@ -42,7 +37,7 @@ namespace AnagramSolver.EF.DbFirst
             return FullWordList.AsEnumerable();
         }
 
-        public void InsertWord(FullWordDto parameters)
+        public bool InsertWord(FullWordDto parameters)
         {
             using var context = new AnagramSolverDataContext();
 
@@ -71,7 +66,10 @@ namespace AnagramSolver.EF.DbFirst
             };
 
             context.Words.Add(newWord);
-            context.SaveChanges();
+
+            bool result = context.SaveChanges() > 0;
+
+            return result;
         }
 
         public bool IsWordExists(string inputWord)

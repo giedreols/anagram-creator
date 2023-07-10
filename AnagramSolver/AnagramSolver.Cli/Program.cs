@@ -18,7 +18,7 @@ while (repeat)
 {
 	string word = renderer.GetWord();
 
-	var invalidityReason = word.Validate(configuration.MinLength, configuration.MaxLength);
+	var invalidityReason = word.Validate(configuration.configOptions.MinLength, configuration.configOptions.MaxLength);
 
 	if (invalidityReason != null)
 	{
@@ -36,7 +36,7 @@ while (repeat)
 	}
 	else
 	{
-		renderer.ShowAnagrams(response.Result.Anagrams.ToList().TrimIfTooManyItems(configuration.TotalAmount));
+		renderer.ShowAnagrams(response.Result.Anagrams.ToList().TrimIfTooManyItems(configuration.configOptions.TotalAmount));
 	}
 
 	repeat = renderer.DoRepeat();

@@ -62,32 +62,32 @@ namespace AnagramSolver.BusinessLogic.DictionaryActions
 			return wordList;
 		}
 
-		public WordsPerPageDto GetMatchingWords(string inputWord, int page, int pageSize)
-		{
-			throw new NotImplementedException();
-		}
+        public NewWordDto SaveWord(FullWordDto word, ConfigOptionsDto config)
+        {
+            throw new NotImplementedException();
+        }
 
-		public CachedAnagramDto GetCachedAnagrams(string word)
-		{
-			throw new NotImplementedException();
-		}
+        public WordsPerPageDto GetMatchingWords(string inputWord, int page, int pageSize)
+        {
+            throw new NotImplementedException();
+        }
 
-		public void CacheAnagrams(WordWithAnagramsDto anagrams)
-		{
-			throw new NotImplementedException();
-		}
+        public IEnumerable<string> GetAnagrams(string word)
+        {
+            throw new NotImplementedException();
+        }
 
-		public void LogSearchInfo(SearchLogDto model)
-		{
-			throw new NotImplementedException();
-		}
+        public void CacheAnagrams(WordWithAnagramsDto anagrams)
+        {
+            throw new NotImplementedException();
+        }
 
-		public SearchLogDto GetLastSearchInfo()
-		{
-			throw new NotImplementedException();
-		}
+        public void LogSearchInfo(SearchLogDto model)
+        {
+            throw new NotImplementedException();
+        }
 
-        public bool SaveWord(FullWordDto word)
+        public SearchLogDto GetLastSearchInfo()
         {
             throw new NotImplementedException();
         }
