@@ -4,20 +4,20 @@ using AnagramSolver.EF.DbFirst.Entities;
 
 namespace AnagramSolver.EF.DbFirst
 {
-	public class DbFirstPartOfSpeechActions : IPartOfSpeechActions
-	{
-		public void Add(PartOfSpeechDto item)
-		{
-			using var context = new AnagramSolverDataContext();
+    public class DbFirstPartOfSpeechActions : IPartOfSpeechActions
+    {
+        public void Add(PartOfSpeechDto item)
+        {
+            using var context = new AnagramSolverDataContext();
 
-			PartOfSpeech partsOfSpeech = new()
-			{
-				FullWord = item.FullWord,
-				Abbreviation = item.Abbreviation,
-			};
+            PartOfSpeech partsOfSpeech = new()
+            {
+                FullWord = item.FullWord,
+                Abbreviation = item.Abbreviation,
+            };
 
-			context.Add(partsOfSpeech);
-			context.SaveChanges();
-		}
-	}
+            context.Add(partsOfSpeech);
+            context.SaveChanges();
+        }
+    }
 }

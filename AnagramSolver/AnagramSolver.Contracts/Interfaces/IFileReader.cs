@@ -1,11 +1,11 @@
 ﻿namespace AnagramSolver.Contracts.Interfaces
 {
-	public interface IFileReader
-	{
-		byte[] GetFile();
+    public interface IFileReader
+    {
+        byte[] GetFile();
 
-		string ReadFile(string path);
+        string ReadFile(string path);
 
-		void WriteFile(string lines);
-	}
+        void WriteFile(string lines);
+    }
 }

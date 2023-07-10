@@ -8,12 +8,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddScoped<IAnagramGenerator, AnagramSolver.BusinessLogic.AnagramActions.AnagramGenerator>();
-builder.Services.AddScoped<IWordRepository, DataBaseActions>();
+builder.Services.AddScoped<IWordRepository, WordRepositoryAccess>();
 builder.Services.AddScoped<MyConfiguration>();
 builder.Services.AddScoped<ILogHelper, LogHelper>();
 
-builder.Services.AddScoped<ICacheActions, DbFirstCacheActions>();
 builder.Services.AddScoped<ISearchLogActions, DbFirstSearchLogActions>();
 builder.Services.AddScoped<IWordsActions, DbFirstWordsActions>();
 
@@ -28,9 +26,9 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
-	app.UseExceptionHandler("/Home/Error");
-	// The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-	app.UseHsts();
+    app.UseExceptionHandler("/Home/Error");
+    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+    app.UseHsts();
 }
 
 app.UseHttpsRedirection();
@@ -41,8 +39,8 @@ app.UseRouting();
 app.UseAuthorization();
 
 app.MapControllerRoute(
-	name: "default",
-	pattern: "{controller=Home}/{action=Index}");
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}");
 
 app.UseSession();
 

@@ -5,16 +5,14 @@ using System.Text;
 
 namespace AnagramSolver.BusinessLogic
 {
-    public class DataBaseActions : IWordRepository
+    public class WordRepositoryAccess : IWordRepository
     {
         private readonly IWordsActions _dbWordTableAccess;
-        private readonly ICacheActions _dbCachedWordTableAccess;
         private readonly ISearchLogActions _dbSearchLogActions;
 
-        public DataBaseActions(ICacheActions dbCachedWordTableAccess, IWordsActions dbWordTableAccess, ISearchLogActions searchLogActions)
+        public WordRepositoryAccess(IWordsActions dbWordTableAccess, ISearchLogActions searchLogActions)
         {
             _dbWordTableAccess = dbWordTableAccess;
-            _dbCachedWordTableAccess = dbCachedWordTableAccess;
             _dbSearchLogActions = searchLogActions;
         }
 
@@ -93,7 +91,7 @@ namespace AnagramSolver.BusinessLogic
 
         public void CacheAnagrams(WordWithAnagramsDto anagrams)
         {
-            _dbCachedWordTableAccess.InsertAnagrams(anagrams);
+            _dbWordTableAccess.InsertAnagrams(anagrams);
         }
 
         public void LogSearchInfo(SearchLogDto model)
@@ -108,7 +106,7 @@ namespace AnagramSolver.BusinessLogic
 
         public IEnumerable<string> GetAnagrams(string inputWord)
         {
-            IEnumerable<string> anagrams = _dbCachedWordTableAccess.GetCachedAnagrams(inputWord);
+            IEnumerable<string> anagrams = _dbWordTableAccess.GetCachedAnagrams(inputWord);
 
             return anagrams.ToList();
         }

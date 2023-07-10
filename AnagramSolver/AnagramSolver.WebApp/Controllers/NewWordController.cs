@@ -1,7 +1,5 @@
-﻿using AnagramSolver.BusinessLogic;
-using AnagramSolver.Contracts.Dtos;
+﻿using AnagramSolver.Contracts.Dtos;
 using AnagramSolver.Contracts.Interfaces;
-using AnagramSolver.EF.DbFirst.Entities;
 using AnagramSolver.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,15 +9,13 @@ namespace AnagramSolver.WebApp.Controllers
     [Route("[Controller]")]
     public class NewWordController : Controller
     {
-        private readonly IWordRepository _wordRepository;
-        private readonly IAnagramGenerator _anagramSolver;
+        private readonly IWordRepository _wordRepo;
         private readonly MyConfiguration _config;
         private readonly ILogHelper _helpers;
 
-        public NewWordController(IWordRepository wordRepository, IAnagramGenerator anagramSolver, MyConfiguration config, ILogHelper helpers)
+        public NewWordController(IWordRepository wordRepo, MyConfiguration config, ILogHelper helpers)
         {
-            _wordRepository = wordRepository;
-            _anagramSolver = anagramSolver;
+            _wordRepo = wordRepo;
             _config = config;
             _helpers = helpers;
         }
@@ -38,7 +34,7 @@ namespace AnagramSolver.WebApp.Controllers
 
             ViewData["SavedMessage"] = "Žodis išsaugotas žodyne";
 
-            NewWordDto savedWord = _wordRepository.SaveWord(new FullWordDto(newWord) { PartOfSpeechAbbreviation = newAbbreviation }, _config.ConfigOptions);
+            NewWordDto savedWord = _wordRepo.SaveWord(new FullWordDto(newWord) { PartOfSpeechAbbreviation = newAbbreviation }, _config.ConfigOptions);
 
             NewWordModel newWordModel = new()
             {
@@ -49,12 +45,12 @@ namespace AnagramSolver.WebApp.Controllers
 
             if (savedWord.IsSaved)
             {
-                newWordModel.AnagramWords.Anagrams = _anagramSolver.GetAnagrams(newWord);
+                newWordModel.AnagramWords.Anagrams = _wordRepo.GetAnagrams(newWord).ToList();
                 _helpers.LogSearch(newWord);
                 return View("../Home/WordWithAnagrams", newWordModel.AnagramWords);
             }
-            
-            return View(newWordModel);
+
+            return View("Index", newWordModel);
         }
     }
 }

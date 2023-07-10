@@ -79,6 +79,20 @@ namespace AnagramSolver.EF.DbFirst
             return context.Words.Any(w => w.OtherForm.Equals(inputWord));
         }
 
+        public IEnumerable<string> GetCachedAnagrams(string word)
+        {
+            using var context = new AnagramSolverDataContext();
+
+            string orderedWord = new(word.Replace(" ", "").OrderByDescending(w => w).ToArray());
+
+            IEnumerable<string> anagrams = context.Words
+                                                    .Where(w => w.OrderedForm == orderedWord && w.OtherForm != word)
+                                                    .Select(x => x.OtherForm)
+                                                    .Distinct()
+                                                    .OrderBy(w => w)
+                                                    .ToList();
+            return anagrams;
+        }
 
         public void AddOrderedFormForAllWords()
         {
@@ -93,6 +107,11 @@ namespace AnagramSolver.EF.DbFirst
             }
 
             context.SaveChanges();
+        }
+
+        public int InsertAnagrams(WordWithAnagramsDto anagrams)
+        {
+            throw new NotImplementedException();
         }
     }
 }

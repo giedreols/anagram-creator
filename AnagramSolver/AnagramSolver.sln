@@ -15,9 +15,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnagramSolver.WebApp", "Ana
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnagramSolver.DbSeeding", "AnagramSolver.DbSeeding\AnagramSolver.DbSeeding.csproj", "{DF769BA2-B9A7-44FF-B171-0CCB42691169}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnagramSolver.DbActions", "AnagramSolver.DbActions\AnagramSolver.DbActions.csproj", "{DD3973C1-7B0E-4525-A42B-6CFA2D971B5E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnagramSolver.SqlActions", "AnagramSolver.DbActions\AnagramSolver.SqlActions.csproj", "{DD3973C1-7B0E-4525-A42B-6CFA2D971B5E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnagramSolver.EF.DbFirst", "AnagramSolver.EF.DbFirst\AnagramSolver.EF.DbFirst.csproj", "{E81D2BE3-A5E0-4A91-9C35-DADB8066404C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnagramSolver.EF.DbFirst", "AnagramSolver.EF.DbFirst\AnagramSolver.EF.DbFirst.csproj", "{E81D2BE3-A5E0-4A91-9C35-DADB8066404C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

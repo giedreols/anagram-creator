@@ -3,13 +3,13 @@ using AnagramSolver.Contracts.Interfaces;
 using System.Data;
 using System.Data.SqlClient;
 
-namespace AnagramSolver.DbActions
+namespace AnagramSolver.SqlActions
 {
-	public class SearchLogActions : DbAccess, ISearchLogActions
-	{
-		public void Add(SearchLogDto item)
-		{
-			var query = @"INSERT INTO [dbo].[SearchLog]
+    public class SearchLogActions : DbAccessHelper, ISearchLogActions
+    {
+        public void Add(SearchLogDto item)
+        {
+            var query = @"INSERT INTO [dbo].[SearchLog]
 							([UserIp]
 					       ,[SearchWord]
 						   ,[TimeStamp])
@@ -18,45 +18,45 @@ namespace AnagramSolver.DbActions
 						  ,@word
 						  ,@timeStamp);";
 
-			SqlCommand command = new()
-			{
-				CommandText = query,
-				CommandType = CommandType.Text
-			};
+            SqlCommand command = new()
+            {
+                CommandText = query,
+                CommandType = CommandType.Text
+            };
 
-			command.Parameters.AddRange(new SqlParameter[]
-			{
-				new SqlParameter("@word", item.Word),
-				new SqlParameter("@userIp", item.UserIp),
-				new SqlParameter("@timeStamp", item.TimeStamp),
-			});
+            command.Parameters.AddRange(new SqlParameter[]
+            {
+                new SqlParameter("@word", item.Word),
+                new SqlParameter("@userIp", item.UserIp),
+                new SqlParameter("@timeStamp", item.TimeStamp),
+            });
 
-			ExecuteCommand(command);
-		}
+            ExecuteCommand(command);
+        }
 
-		public SearchLogDto GetLastSearch()
-		{
-			string queryLog = @"select top 1 
+        public SearchLogDto GetLastSearch()
+        {
+            string queryLog = @"select top 1 
 								SearchWord as word, UserIp as ip, TimeStamp as time from SearchLog 
 								where TimeStamp > (SELECT DATEADD(MONTH, -1, GETDATE())) order by Id desc";
 
-			SqlCommand commandLog = new()
-			{
-				CommandText = queryLog,
-				CommandType = CommandType.Text
-			};
+            SqlCommand commandLog = new()
+            {
+                CommandText = queryLog,
+                CommandType = CommandType.Text
+            };
 
-			DataTable dataTableLog = ExecuteCommand(commandLog);
+            DataTable dataTableLog = ExecuteCommand(commandLog);
 
-			if (dataTableLog.Rows.Count == 0)
-			{
-				return new SearchLogDto();
-			}
+            if (dataTableLog.Rows.Count == 0)
+            {
+                return new SearchLogDto();
+            }
 
-			SearchLogDto result = new(
-				dataTableLog.Rows[0].Field<string>("ip"), dataTableLog.Rows[0].Field<DateTime>("time"), dataTableLog.Rows[0].Field<string>("word"));
+            SearchLogDto result = new(
+                dataTableLog.Rows[0].Field<string>("ip"), dataTableLog.Rows[0].Field<DateTime>("time"), dataTableLog.Rows[0].Field<string>("word"));
 
-			return result;
-		}
-	}
+            return result;
+        }
+    }
 }

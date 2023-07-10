@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace AnagramSolver.EF.DbFirst.Entities;
+﻿namespace AnagramSolver.EF.DbFirst.Entities;
 
 public partial class PartOfSpeech
 {

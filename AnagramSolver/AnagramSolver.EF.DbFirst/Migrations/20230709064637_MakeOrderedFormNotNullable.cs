@@ -16,19 +16,19 @@ namespace AnagramSolver.EF.DbFirst.Migrations
                 type: "nvarchar(50)",
                 oldType: "nvarchar(max)",
                 nullable: false,
-				oldNullable: true);
+                oldNullable: true);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-			migrationBuilder.AlterColumn<string>(
-				name: "OrderedForm",
-				table: "Words",
-				type: "nvarchar(max)",
-				oldType: "nvarchar(50)",
-				nullable: true,
-				oldNullable: false);
-		}
+            migrationBuilder.AlterColumn<string>(
+                name: "OrderedForm",
+                table: "Words",
+                type: "nvarchar(max)",
+                oldType: "nvarchar(50)",
+                nullable: true,
+                oldNullable: false);
+        }
     }
 }

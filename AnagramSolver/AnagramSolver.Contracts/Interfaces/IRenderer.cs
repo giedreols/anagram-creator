@@ -1,18 +1,18 @@
 ﻿namespace AnagramSolver.Contracts.Interfaces
 {
-	public interface IRenderer
-	{
-		void ShowHeader();
+    public interface IRenderer
+    {
+        void ShowHeader();
 
-		string GetWord();
+        string GetWord();
 
-		void RejectWord(string reason);
+        void RejectWord(string reason);
 
-		void ShowAnagrams(IList<string> anagrams);
+        void ShowAnagrams(IList<string> anagrams);
 
-		bool DoRepeat();
+        bool DoRepeat();
 
-		void ShowError(string message);
+        void ShowError(string message);
 
-	}
+    }
 }

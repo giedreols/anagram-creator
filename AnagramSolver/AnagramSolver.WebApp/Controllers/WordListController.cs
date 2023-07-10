@@ -7,55 +7,55 @@ using Microsoft.IdentityModel.Tokens;
 namespace AnagramSolver.WebApp.Controllers
 {
     [ApiController]
-	[Route("[Controller]/[Action]")]
-	public class WordListController : Controller
-	{
-		private readonly IWordRepository _dictionary;
-		private readonly MyConfiguration _config;
+    [Route("[Controller]/[Action]")]
+    public class WordListController : Controller
+    {
+        private readonly IWordRepository _wordRepo;
+        private readonly MyConfiguration _config;
 
-		public WordListController(IWordRepository dictionary, MyConfiguration congif)
-		{
-			_dictionary = dictionary;
-			_config = congif;
-		}
+        public WordListController(IWordRepository wordRepo, MyConfiguration congif)
+        {
+            _wordRepo = wordRepo;
+            _config = congif;
+        }
 
-		[HttpGet]
-		public IActionResult Index(int page = 1)
-		{
-			int pageSize = _config.ConfigOptions.TotalAmount;
+        [HttpGet]
+        public IActionResult Index(int page = 1)
+        {
+            int pageSize = _config.ConfigOptions.TotalAmount;
 
-			WordsPerPageDto wordsPerPage = _dictionary.GetWordsByPage(page, pageSize);
+            WordsPerPageDto wordsPerPage = _wordRepo.GetWordsByPage(page, pageSize);
 
-			WordListModel viewModel = new(wordsPerPage.Words, page, wordsPerPage.TotalWordsCount, pageSize);
+            WordListModel viewModel = new(wordsPerPage.Words, page, wordsPerPage.TotalWordsCount, pageSize);
 
-			return View("Index", viewModel);
-		}
+            return View("Index", viewModel);
+        }
 
-		[HttpGet]
-		public IActionResult Search(string inputWord, int page = 1)
-		{
-			if (inputWord.IsNullOrEmpty())
-			{
-				return Index();
-			}
+        [HttpGet]
+        public IActionResult Search(string inputWord, int page = 1)
+        {
+            if (inputWord.IsNullOrEmpty())
+            {
+                return Index();
+            }
 
-			ViewData["CurrentWord"] = inputWord;
+            ViewData["CurrentWord"] = inputWord;
 
-			int pageSize = _config.ConfigOptions.TotalAmount;
+            int pageSize = _config.ConfigOptions.TotalAmount;
 
-			WordsPerPageDto matchingWords = _dictionary.GetMatchingWords(inputWord, page, pageSize);
+            WordsPerPageDto matchingWords = _wordRepo.GetMatchingWords(inputWord, page, pageSize);
 
-			WordListModel viewModel = new(matchingWords.Words, page, matchingWords.TotalWordsCount, pageSize);
+            WordListModel viewModel = new(matchingWords.Words, page, matchingWords.TotalWordsCount, pageSize);
 
-			return View("Index", viewModel);
-		}
+            return View("Index", viewModel);
+        }
 
-		[HttpGet]
-		public IActionResult DownloadFile()
-		{
-			byte[] fileInBytes = _dictionary.GetFileWithWords();
+        [HttpGet]
+        public IActionResult DownloadFile()
+        {
+            byte[] fileInBytes = _wordRepo.GetFileWithWords();
 
-			return File(fileInBytes, "text/plain", "zodynas.txt");
-		}
-	}
+            return File(fileInBytes, "text/plain", "zodynas.txt");
+        }
+    }
 }

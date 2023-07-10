@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace AnagramSolver.EF.DbFirst.Entities;
 
 public partial class AnagramSolverDataContext : DbContext
 {
-	public AnagramSolverDataContext()
+    public AnagramSolverDataContext()
     {
     }
 
@@ -17,17 +15,18 @@ public partial class AnagramSolverDataContext : DbContext
 
     public virtual DbSet<Anagram> Anagrams { get; set; }
 
-    public virtual DbSet<PartOfSpeech> PartsOfSpeech{ get; set; }
+    public virtual DbSet<PartOfSpeech> PartsOfSpeech { get; set; }
 
     public virtual DbSet<SearchLog> SearchLog { get; set; }
 
     public virtual DbSet<Word> Words { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Data Source=.\\MSSQLSERVER01;Initial Catalog=AnagramSolverData;Integrated Security=True;TrustServerCertificate=true");
+    {
+        optionsBuilder.UseSqlServer("Data Source=.\\MSSQLSERVER01;Initial Catalog=AnagramSolverData;Integrated Security=True;TrustServerCertificate=true");
+    }
 
-	protected override void OnModelCreating(ModelBuilder modelBuilder)
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Anagram>(entity =>
         {
@@ -72,9 +71,9 @@ public partial class AnagramSolverDataContext : DbContext
 
             entity.Property(e => e.MainForm).HasMaxLength(50);
             entity.Property(e => e.OtherForm).HasMaxLength(50);
-			entity.Property(e => e.OrderedForm).HasMaxLength(50);
+            entity.Property(e => e.OrderedForm).HasMaxLength(50);
 
-			entity.HasOne(d => d.PartOfSpeech).WithMany(p => p.Words)
+            entity.HasOne(d => d.PartOfSpeech).WithMany(p => p.Words)
                 .HasForeignKey(d => d.PartOfSpeechId)
                 .HasConstraintName("FK__Words__AnagramId__60A75C0F");
         });

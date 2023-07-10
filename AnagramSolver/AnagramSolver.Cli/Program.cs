@@ -1,6 +1,5 @@
 ﻿using AnagramSolver.BusinessLogic;
-using AnagramSolver.BusinessLogic.AnagramActions;
-using AnagramSolver.BusinessLogic.DictionaryActions;
+using AnagramSolver.BusinessLogic.DictionaryFromFile;
 using AnagramSolver.Cli;
 using AnagramSolver.Contracts.Dtos;
 using AnagramSolver.Contracts.Interfaces;
@@ -16,29 +15,29 @@ renderer.ShowHeader();
 
 while (repeat)
 {
-	string word = renderer.GetWord();
+    string word = renderer.GetWord();
 
-	var invalidityReason = word.Validate(configuration.configOptions.MinLength, configuration.configOptions.MaxLength);
+    var invalidityReason = word.Validate(configuration.configOptions.MinLength, configuration.configOptions.MaxLength);
 
-	if (invalidityReason != null)
-	{
-		renderer.RejectWord(invalidityReason);
-		continue;
-	}
+    if (invalidityReason != null)
+    {
+        renderer.RejectWord(invalidityReason);
+        continue;
+    }
 
-	Task<WordWithAnagramsDto?> response = new Client().ExecuteGetAnagramsAsync(word);
+    Task<WordWithAnagramsDto?> response = new Client().ExecuteGetAnagramsAsync(word);
 
-	response.Wait();
+    response.Wait();
 
-	if (response == null || response.Result == null)
-	{
-		renderer.ShowError("Anagramų parodyti nepavyko");
-	}
-	else
-	{
-		renderer.ShowAnagrams(response.Result.Anagrams.ToList().TrimIfTooManyItems(configuration.configOptions.TotalAmount));
-	}
+    if (response == null || response.Result == null)
+    {
+        renderer.ShowError("Anagramų parodyti nepavyko");
+    }
+    else
+    {
+        renderer.ShowAnagrams(response.Result.Anagrams.ToList().TrimIfTooManyItems(configuration.configOptions.TotalAmount));
+    }
 
-	repeat = renderer.DoRepeat();
+    repeat = renderer.DoRepeat();
 
 }

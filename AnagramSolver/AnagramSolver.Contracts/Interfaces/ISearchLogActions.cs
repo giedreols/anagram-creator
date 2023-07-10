@@ -2,9 +2,9 @@
 
 namespace AnagramSolver.Contracts.Interfaces
 {
-	public interface ISearchLogActions
-	{
-		void Add(SearchLogDto item);
-		SearchLogDto GetLastSearch();
-	}
+    public interface ISearchLogActions
+    {
+        void Add(SearchLogDto item);
+        SearchLogDto GetLastSearch();
+    }
 }

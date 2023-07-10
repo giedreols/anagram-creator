@@ -2,8 +2,8 @@
 
 namespace AnagramSolver.Contracts.Interfaces
 {
-	public interface IPartOfSpeechActions
-	{
-		void Add(PartOfSpeechDto item);
-	}
+    public interface IPartOfSpeechActions
+    {
+        void Add(PartOfSpeechDto item);
+    }
 }

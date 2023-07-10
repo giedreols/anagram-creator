@@ -2,24 +2,24 @@
 
 namespace AnagramSolver.Contracts.Interfaces
 {
-	public interface IWordRepository
-	{
-		IEnumerable<WordWithFormsDto> GetWords();
+    public interface IWordRepository
+    {
+        IEnumerable<WordWithFormsDto> GetWords();
 
         NewWordDto SaveWord(FullWordDto word, ConfigOptionsDto config);
 
-		WordsPerPageDto GetWordsByPage(int page, int totalAmount);
+        WordsPerPageDto GetWordsByPage(int page, int totalAmount);
 
-		byte[] GetFileWithWords();
+        byte[] GetFileWithWords();
 
-		WordsPerPageDto GetMatchingWords(string inputWord, int page, int pageSize);
+        WordsPerPageDto GetMatchingWords(string inputWord, int page, int pageSize);
 
-		IEnumerable<string> GetAnagrams(string word);
+        IEnumerable<string> GetAnagrams(string word);
 
-		void CacheAnagrams(WordWithAnagramsDto anagrams);
+        void CacheAnagrams(WordWithAnagramsDto anagrams);
 
-		void LogSearchInfo(SearchLogDto model);
+        void LogSearchInfo(SearchLogDto model);
 
-		SearchLogDto GetLastSearchInfo();
-	}
+        SearchLogDto GetLastSearchInfo();
+    }
 }

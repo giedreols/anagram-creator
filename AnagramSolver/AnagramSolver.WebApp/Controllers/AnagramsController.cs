@@ -5,33 +5,33 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace AnagramSolver.WebApp.Controllers
 {
-	[ApiController]
-	[Route("[Controller]/[Action]")]
-	public class AnagramsController : Controller
-	{
-		private readonly IAnagramGenerator _anagramSolver;
-		private readonly ILogHelper _helpers;
+    [ApiController]
+    [Route("[Controller]/[Action]")]
+    public class AnagramsController : Controller
+    {
+        private readonly IWordRepository _wordRepo;
+        private readonly ILogHelper _helpers;
 
 
-		public AnagramsController(IAnagramGenerator anagramSolver, ILogHelper helpers)
-		{
-			_anagramSolver = anagramSolver;
-			_helpers = helpers;
-		}
+        public AnagramsController(IWordRepository wordRepo, ILogHelper helpers)
+        {
+            _wordRepo = wordRepo;
+            _helpers = helpers;
+        }
 
-		[HttpGet]
-		public IActionResult Get(string inputWord)
-		{
-			if (inputWord.IsNullOrEmpty())
-			{
-				return View("../Home/Index");
-			}
+        [HttpGet]
+        public IActionResult Get(string inputWord)
+        {
+            if (inputWord.IsNullOrEmpty())
+            {
+                return View("../Home/Index");
+            }
 
-			AnagramWordsModel model = new(inputWord, _anagramSolver.GetAnagrams(inputWord));
+            AnagramWordsModel model = new(inputWord, _wordRepo.GetAnagrams(inputWord).ToList());
 
-			_helpers.LogSearch(inputWord);
+            _helpers.LogSearch(inputWord);
 
-			return View("../Home/WordWithAnagrams", model);
-		}
-	}
+            return View("../Home/WordWithAnagrams", model);
+        }
+    }
 }

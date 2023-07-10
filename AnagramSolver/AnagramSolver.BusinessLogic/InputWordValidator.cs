@@ -2,51 +2,51 @@
 
 namespace AnagramSolver.BusinessLogic
 {
-	public static class InputWordValidator
-	{
-		public static string Validate(this string word, int minLength, int maxLength)
-		{
-			if (word == null)
-			{
-				return ErrorMessages.Empty;
-			}
+    public static class InputWordValidator
+    {
+        public static string Validate(this string word, int minLength, int maxLength)
+        {
+            if (word == null)
+            {
+                return ErrorMessages.Empty;
+            }
 
-			if (!IsValidChars(word))
-			{
-				return ErrorMessages.InvalidChars;
-			}
+            if (!IsValidChars(word))
+            {
+                return ErrorMessages.InvalidChars;
+            }
 
-			if (!(word.Length >= minLength))
-			{
-				return ErrorMessages.TooShort;
-			}
+            if (!(word.Length >= minLength))
+            {
+                return ErrorMessages.TooShort;
+            }
 
-			if (!(word.Length <= maxLength))
-			{
-				return ErrorMessages.TooLong;
-			}
+            if (!(word.Length <= maxLength))
+            {
+                return ErrorMessages.TooLong;
+            }
 
-			return null;
-		}
+            return null;
+        }
 
-		private static bool IsValidChars(string word)
-		{
-			bool isValid = false;
+        private static bool IsValidChars(string word)
+        {
+            bool isValid = false;
 
-			foreach (char letter in word)
-			{
-				if (char.IsDigit(letter) || char.IsLetter(letter) || letter.Equals('-'))
-				{
-					isValid = true;
-				}
+            foreach (char letter in word)
+            {
+                if (char.IsDigit(letter) || char.IsLetter(letter) || letter.Equals('-'))
+                {
+                    isValid = true;
+                }
 
-				else
-				{
-					isValid = false;
-					break;
-				}
-			}
-			return isValid;
-		}
-	}
+                else
+                {
+                    isValid = false;
+                    break;
+                }
+            }
+            return isValid;
+        }
+    }
 }

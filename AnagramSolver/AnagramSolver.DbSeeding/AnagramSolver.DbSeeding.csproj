@@ -19,7 +19,7 @@
   <ItemGroup>
     <ProjectReference Include="..\AnagramSolver.BusinessLogic\AnagramSolver.BusinessLogic.csproj" />
     <ProjectReference Include="..\AnagramSolver.Contracts\AnagramSolver.Contracts.csproj" />
-    <ProjectReference Include="..\AnagramSolver.DbActions\AnagramSolver.DbActions.csproj" />
+    <ProjectReference Include="..\AnagramSolver.DbActions\AnagramSolver.SqlActions.csproj" />
     <ProjectReference Include="..\AnagramSolver.EF.DbFirst\AnagramSolver.EF.DbFirst.csproj" />
   </ItemGroup>
 

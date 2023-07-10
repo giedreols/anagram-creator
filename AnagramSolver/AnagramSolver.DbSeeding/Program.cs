@@ -1,5 +1,4 @@
-﻿using AnagramSolver.DbSeeding;
-using AnagramSolver.EF.DbFirst;
+﻿using AnagramSolver.EF.DbFirst;
 
 new DbFirstWordsActions().AddOrderedFormForAllWords();
 

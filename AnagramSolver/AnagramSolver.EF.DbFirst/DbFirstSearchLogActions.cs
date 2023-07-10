@@ -4,35 +4,35 @@ using AnagramSolver.EF.DbFirst.Entities;
 
 namespace AnagramSolver.EF.DbFirst
 {
-	public class DbFirstSearchLogActions : ISearchLogActions
-	{
-		public void Add(SearchLogDto item)
-		{
-			using var context = new AnagramSolverDataContext();
+    public class DbFirstSearchLogActions : ISearchLogActions
+    {
+        public void Add(SearchLogDto item)
+        {
+            using var context = new AnagramSolverDataContext();
 
-			SearchLog model = new()
-			{
-				SearchWord = item.Word,
-				TimeStamp = item.TimeStamp,
-				UserIp = item.UserIp,
-			};
+            SearchLog model = new()
+            {
+                SearchWord = item.Word,
+                TimeStamp = item.TimeStamp,
+                UserIp = item.UserIp,
+            };
 
-			context.SearchLog.Add(model);
-			context.SaveChanges();
-		}
+            context.SearchLog.Add(model);
+            context.SaveChanges();
+        }
 
-		public SearchLogDto GetLastSearch()
-		{
-			using var context = new AnagramSolverDataContext();
+        public SearchLogDto GetLastSearch()
+        {
+            using var context = new AnagramSolverDataContext();
 
-			var lastItem = context.SearchLog.OrderByDescending(item => item.TimeStamp).FirstOrDefault();
+            var lastItem = context.SearchLog.OrderByDescending(item => item.TimeStamp).FirstOrDefault();
 
-			if (lastItem != null)
-			{
-				return new SearchLogDto(lastItem.UserIp, lastItem.TimeStamp, lastItem.SearchWord);
-			}
+            if (lastItem != null)
+            {
+                return new SearchLogDto(lastItem.UserIp, lastItem.TimeStamp, lastItem.SearchWord);
+            }
 
-			else return new SearchLogDto();
-		}
-	}
+            else return new SearchLogDto();
+        }
+    }
 }

@@ -6,38 +6,36 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace AnagramSolver.WebApp.Controllers
 {
-	[ApiController]
-	[Route("[Controller]/[Action]")]
-	public class UserInfoController : Controller
-	{
-		private readonly IWordRepository _databaseActions;
-		private readonly IAnagramGenerator _anagramGenerator;
+    [ApiController]
+    [Route("[Controller]/[Action]")]
+    public class UserInfoController : Controller
+    {
+        private readonly IWordRepository _wordRepo;
 
-		public UserInfoController(IWordRepository databaseActions, IAnagramGenerator anagramGenerator)
-		{
-			_databaseActions = databaseActions;
-			_anagramGenerator = anagramGenerator;
-		}
+        public UserInfoController(IWordRepository wordRepo)
+        {
+            _wordRepo = wordRepo;
+        }
 
-		[HttpGet]
-		public IActionResult Index()
-		{
-			SearchLogDto lastSearchInfo = _databaseActions.GetLastSearchInfo();
+        [HttpGet]
+        public IActionResult Index()
+        {
+            SearchLogDto lastSearchInfo = _wordRepo.GetLastSearchInfo();
 
-			UserInfoModel model = new()
-			{
-				LastWord = string.IsNullOrEmpty(lastSearchInfo.Word) ? "nėra" : lastSearchInfo.Word,
-				SearchDateTime = lastSearchInfo.TimeStamp.Equals(DateTime.MinValue) ? "nėra" : lastSearchInfo.TimeStamp.ToString(),
-				Ip = string.IsNullOrEmpty(lastSearchInfo.UserIp) ? "nėra" : lastSearchInfo.UserIp,
-			};
+            UserInfoModel model = new()
+            {
+                LastWord = string.IsNullOrEmpty(lastSearchInfo.Word) ? "nėra" : lastSearchInfo.Word,
+                SearchDateTime = lastSearchInfo.TimeStamp.Equals(DateTime.MinValue) ? "nėra" : lastSearchInfo.TimeStamp.ToString(),
+                Ip = string.IsNullOrEmpty(lastSearchInfo.UserIp) ? "nėra" : lastSearchInfo.UserIp,
+            };
 
-			if (!lastSearchInfo.Word.IsNullOrEmpty())
-			{
-				IList<string> anagrams = _anagramGenerator.GetAnagrams(lastSearchInfo.Word);
-				model.Anagrams = anagrams;
-			}
+            if (!lastSearchInfo.Word.IsNullOrEmpty())
+            {
+                IList<string> anagrams = _wordRepo.GetAnagrams(lastSearchInfo.Word).ToList();
+                model.Anagrams = anagrams;
+            }
 
-			return View(model);
-		}
-	}
+            return View(model);
+        }
+    }
 }
