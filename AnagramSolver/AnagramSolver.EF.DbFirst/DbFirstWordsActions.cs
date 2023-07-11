@@ -6,7 +6,7 @@ namespace AnagramSolver.EF.DbFirst
 {
     public class DbFirstWordsActions : IWordsActions
     {
-        public IEnumerable<FullWordDto> GetMatchingWords(string inputWord)
+        public IEnumerable<string> GetMatchingWords(string inputWord)
         {
             using var context = new AnagramSolverDataContext();
 
@@ -14,17 +14,10 @@ namespace AnagramSolver.EF.DbFirst
                         .Where(item => item.OtherForm.Contains(inputWord))
                         .Select(w => w.OtherForm);
 
-            List<FullWordDto> convertedWords = new();
-
-            foreach (string word in matchingItems)
-            {
-                convertedWords.Add(new FullWordDto(word));
-            }
-
-            return convertedWords;
+            return matchingItems;
         }
 
-        public IEnumerable<FullWordDto> GetWords()
+        public IEnumerable<string> GetWords()
         {
             var FullWordList = new List<FullWordDto>();
 
@@ -32,9 +25,7 @@ namespace AnagramSolver.EF.DbFirst
 
             var words = context.Words.Select(w => w.OtherForm).ToList();
 
-            FullWordList.AddRange(words.Select(w => new FullWordDto(w)));
-
-            return FullWordList.AsEnumerable();
+            return words;
         }
 
         public bool InsertWord(FullWordDto parameters)
@@ -79,7 +70,7 @@ namespace AnagramSolver.EF.DbFirst
             return context.Words.Any(w => w.OtherForm.Equals(inputWord));
         }
 
-        public IEnumerable<string> GetCachedAnagrams(string word)
+        public IEnumerable<string> GetAnagrams(string word)
         {
             using var context = new AnagramSolverDataContext();
 

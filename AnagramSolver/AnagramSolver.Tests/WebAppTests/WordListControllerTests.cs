@@ -14,15 +14,15 @@ namespace AnagramSolver.Tests.WebAppTests
 	{
 		private WordListController _listPageController;
 		private Mock<IWordRepository> _mockWordRepository;
-		private Mock<MyConfiguration> _mockConfig;
+		private Mock<WebApp.MyConfiguration> _mockConfig;
 
 		[SetUp]
 		public void SetUp()
 		{
 			_mockWordRepository = new Mock<IWordRepository>(MockBehavior.Strict);
-			_mockConfig = new Mock<MyConfiguration>(MockBehavior.Strict);
+			_mockConfig = new Mock<WebApp.MyConfiguration>(MockBehavior.Strict);
 			_mockConfig.SetupAllProperties();
-			_mockConfig.Object.TotalAmount = 1;
+			_mockConfig.Object.ConfigOptions.TotalAmount = 1;
 
 			_listPageController = new WordListController(_mockWordRepository.Object, _mockConfig.Object);
 		}

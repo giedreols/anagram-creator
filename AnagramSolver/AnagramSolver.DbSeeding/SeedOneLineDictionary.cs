@@ -16,7 +16,7 @@ namespace AnagramSolver.DbSeeding
 
             var wtable = new WordsActions();
 
-            List<string> allExistingWords = wtable.GetWords().Select(w => w.OtherForm).ToList();
+            List<string> allExistingWords = wtable.GetWords().ToList();
 
 
             for (int i = lines.Count - 1; i >= 0; i--)

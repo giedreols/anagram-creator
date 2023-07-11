@@ -12,30 +12,30 @@ namespace AnagramSolver.BusinessLogic.DictionaryFromFile
             _fileReader = fileReader;
         }
 
-        public IEnumerable<WordWithFormsDto> GetWords()
+        public IEnumerable<string> GetWords()
         {
             List<string> words = ReadWords();
 
-            return Converter.ConvertStringListToAnagramWordList(words);
+            return words;
         }
 
         public WordsPerPageDto GetWordsByPage(int page = 1, int pageSize = 100)
         {
-            var allWords = GetWords().OrderBy(w => w.LowerCaseForm).ToList();
+            var allWords = GetWords().OrderBy(w => w).ToList();
             var totalPages = (int)Math.Ceiling(allWords.Count / (double)pageSize);
 
-            List<string> currentPageItems = allWords.Skip((page - 1) * pageSize).Select(w => w.LowerCaseForm).Take(pageSize).ToList();
+            List<string> currentPageItems = allWords.Skip((page - 1) * pageSize).Select(w => w).Take(pageSize).ToList();
 
             return new WordsPerPageDto(currentPageItems, pageSize, allWords.Count);
         }
 
         public bool SaveWord(string word)
         {
-            IEnumerable<WordWithFormsDto> currentWords = GetWords();
+            IEnumerable<string> currentWords = GetWords();
 
             foreach (var existingWord in currentWords)
             {
-                if (existingWord.LowerCaseForm == word.ToLower())
+                if (existingWord.ToLower() == word.ToLower())
                 {
                     return false;
                 }
@@ -61,6 +61,7 @@ namespace AnagramSolver.BusinessLogic.DictionaryFromFile
 
             return wordList;
         }
+
 
         public NewWordDto SaveWord(FullWordDto word, ConfigOptionsDto config)
         {

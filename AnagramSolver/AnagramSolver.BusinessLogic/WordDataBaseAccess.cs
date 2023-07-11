@@ -5,27 +5,27 @@ using System.Text;
 
 namespace AnagramSolver.BusinessLogic
 {
-    public class WordRepositoryAccess : IWordRepository
+    public class WordDataBaseAccess : IWordRepository
     {
         private readonly IWordsActions _dbWordTableAccess;
         private readonly ISearchLogActions _dbSearchLogActions;
 
-        public WordRepositoryAccess(IWordsActions dbWordTableAccess, ISearchLogActions searchLogActions)
+        public WordDataBaseAccess(IWordsActions dbWordTableAccess, ISearchLogActions searchLogActions)
         {
             _dbWordTableAccess = dbWordTableAccess;
             _dbSearchLogActions = searchLogActions;
         }
 
-        public IEnumerable<WordWithFormsDto> GetWords()
+        public IEnumerable<string> GetWords()
         {
-            List<FullWordDto> words = _dbWordTableAccess.GetWords().ToList();
-            return Converter.ConvertDictionaryWordListToAnagramWordList(words);
+            List<string> words = _dbWordTableAccess.GetWords().ToList();
+            return words;
         }
 
         public WordsPerPageDto GetMatchingWords(string inputWord, int page = 1, int pageSize = 100)
         {
-            IList<WordWithFormsDto> matchingWords = Converter.ConvertDictionaryWordListToAnagramWordList(_dbWordTableAccess.
-                GetMatchingWords(inputWord).ToList()).OrderBy(a => a.LowerCaseForm).ToList();
+            List<string> words = _dbWordTableAccess.GetMatchingWords(inputWord).ToList();
+            IList<WordWithFormsDto> matchingWords = Converter.ConvertDictionaryWordListToAnagramWordList(words).OrderBy(a => a.LowerCaseForm).ToList();
 
             var totalPages = (int)Math.Ceiling(matchingWords.Count / (double)pageSize);
 
@@ -36,10 +36,10 @@ namespace AnagramSolver.BusinessLogic
 
         public WordsPerPageDto GetWordsByPage(int page = 1, int pageSize = 100)
         {
-            var allWords = GetWords().OrderBy(w => w.LowerCaseForm).ToList();
+            var allWords = GetWords().OrderBy(w => w).ToList();
             var totalPages = (int)Math.Ceiling(allWords.Count / (double)pageSize);
 
-            List<string> currentPageItems = allWords.Skip((page - 1) * pageSize).Select(w => w.LowerCaseForm).Take(pageSize).ToList();
+            List<string> currentPageItems = allWords.Skip((page - 1) * pageSize).Select(w => w).Take(pageSize).ToList();
 
             return new WordsPerPageDto(currentPageItems, pageSize, allWords.Count);
         }
@@ -73,13 +73,13 @@ namespace AnagramSolver.BusinessLogic
 
         public byte[] GetFileWithWords()
         {
-            IEnumerable<FullWordDto> wordList = _dbWordTableAccess.GetWords();
+            IEnumerable<string> wordList = _dbWordTableAccess.GetWords();
 
             IList<string> stringList = new List<string>();
 
             foreach (var word in wordList)
             {
-                stringList.Add($"{word.MainForm}\t{word.PartOfSpeechAbbreviation}\t{word.OtherForm}");
+                stringList.Add(word);
             }
 
             string concatenatedString = string.Join("\n", stringList);
@@ -106,7 +106,7 @@ namespace AnagramSolver.BusinessLogic
 
         public IEnumerable<string> GetAnagrams(string inputWord)
         {
-            IEnumerable<string> anagrams = _dbWordTableAccess.GetCachedAnagrams(inputWord);
+            IEnumerable<string> anagrams = _dbWordTableAccess.GetAnagrams(inputWord);
 
             return anagrams.ToList();
         }

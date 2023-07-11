@@ -5,11 +5,11 @@ namespace AnagramSolver.Contracts.Interfaces
     public interface IWordsActions
     {
         bool InsertWord(FullWordDto parameters);
-        IEnumerable<FullWordDto> GetWords();
-        IEnumerable<FullWordDto> GetMatchingWords(string inputWord);
+        IEnumerable<string> GetWords();
+        IEnumerable<string> GetMatchingWords(string inputWord);
         bool IsWordExists(string inputWord);
 
         int InsertAnagrams(WordWithAnagramsDto anagrams);
-        IEnumerable<string> GetCachedAnagrams(string word);
+        IEnumerable<string> GetAnagrams(string word);
     }
 }

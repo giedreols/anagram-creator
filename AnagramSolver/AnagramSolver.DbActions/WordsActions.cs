@@ -67,9 +67,9 @@ namespace AnagramSolver.SqlActions
             ExecuteCommand(command);
         }
 
-        public IEnumerable<FullWordDto> GetWords()
+        public IEnumerable<string> GetWords()
         {
-            string query = @"SELECT Words.MainForm, Words.OtherForm, PartsOfSpeech.Abbreviation
+            string query = @"SELECT Words.OtherForm 
 							from Words LEFT JOIN PartsOfSpeech ON PartOfSpeechId = PartsOfSpeech.Id";
 
             SqlCommand command = new()
@@ -80,13 +80,13 @@ namespace AnagramSolver.SqlActions
 
             DataTable dataTable = ExecuteCommand(command);
 
-            IEnumerable<FullWordDto> result = dataTable.AsEnumerable()
-                .Select(row => new FullWordDto(row.Field<string>("MainForm"), row.Field<string>("OtherForm"), row.Field<string>("Abbreviation")));
+            IEnumerable<string> result = dataTable.AsEnumerable()
+                .Select(row => row.Field<string>("OtherForm")).ToList();
 
             return result;
         }
 
-        public IEnumerable<FullWordDto> GetMatchingWords(string inputWord)
+        public IEnumerable<string> GetMatchingWords(string inputWord)
         {
             string query = @"SELECT DISTINCT [OtherForm] AS a 
 				FROM [AnagramSolverData].[dbo].[Words] 
@@ -102,8 +102,8 @@ namespace AnagramSolver.SqlActions
 
             DataTable dataTable = ExecuteCommand(command);
 
-            List<FullWordDto> result = dataTable.AsEnumerable()
-                .Select(row => new FullWordDto(row.Field<string>("a"))).ToList();
+            IEnumerable<string> result = dataTable.AsEnumerable()
+                .Select(row => row.Field<string>("a")).ToList();
 
             return result;
         }
@@ -199,7 +199,7 @@ namespace AnagramSolver.SqlActions
             return command;
         }
 
-        public IEnumerable<string> GetCachedAnagrams(string word)
+        public IEnumerable<string> GetAnagrams(string word)
         {
             string query = @"
 							DECLARE @count INT;

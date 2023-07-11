@@ -11,22 +11,19 @@ namespace AnagramSolver.Tests.WebAppTests
 	internal class UseInfoControllerTests
 	{
 		private UserInfoController _userInfoController;
-		private Mock<IWordRepository> _mockDatabaseActions;
-		private Mock<IAnagramGenerator> _mockAnagramGenerator;
+		private Mock<IWordRepository> _mockWordRepo;
 
 		[SetUp]
 		public void SetUp()
 		{
-			_mockDatabaseActions = new Mock<IWordRepository>(MockBehavior.Strict);
-			_mockAnagramGenerator = new Mock<IAnagramGenerator>(MockBehavior.Strict);
-			_userInfoController = new UserInfoController(_mockDatabaseActions.Object, _mockAnagramGenerator.Object);
+			_mockWordRepo = new Mock<IWordRepository>(MockBehavior.Strict);
+			_userInfoController = new UserInfoController(_mockWordRepo.Object);
 		}
 
 		[Test]
 		public void Index_ReturnsUserInfoModel()
 		{
-			_mockDatabaseActions.Setup(p => p.GetLastSearchInfo()).Returns(new SearchLogDto());
-			_mockAnagramGenerator.Setup(g => g.GetAnagrams("")).Returns(new List<string>());
+            _mockWordRepo.Setup(p => p.GetLastSearchInfo()).Returns(new SearchLogDto());
 
 			var result = (ViewResult)_userInfoController.Index();
 
@@ -45,10 +42,10 @@ namespace AnagramSolver.Tests.WebAppTests
 				TimeStamp = DateTime.Now,
 			};
 
-			_mockDatabaseActions.Setup(p => p.GetLastSearchInfo()).Returns(expectedResult);
-			_mockAnagramGenerator.Setup(g => g.GetAnagrams(word)).Returns(new List<string>());
+            _mockWordRepo.Setup(p => p.GetLastSearchInfo()).Returns(expectedResult);
+            _mockWordRepo.Setup(p => p.GetAnagrams(word)).Returns(new List<string>());
 
-			var result = (ViewResult)_userInfoController.Index();
+            var result = (ViewResult)_userInfoController.Index();
 
 			UserInfoModel model = result.Model as UserInfoModel;
 
@@ -67,10 +64,10 @@ namespace AnagramSolver.Tests.WebAppTests
 				TimeStamp = DateTime.Now,
 			};
 
-			_mockDatabaseActions.Setup(p => p.GetLastSearchInfo()).Returns(expectedResult);
-			_mockAnagramGenerator.Setup(g => g.GetAnagrams(word)).Returns(new List<string>());
+			_mockWordRepo.Setup(p => p.GetLastSearchInfo()).Returns(expectedResult);
+            _mockWordRepo.Setup(p => p.GetAnagrams(word)).Returns(new List<string>());
 
-			var result = (ViewResult)_userInfoController.Index();
+            var result = (ViewResult)_userInfoController.Index();
 
 			UserInfoModel model = result.Model as UserInfoModel;
 
@@ -87,13 +84,13 @@ namespace AnagramSolver.Tests.WebAppTests
 				"marakonas"
 			};
 
-			_mockDatabaseActions.Setup(p => p.GetLastSearchInfo()).Returns(new SearchLogDto()
+			_mockWordRepo.Setup(p => p.GetLastSearchInfo()).Returns(new SearchLogDto()
 			{
 				Word = word,
 				UserIp = "",
 				TimeStamp = DateTime.Now,
 			});
-			_mockAnagramGenerator.Setup(g => g.GetAnagrams(word)).Returns(expectedResult);
+			_mockWordRepo.Setup(p => p.GetAnagrams(word)).Returns(expectedResult);
 
 			var result = (ViewResult)_userInfoController.Index();
 
@@ -106,7 +103,7 @@ namespace AnagramSolver.Tests.WebAppTests
 		public void Index_DoesNotThrowError_IfNoLastSearchInfo()
 		{
 			SearchLogDto expectedResult = new();
-			_mockDatabaseActions.Setup(p => p.GetLastSearchInfo()).Returns(expectedResult);
+			_mockWordRepo.Setup(p => p.GetLastSearchInfo()).Returns(expectedResult);
 
 			var result = (ViewResult)_userInfoController.Index();
 
@@ -121,16 +118,9 @@ namespace AnagramSolver.Tests.WebAppTests
 		[Test]
 		public void Index_DoesNotThrowError_IfNoAnagramsInLastSearch()
 		{
-			var word = "tu";
-			SearchLogDto expectedResult = new()
-			{
-				Word = word,
-				UserIp = "111",
-				TimeStamp = DateTime.Now,
-			};
+			SearchLogDto expectedResult = new();
 
-			_mockDatabaseActions.Setup(p => p.GetLastSearchInfo()).Returns(expectedResult);
-			_mockAnagramGenerator.Setup(g => g.GetAnagrams(word)).Returns(new List<string>());
+			_mockWordRepo.Setup(p => p.GetLastSearchInfo()).Returns(expectedResult);
 
 			Assert.DoesNotThrow(() =>
 			{

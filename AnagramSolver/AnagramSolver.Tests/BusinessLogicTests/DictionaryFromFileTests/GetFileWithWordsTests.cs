@@ -1,23 +1,23 @@
-﻿using AnagramSolver.BusinessLogic.DictionaryActions;
+﻿using AnagramSolver.BusinessLogic.DictionaryFromFile;
 using AnagramSolver.Contracts.Interfaces;
 using Moq;
 
-namespace AnagramSolver.Tests.BusinessLogicTests.DictionaryTests
+namespace AnagramSolver.Tests.BusinessLogicTests.DictionaryFromFileTests
 {
-	public class GetFileTests
+    public class GetFileWithWordsTests
 	{
 		private Mock<IFileReader> _mockFileReader;
-		private WordDictionary _wordDictionary;
+		private DictionaryFromFileActions _wordDictionary;
 
 		[SetUp]
 		public void Setup()
 		{
 			_mockFileReader = new Mock<IFileReader>(MockBehavior.Strict);
-			_wordDictionary = new WordDictionary(_mockFileReader.Object);
+			_wordDictionary = new DictionaryFromFileActions(_mockFileReader.Object);
 		}
 
 		[Test]
-		public void GetFile_ReturnsByteArray()
+		public void GetFileWithWords_ReturnsByteArray()
 		{
 			var expectedResult = new byte[0];
 			_mockFileReader.Setup(r => r.GetFile()).Returns(expectedResult);

@@ -1,4 +1,4 @@
-﻿namespace AnagramSolver.BusinessLogic.DictionaryFromFile
+﻿namespace AnagramSolver.Cli
 {
     public static class AnagramValidator
     {

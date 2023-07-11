@@ -80,14 +80,14 @@ namespace AnagramSolver.BusinessLogic
             return tempList.DistinctBy(word => word.LowerCaseForm).ToList().OrderByDescending(word => word.MainForm.Length).ToList();
         }
 
-        public static List<WordWithFormsDto> ConvertDictionaryWordListToAnagramWordList(List<FullWordDto> list)
+        public static List<WordWithFormsDto> ConvertDictionaryWordListToAnagramWordList(List<string> list)
         {
             List<WordWithFormsDto> tempList = new();
 
             foreach (var word in list)
             {
-                tempList.Add(new WordWithFormsDto(word.MainForm));
-                if (word.OtherForm != null) tempList.Add(new WordWithFormsDto(word.OtherForm));
+                tempList.Add(new WordWithFormsDto(word));
+                if (word != null) tempList.Add(new WordWithFormsDto(word));
             }
 
             return tempList.DistinctBy(word => word.LowerCaseForm).ToList().OrderByDescending(word => word.MainForm.Length).ToList();

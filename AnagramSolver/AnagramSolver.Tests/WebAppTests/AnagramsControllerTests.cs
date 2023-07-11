@@ -10,14 +10,15 @@ namespace AnagramSolver.Tests.WebAppTests
 	internal class AnagramsControllerTests
 	{
 		private AnagramsController _anagramsController;
-		private Mock<IAnagramGenerator> _mockAnagramSolver;
 		private Mock<ILogHelper> _mockHelpers;
+		private Mock<IWordRepository> _wordRepository;
 
 		[SetUp]
 		public void SetUp()
 		{
-			_mockAnagramSolver = new Mock<IAnagramGenerator>(MockBehavior.Default);
-			_mockHelpers = new Mock<ILogHelper>(MockBehavior.Strict);
+			_mockHelpers = new Mock<ILogHelper>();
+			_wordRepository = new Mock<IWordRepository>();
+
 			_mockHelpers.Setup(m => m.LogSearch(It.IsAny<string>()))
 						.Callback<string>(inputWord =>
 						{
@@ -25,14 +26,14 @@ namespace AnagramSolver.Tests.WebAppTests
 							DateTime now = DateTime.Now;
 						});
 
-			_anagramsController = new AnagramsController(_mockAnagramSolver.Object, _mockHelpers.Object);
+			_anagramsController = new AnagramsController(_wordRepository.Object, _mockHelpers.Object);
 		}
 
 		[Test]
-		public void Index_ReturnsAnagramWordsModel()
+		public void Get_ReturnsAnagramWordsModel()
 		{
 			var word = "a";
-			_mockAnagramSolver.Setup(p => p.GetAnagrams(word)).Returns(new List<string>());
+            _wordRepository.Setup(p => p.GetAnagrams(word)).Returns(new List<string>());
 
 			var result = (ViewResult)_anagramsController.Get(word);
 
@@ -41,11 +42,11 @@ namespace AnagramSolver.Tests.WebAppTests
 		}
 
 		[Test]
-		public void Index_ReturnsAnagrams_IfInputWordHasIt()
+		public void Get_ReturnsAnagrams_IfInputWordHasIt()
 		{
 			var word = "liepa";
 			var anagram = "palei";
-			_mockAnagramSolver.Setup(p => p.GetAnagrams(word)).Returns(new List<string> { anagram });
+            _wordRepository.Setup(p => p.GetAnagrams(word)).Returns(new List<string> { anagram });
 
 			var result = (ViewResult)_anagramsController.Get(word);
 			var model = (AnagramWordsModel)result.Model;
@@ -54,10 +55,10 @@ namespace AnagramSolver.Tests.WebAppTests
 		}
 
 		[Test]
-		public void Index_ReturnsInputWord()
+		public void Get_ReturnsInputWord()
 		{
 			var word = "liepa";
-			_mockAnagramSolver.Setup(p => p.GetAnagrams(word)).Returns(new List<string>());
+            _wordRepository.Setup(p => p.GetAnagrams(word)).Returns(new List<string>());
 
 			var result = (ViewResult)_anagramsController.Get(word);
 			var model = (AnagramWordsModel)result.Model;

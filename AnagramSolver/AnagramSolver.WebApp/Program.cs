@@ -8,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddScoped<IWordRepository, WordRepositoryAccess>();
+builder.Services.AddScoped<IWordRepository, WordDataBaseAccess>();
 builder.Services.AddScoped<MyConfiguration>();
 builder.Services.AddScoped<ILogHelper, LogHelper>();
 
