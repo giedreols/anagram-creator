@@ -14,7 +14,7 @@ namespace AnagramSolver.EF.DbFirst
                         .Where(item => item.OtherForm.Contains(inputWord))
                         .Select(w => w.OtherForm);
 
-            return matchingItems;
+            return matchingItems.ToList();
         }
 
         public IEnumerable<string> GetWords()
