@@ -32,29 +32,39 @@ namespace AnagramSolver.EF.DbFirst
         {
             using var context = new AnagramSolverDataContext();
 
-            var isPartOfSpeechExists = context.PartsOfSpeech
-                                    .FirstOrDefault(x => x.Abbreviation.Equals(parameters.PartOfSpeechAbbreviation));
+            int partOfSpeechId = 0;
 
-            if (isPartOfSpeechExists == null)
+            if (parameters.PartOfSpeechAbbreviation != null)
             {
-                context.PartsOfSpeech.Add(new()
-                {
-                    Abbreviation = parameters.PartOfSpeechAbbreviation
-                });
-                context.SaveChanges();
-            }
 
-            var partOfSpeechId = context.PartsOfSpeech
-                                .First(x => x.Abbreviation.Equals(parameters.PartOfSpeechAbbreviation))
-                                .Id;
+                var isPartOfSpeechExists = context.PartsOfSpeech
+                                        .FirstOrDefault(x => x.Abbreviation.Equals(parameters.PartOfSpeechAbbreviation));
+
+                if (isPartOfSpeechExists == null)
+                {
+                    context.PartsOfSpeech.Add(new()
+                    {
+                        Abbreviation = parameters.PartOfSpeechAbbreviation
+                    });
+                    context.SaveChanges();
+                }
+
+                partOfSpeechId = context.PartsOfSpeech
+                                    .First(x => x.Abbreviation.Equals(parameters.PartOfSpeechAbbreviation))
+                                    .Id;
+            }
 
             var newWord = new Word
             {
                 MainForm = parameters.MainForm,
                 OtherForm = parameters.OtherForm,
                 OrderedForm = new(parameters.OtherForm.ToLower(System.Globalization.CultureInfo.CurrentCulture).OrderByDescending(a => a).ToArray()),
-                PartOfSpeechId = partOfSpeechId
             };
+
+            if (partOfSpeechId != 0)
+            {
+                newWord.PartOfSpeechId = partOfSpeechId;
+            }
 
             context.Words.Add(newWord);
 
