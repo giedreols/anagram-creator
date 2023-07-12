@@ -1,6 +1,7 @@
 ﻿using AnagramSolver.BusinessLogic;
 using AnagramSolver.BusinessLogic.DictionaryFromFile;
 using AnagramSolver.Contracts.Dtos;
+using AnagramSolver.EF.DbFirst;
 using AnagramSolver.SqlActions;
 
 namespace AnagramSolver.DbSeeding
@@ -12,20 +13,19 @@ namespace AnagramSolver.DbSeeding
         {
             FileReader fileReader = new();
             var stringText = fileReader.ReadFile("lithuanian-words-list.txt");
-            var lines = Converter.ParseSingleLines(stringText);
+            IEnumerable<string> lines = Converter.ParseSingleLines(stringText).DistinctBy(l => l).ToList();
 
-            var wtable = new WordsActions();
+            var newList = new List<string>();
 
-            List<string> allExistingWords = wtable.GetWords().ToList();
-
-
-            for (int i = lines.Count - 1; i >= 0; i--)
+            foreach (var line in lines)
             {
-                if (allExistingWords.Contains(lines[i]))
+                if(!line.Contains(".") && !line.Contains("-") && !line.Any(char.IsDigit))
                 {
-                    lines.RemoveAt(i);
+                    newList.Add(line);
                 }
             }
+
+            var wtable = new DbFirstWordsActions();
 
             foreach (var word in lines)
             {
