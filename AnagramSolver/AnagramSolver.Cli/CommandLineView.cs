@@ -3,6 +3,7 @@ using System.Text;
 
 namespace AnagramSolver.Cli
 {
+    [Obsolete("new implementation uses WebApp")]
     public class CommandLineView : IRenderer
     {
         public CommandLineView()

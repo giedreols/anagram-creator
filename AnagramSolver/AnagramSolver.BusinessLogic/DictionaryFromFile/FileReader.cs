@@ -2,6 +2,7 @@
 
 namespace AnagramSolver.BusinessLogic.DictionaryFromFile
 {
+    [Obsolete("might be using only for seeding database")]
     public class FileReader : IFileReader
     {
         private static string _path;

@@ -2,6 +2,7 @@
 
 namespace AnagramSolver.Cli
 {
+    [Obsolete("new implementation uses WebApp")]
     internal class Client
     {
         private HttpClient httpClient;

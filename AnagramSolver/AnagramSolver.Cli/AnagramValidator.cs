@@ -1,5 +1,6 @@
 ﻿namespace AnagramSolver.Cli
 {
+    [Obsolete("new implementation uses WebApp")]
     public static class AnagramValidator
     {
         public static IList<T> TrimIfTooManyItems<T>(this IList<T> list, int totalAmount)

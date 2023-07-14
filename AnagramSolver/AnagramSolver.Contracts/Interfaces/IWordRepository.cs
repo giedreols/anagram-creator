@@ -16,8 +16,6 @@ namespace AnagramSolver.Contracts.Interfaces
 
         IEnumerable<string> GetAnagrams(string word);
 
-        void CacheAnagrams(WordWithAnagramsDto anagrams);
-
         void LogSearchInfo(SearchLogDto model);
 
         SearchLogDto GetLastSearchInfo();

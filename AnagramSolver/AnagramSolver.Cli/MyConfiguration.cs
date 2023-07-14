@@ -4,6 +4,7 @@ using System.Configuration;
 
 namespace AnagramSolver.Cli
 {
+    [Obsolete("new implementation uses WebApp")]
     public class MyConfiguration
     {
         public ConfigOptionsDto configOptions { get; set; }
