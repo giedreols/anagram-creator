@@ -13,8 +13,6 @@ public partial class AnagramSolverDataContext : DbContext
     {
     }
 
-    public virtual DbSet<Anagram> Anagrams { get; set; }
-
     public virtual DbSet<PartOfSpeech> PartsOfSpeech { get; set; }
 
     public virtual DbSet<SearchLog> SearchLog { get; set; }
@@ -28,20 +26,6 @@ public partial class AnagramSolverDataContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Anagram>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK__Anagrams__3214EC0765F6E4AE");
-
-            entity.Property(e => e.SearchWord).HasMaxLength(50);
-            entity.Property(e => e.TimeStamp)
-                .HasDefaultValueSql("(getdate())")
-                .HasColumnType("datetime");
-
-            entity.HasOne(d => d.Word).WithMany(p => p.Anagrams)
-                .HasForeignKey(d => d.WordId)
-                .HasConstraintName("FK__Anagrams__WordId__05D8E0BE");
-        });
-
         modelBuilder.Entity<PartOfSpeech>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__PartsOfS__3214EC07BCBFAD36");

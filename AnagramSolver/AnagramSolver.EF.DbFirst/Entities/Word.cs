@@ -12,7 +12,5 @@ public partial class Word
 
     public int? PartOfSpeechId { get; set; }
 
-    public virtual ICollection<Anagram> Anagrams { get; set; } = new List<Anagram>();
-
     public virtual PartOfSpeech? PartOfSpeech { get; set; }
 }
