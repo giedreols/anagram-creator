@@ -1,19 +1,17 @@
 ﻿using AnagramSolver.BusinessLogic;
 using AnagramSolver.Contracts.Interfaces;
 using AnagramSolver.EF.DbFirst;
-using AnagramSolver.WebApp.Controllers;
 using MyConfiguration = AnagramSolver.WebApp.MyConfiguration;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddScoped<IWordRepository, WordDataBaseAccess>();
+builder.Services.AddScoped<IWordServer, WordServer>();
 builder.Services.AddScoped<MyConfiguration>();
-builder.Services.AddScoped<ILogHelper, LogHelper>();
 
-builder.Services.AddScoped<ISearchLogActions, DbFirstSearchLogActions>();
-builder.Services.AddScoped<IWordsActions, DbFirstWordsActions>();
+builder.Services.AddScoped<ILogRepository, LogRepo>();
+builder.Services.AddScoped<IWordRepository, WordRepo>();
 
 
 builder.Services.AddControllersWithViews();

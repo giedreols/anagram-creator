@@ -2,10 +2,9 @@
 {
     public class FullWordDto
     {
-        public int? Id { get; set; }
-        public string MainForm { get; set; }
-        public string OtherForm { get; set; }
-        public string? PartOfSpeechAbbreviation { get; set; }
+        public string MainForm { get; private set; }
+        public string OtherForm { get; private set; }
+		public string? PartOfSpeechAbbreviation { get; private set; }
 
         public FullWordDto(string mainForm, string otherForm, string partOfSpeechAbbreviation)
         {

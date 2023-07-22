@@ -1,5 +1,4 @@
-﻿using AnagramSolver.Contracts.Interfaces;
-using AnagramSolver.WebApp.Models;
+﻿using AnagramSolver.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 
@@ -9,29 +8,34 @@ namespace AnagramSolver.WebApp.Controllers
     [Route("[Controller]/[Action]")]
     public class AnagramsController : Controller
     {
-        private readonly IWordRepository _wordRepo;
-        private readonly ILogHelper _helpers;
+        private readonly Contracts.Interfaces.IWordServer _wordServer;
+        private readonly BusinessLogic.LogService _logService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-
-        public AnagramsController(IWordRepository wordRepo, ILogHelper helpers)
+        public AnagramsController(Contracts.Interfaces.IWordServer wordServer, BusinessLogic.LogService logService, IHttpContextAccessor httpContextAccessor)
         {
-            _wordRepo = wordRepo;
-            _helpers = helpers;
+            _wordServer = wordServer;
+            _logService = logService;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         [HttpGet]
         public IActionResult Get(string inputWord)
         {
             if (inputWord.IsNullOrEmpty())
-            {
                 return View("../Home/Index");
+
+            string ipAddress = _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString();
+
+            if (_logService.HasSpareSearch(ipAddress))
+            {
+                AnagramViewModel model = new(inputWord, _wordServer.GetAnagrams(inputWord).ToList());
+                _logService.LogSearch(inputWord, ipAddress);
+                return View("../Home/WordWithAnagrams", model);
             }
 
-            AnagramWordsModel model = new(inputWord, _wordRepo.GetAnagrams(inputWord).ToList());
-
-            _helpers.LogSearch(inputWord);
-
-            return View("../Home/WordWithAnagrams", model);
+            else return View("../Home/Index", new ErrorModel("Deja, anagramų paieškų limitas " +
+                "iš šio IP adreso išnaudotas"));
         }
     }
 }

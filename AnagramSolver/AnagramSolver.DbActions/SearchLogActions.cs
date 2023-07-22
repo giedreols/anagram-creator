@@ -5,7 +5,8 @@ using System.Data.SqlClient;
 
 namespace AnagramSolver.SqlActions
 {
-    public class SearchLogActions : DbAccessHelper, ISearchLogActions
+    [Obsolete]
+    public class logRepo : DbAccessHelper, ILogRepository
     {
         public void Add(SearchLogDto item)
         {
@@ -50,13 +51,20 @@ namespace AnagramSolver.SqlActions
 
             if (dataTableLog.Rows.Count == 0)
             {
-                return new SearchLogDto();
-            }
+				return new SearchLogDto(string.Empty, DateTime.MinValue, string.Empty);
+			}
 
             SearchLogDto result = new(
                 dataTableLog.Rows[0].Field<string>("ip"), dataTableLog.Rows[0].Field<DateTime>("time"), dataTableLog.Rows[0].Field<string>("word"));
 
             return result;
         }
+
+		public int GetSearchCount(string ipAddress)
+        {
+            throw new NotImplementedException();
+        }
+
+
     }
 }

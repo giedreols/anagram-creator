@@ -1,34 +1,42 @@
-﻿@{
-	ViewData["Title"] = "Anagramų generatorius";
+﻿@model ErrorModel?
+
+@{
+    ViewData["Title"] = "Anagramų generatorius";
 }
 
 <div class="text-left">
 
-	<header>Šitoj nuostabioj programoj jūs galite atlikti šiuos ypatingus veiksmus:</header>
-	<p></p>
-	<ul>
-		<li>
-			<a asp-area="" asp-controller="WordList" asp-action="Index">Peržiūrėti žodžius ir jų anagramas</a><span style="color: red;">  Dabar ir su paieška </span><span style="color: red; font-weight: bold;">!</span>
-		</li>
-		<li>
-			<a asp-area="" asp-controller="NewWord" asp-action="Index">Įtraukti naują žodį į žodyną</a>
-		</li>
-		<li>
-			<a asp-area="" asp-controller="WordList" asp-action="DownloadFile">Atsisiųsti visus žodžius tekstiniu failu</a>
-		</li>
-		<li>
-			<a asp-area="" asp-controller="UserInfo" asp-action="Index">Paskutinė paieška</a>
-		</li>
-	</ul>
+    <header>Šitoj nuostabioj programoj jūs galite atlikti šiuos ypatingus veiksmus:</header>
+    <p></p>
+    <ul>
+        <li>
+            <a asp-area="" asp-controller="WordList" asp-action="Index">Peržiūrėti žodžius ir jų anagramas</a><span style="color: red;">  Dabar ir su paieška </span><span style="color: red; font-weight: bold;">!</span>
+        </li>
+        <li>
+            <a asp-area="" asp-controller="NewWord" asp-action="Index">Įtraukti naują žodį į žodyną</a>
+        </li>
+        <li>
+            <a asp-area="" asp-controller="WordList" asp-action="DownloadFile">Atsisiųsti visus žodžius tekstiniu failu</a>
+        </li>
+        <li>
+            <a asp-area="" asp-controller="UserInfo" asp-action="Index">Paskutinė paieška</a>
+        </li>
+    </ul>
 
-
-	<form asp-controller="Anagrams" asp-action="Get" method="get">
-		<div class="form-actions no-color">
-			<p>
-				<input type="text" name="inputWord" placeholder="Žodis" />
-				<input type="submit" value="Surask anagramas ir viskas" class="btn btn-default" />
-			</p>
-		</div>
-	</form>
+    @if (Model != null)
+    {
+        <p>@Model.Message</p>
+    }
+    else
+    {
+        <form asp-controller="Anagrams" asp-action="Get" method="get">
+            <div class="form-actions no-color">
+                <p>
+                    <input type="text" name="inputWord" placeholder="Žodis" />
+                    <input type="submit" value="Surask anagramas ir viskas" class="btn btn-default" />
+                </p>
+            </div>
+        </form>
+    }
 
 </div>

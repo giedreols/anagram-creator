@@ -1,4 +1,5 @@
 ﻿using AnagramSolver.Contracts.Dtos;
+using AnagramSolver.Contracts.Dtos.Obsolete;
 using AnagramSolver.Contracts.Interfaces;
 using Microsoft.IdentityModel.Tokens;
 using System.Data;
@@ -6,7 +7,8 @@ using System.Data.SqlClient;
 
 namespace AnagramSolver.SqlActions
 {
-    public class WordsActions : DbAccessHelper, IWordsActions
+    [Obsolete]
+    public class WordsActions : DbAccessHelper, IWordRepository
     {
         public void InsertWord(FullWordDto parameters)
         {
@@ -128,7 +130,7 @@ namespace AnagramSolver.SqlActions
             return false;
         }
 
-        bool IWordsActions.InsertWord(FullWordDto parameters)
+        bool IWordRepository.InsertWord(FullWordDto parameters)
         {
             throw new NotImplementedException();
         }

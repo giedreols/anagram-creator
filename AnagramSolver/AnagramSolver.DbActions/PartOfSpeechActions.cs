@@ -1,11 +1,12 @@
-﻿using AnagramSolver.Contracts.Dtos;
+﻿using AnagramSolver.Contracts.Dtos.Obsolete;
 using AnagramSolver.Contracts.Interfaces;
 using System.Data;
 using System.Data.SqlClient;
 
 namespace AnagramSolver.SqlActions
 {
-    public class PartOfSpeechActions : DbAccessHelper, IPartOfSpeechActions
+    [Obsolete]
+    public class PartOfSpeechActions : DbAccessHelper, IPartOfSpeechRespository
     {
         public void Add(PartOfSpeechDto item)
         {

@@ -1,9 +1,9 @@
-﻿using AnagramSolver.EF.DbFirst;
-using AnagramSolver.DbSeeding;
+﻿using AnagramSolver.DbSeeding;
+using AnagramSolver.EF.DbFirst;
 
 
 
 SeedOneLineDictionary.Seed();
 
 
-new DbFirstWordsActions().AddOrderedFormForAllWords();
+new WordRepo().AddOrderedFormForAllWords();

@@ -1,4 +1,4 @@
-﻿@model UserInfoModel
+﻿@model UserInfoViewModel
 
 @{
 	ViewData["Title"] = "Info apie tave";
@@ -17,18 +17,18 @@
 			<p>Paieškos data ir laikas: @Model.SearchDateTime</p>
 		</li>
 		<li>
-			<p>Ieškotas žodis: @Model.LastWord</p>
+			<p>Ieškotas žodis: @Model.AnagramWords.Word</p>
 		</li>
 		<li>
-			@if (Model.Anagrams == null)
+			@if (Model.AnagramWords.Anagrams == null)
 			{
 				<p> Nėra žodžio, tai nėra ir anagramų.</p>
 			}
-			else if (Model.Anagrams.Count > 0)
+			else if (Model.AnagramWords.Anagrams.Count > 0)
 			{
 				<p>Jo anagramos:</p>
 				<ul>
-					@foreach (var item in @Model.Anagrams)
+					@foreach (var item in @Model.AnagramWords.Anagrams)
 					{
 						<li>@item</li>
 					}

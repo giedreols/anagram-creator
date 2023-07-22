@@ -1,5 +1,6 @@
 ﻿namespace AnagramSolver.Contracts.Interfaces
 {
+    [Obsolete]
     public interface IRenderer
     {
         void ShowHeader();

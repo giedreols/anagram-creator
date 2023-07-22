@@ -1,10 +1,12 @@
-﻿using AnagramSolver.Contracts.Dtos;
+﻿using AnagramSolver.BusinessLogic.Helpers;
+using AnagramSolver.Contracts.Dtos;
+using AnagramSolver.Contracts.Dtos.Obsolete;
 using AnagramSolver.Contracts.Interfaces;
 
 namespace AnagramSolver.BusinessLogic.DictionaryFromFile
 {
     [Obsolete("new implementation uses database")]
-    public class DictionaryFromFileActions : IWordRepository
+    public class DictionaryFromFileActions : Contracts.Interfaces.IWordServer
     {
         private readonly IFileReader _fileReader;
 
@@ -57,8 +59,8 @@ namespace AnagramSolver.BusinessLogic.DictionaryFromFile
         private List<string> ReadWords()
         {
             string text = _fileReader.ReadFile("zodynas.txt");
-            List<string> linesList = Converter.ParseLinesWithTabs(text);
-            List<string> wordList = Converter.ParseWordsFromDictionaryFile(linesList);
+            List<string> linesList = Parser.ParseLinesWithTabs(text);
+            List<string> wordList = Parser.ParseWordsFromDictionaryFile(linesList);
 
             return wordList;
         }
@@ -90,6 +92,11 @@ namespace AnagramSolver.BusinessLogic.DictionaryFromFile
         }
 
         public SearchLogDto GetLastSearchInfo()
+        {
+            throw new NotImplementedException();
+        }
+
+        public int GetSearchCount(string ipAddress)
         {
             throw new NotImplementedException();
         }

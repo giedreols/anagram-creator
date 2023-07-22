@@ -3,6 +3,7 @@ using System.Data.SqlClient;
 
 namespace AnagramSolver.SqlActions
 {
+    [Obsolete]
     public class DbAccessHelper
     {
         public static DataTable ExecuteCommand(SqlCommand command)

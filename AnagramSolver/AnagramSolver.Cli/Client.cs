@@ -1,4 +1,4 @@
-﻿using AnagramSolver.Contracts.Dtos;
+﻿using AnagramSolver.Contracts.Dtos.Obsolete;
 
 namespace AnagramSolver.Cli
 {

@@ -9,15 +9,13 @@ namespace AnagramSolver.WebApp.Controllers
     [Route("[Controller]")]
     public class NewWordController : Controller
     {
-        private readonly IWordRepository _wordRepo;
-        private readonly MyConfiguration _config;
-        private readonly ILogHelper _helpers;
+        private readonly IWordServer _wordServer;
+        private readonly ConfigOptionsDto _configOptions;
 
-        public NewWordController(IWordRepository wordRepo, MyConfiguration config, ILogHelper helpers)
+        public NewWordController(IWordServer wordServer, MyConfiguration config)
         {
-            _wordRepo = wordRepo;
-            _config = config;
-            _helpers = helpers;
+            _wordServer = wordServer;
+            _configOptions = config.ConfigOptions;
         }
 
         [HttpGet]
@@ -34,19 +32,18 @@ namespace AnagramSolver.WebApp.Controllers
 
             ViewData["SavedMessage"] = "Žodis išsaugotas žodyne";
 
-            NewWordDto savedWord = _wordRepo.SaveWord(new FullWordDto(newWord) { PartOfSpeechAbbreviation = newAbbreviation }, _config.ConfigOptions);
+            NewWordDto savedWord = _wordServer.SaveWord(new FullWordDto(newWord, newWord, newAbbreviation), _configOptions);
 
-            NewWordModel newWordModel = new()
+            NewWordViewModel newWordModel = new()
             {
                 IsSaved = savedWord.IsSaved,
                 ErrorMessage = savedWord.ErrorMessage,
-                AnagramWords = new AnagramWordsModel(newWord)
+                AnagramWords = new AnagramViewModel(newWord)
             };
 
             if (savedWord.IsSaved)
             {
-                newWordModel.AnagramWords.Anagrams = _wordRepo.GetAnagrams(newWord).ToList();
-                _helpers.LogSearch(newWord);
+                newWordModel.AnagramWords.Anagrams = _wordServer.GetAnagrams(newWord).ToList();
                 return View("../Home/WordWithAnagrams", newWordModel.AnagramWords);
             }
 

@@ -1,13 +1,13 @@
-﻿using AnagramSolver.BusinessLogic;
-using AnagramSolver.BusinessLogic.DictionaryFromFile;
+﻿using AnagramSolver.BusinessLogic.DictionaryFromFile;
+using AnagramSolver.BusinessLogic.Helpers;
 using AnagramSolver.Cli;
-using AnagramSolver.Contracts.Dtos;
+using AnagramSolver.Contracts.Dtos.Obsolete;
 using AnagramSolver.Contracts.Interfaces;
 
 bool repeat = true;
 
 IRenderer renderer = new CommandLineView();
-MyConfiguration configuration = new();
+var configOptions = new MyConfiguration().ConfigOptions;
 
 IFileReader fileReader = new FileReader();
 
@@ -17,7 +17,7 @@ while (repeat)
 {
     string word = renderer.GetWord();
 
-    var invalidityReason = word.Validate(configuration.configOptions.MinLength, configuration.configOptions.MaxLength);
+    var invalidityReason = word.Validate(configOptions.MinLength, configOptions.MaxLength);
 
     if (invalidityReason != null)
     {
@@ -35,7 +35,7 @@ while (repeat)
     }
     else
     {
-        renderer.ShowAnagrams(response.Result.Anagrams.ToList().TrimIfTooManyItems(configuration.configOptions.TotalAmount));
+        renderer.ShowAnagrams(response.Result.Anagrams.ToList().TrimIfTooManyItems(configOptions.TotalAmount));
     }
 
     repeat = renderer.DoRepeat();

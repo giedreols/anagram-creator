@@ -10,29 +10,33 @@ namespace AnagramSolver.WebApp.Controllers
     [Route("[Controller]/[Action]")]
     public class UserInfoController : Controller
     {
-        private readonly IWordRepository _wordRepo;
+        private readonly BusinessLogic.LogService _logService;
+        private readonly IWordServer _wordServer;
 
-        public UserInfoController(IWordRepository wordRepo)
+        public UserInfoController(BusinessLogic.LogService logService, IWordServer wordServer)
         {
-            _wordRepo = wordRepo;
+            _logService = logService;
+            _wordServer = wordServer;
         }
 
         [HttpGet]
         public IActionResult Index()
         {
-            SearchLogDto lastSearchInfo = _wordRepo.GetLastSearchInfo();
+            SearchLogDto lastSearchInfo = _logService.GetLastSearchInfo();
 
-            UserInfoModel model = new()
+            var word = string.IsNullOrEmpty(lastSearchInfo.Word) ? "nėra" : lastSearchInfo.Word;
+
+			UserInfoViewModel model = new()
             {
-                LastWord = string.IsNullOrEmpty(lastSearchInfo.Word) ? "nėra" : lastSearchInfo.Word,
+				AnagramWords = new AnagramViewModel(word),
                 SearchDateTime = lastSearchInfo.TimeStamp.Equals(DateTime.MinValue) ? "nėra" : lastSearchInfo.TimeStamp.ToString(),
                 Ip = string.IsNullOrEmpty(lastSearchInfo.UserIp) ? "nėra" : lastSearchInfo.UserIp,
             };
 
             if (!lastSearchInfo.Word.IsNullOrEmpty())
             {
-                IList<string> anagrams = _wordRepo.GetAnagrams(lastSearchInfo.Word).ToList();
-                model.Anagrams = anagrams;
+                IList<string> anagrams = _wordServer.GetAnagrams(lastSearchInfo.Word).ToList();
+                model.AnagramWords.Anagrams = anagrams;
             }
 
             return View(model);

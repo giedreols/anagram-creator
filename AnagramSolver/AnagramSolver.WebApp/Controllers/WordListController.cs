@@ -1,4 +1,5 @@
-﻿using AnagramSolver.Contracts.Dtos;
+﻿using AnagramSolver.BusinessLogic;
+using AnagramSolver.Contracts.Dtos;
 using AnagramSolver.Contracts.Interfaces;
 using AnagramSolver.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -10,12 +11,14 @@ namespace AnagramSolver.WebApp.Controllers
     [Route("[Controller]/[Action]")]
     public class WordListController : Controller
     {
-        private readonly IWordRepository _wordRepo;
+        private readonly IWordServer _wordServer;
         private readonly MyConfiguration _config;
+        private readonly FileService _fileService;
 
-        public WordListController(IWordRepository wordRepo, MyConfiguration congif)
+        public WordListController(IWordServer wordServer, FileService fileService, MyConfiguration congif)
         {
-            _wordRepo = wordRepo;
+            _wordServer = wordServer;
+            _fileService = fileService;
             _config = congif;
         }
 
@@ -24,9 +27,9 @@ namespace AnagramSolver.WebApp.Controllers
         {
             int pageSize = _config.ConfigOptions.TotalAmount;
 
-            WordsPerPageDto wordsPerPage = _wordRepo.GetWordsByPage(page, pageSize);
+            WordsPerPageDto wordsPerPage = _wordServer.GetWordsByPage(page, pageSize);
 
-            WordListModel viewModel = new(wordsPerPage.Words, page, wordsPerPage.TotalWordsCount, pageSize);
+            WordListViewModel viewModel = new(wordsPerPage.Words, page, wordsPerPage.TotalWordsCount, pageSize);
 
             return View("Index", viewModel);
         }
@@ -43,9 +46,9 @@ namespace AnagramSolver.WebApp.Controllers
 
             int pageSize = _config.ConfigOptions.TotalAmount;
 
-            WordsPerPageDto matchingWords = _wordRepo.GetMatchingWords(inputWord, page, pageSize);
+            WordsPerPageDto matchingWords = _wordServer.GetMatchingWords(inputWord, page, pageSize);
 
-            WordListModel viewModel = new(matchingWords.Words, page, matchingWords.TotalWordsCount, pageSize);
+            WordListViewModel viewModel = new(matchingWords.Words, page, matchingWords.TotalWordsCount, pageSize);
 
             return View("Index", viewModel);
         }
@@ -53,7 +56,7 @@ namespace AnagramSolver.WebApp.Controllers
         [HttpGet]
         public IActionResult DownloadFile()
         {
-            byte[] fileInBytes = _wordRepo.GetFileWithWords();
+            byte[] fileInBytes = _fileService.GetFileWithWords();
 
             return File(fileInBytes, "text/plain", "zodynas.txt");
         }

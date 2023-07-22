@@ -2,18 +2,11 @@
 {
     public class SearchLogDto
     {
-        public int Id { get; set; }
+        public string UserIp { get; private set; }
 
-        public string UserIp { get; set; }
+        public DateTime? TimeStamp { get; private set; }
 
-        public DateTime? TimeStamp { get; set; }
-
-        public string Word { get; set; }
-
-        public SearchLogDto()
-        {
-
-        }
+        public string Word { get; private set; }
 
         public SearchLogDto(string userIp, DateTime? timeStamp, string word)
         {

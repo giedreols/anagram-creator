@@ -1,6 +1,7 @@
-﻿using AnagramSolver.BusinessLogic;
-using AnagramSolver.BusinessLogic.DictionaryFromFile;
+﻿using AnagramSolver.BusinessLogic.DictionaryFromFile;
+using AnagramSolver.BusinessLogic.Helpers;
 using AnagramSolver.Contracts.Dtos;
+using AnagramSolver.Contracts.Dtos.Obsolete;
 using AnagramSolver.SqlActions;
 
 namespace AnagramSolver.DbSeeding
@@ -11,8 +12,8 @@ namespace AnagramSolver.DbSeeding
         {
             FileReader fileReader = new();
             var stringText = fileReader.ReadFile("zodynas.txt");
-            var lines = Converter.ParseLinesWithTabs(stringText);
-            List<FullWordDto> fullWordsFromTxtFile = Converter.ParseDictionaryWordsFromLines(lines);
+            var lines = Parser.ParseLinesWithTabs(stringText);
+            List<FullWordDto> fullWordsFromTxtFile = Parser.ParseDictionaryWordsFromLines(lines);
 
             var distinctPartsOfSpeech = fullWordsFromTxtFile.Select(w => w.PartOfSpeechAbbreviation).Distinct().ToList();
             var ptable = new PartOfSpeechActions();
@@ -28,7 +29,7 @@ namespace AnagramSolver.DbSeeding
 
             foreach (var item in fullWordsFromTxtFile)
             {
-                allMainForms.Add(new FullWordDto(item.MainForm) { OtherForm = item.MainForm, PartOfSpeechAbbreviation = item.PartOfSpeechAbbreviation });
+                allMainForms.Add(new FullWordDto(item.MainForm, item.MainForm, item.PartOfSpeechAbbreviation));
             }
 
             var joinedList = fullWordsFromTxtFile.Concat(allMainForms).DistinctBy(w => w.OtherForm);

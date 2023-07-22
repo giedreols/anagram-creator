@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 
 namespace AnagramSolver.EF.CodeFirst.Entities;
 
@@ -21,7 +22,7 @@ public partial class AnagramSolverDataContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlServer("Data Source=.\\MSSQLSERVER01;Initial Catalog=AnagramSolverCodeFirst;Integrated Security=True;TrustServerCertificate=true");
+        optionsBuilder.UseSqlServer("Data Source=.\\DESKTOP-SPUUH8D;Initial Catalog=AnagramSolverData;Integrated Security=True;TrustServerCertificate=true");
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

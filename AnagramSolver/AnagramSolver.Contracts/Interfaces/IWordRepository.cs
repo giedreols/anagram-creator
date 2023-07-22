@@ -1,23 +1,18 @@
 ﻿using AnagramSolver.Contracts.Dtos;
+using AnagramSolver.Contracts.Dtos.Obsolete;
 
 namespace AnagramSolver.Contracts.Interfaces
 {
     public interface IWordRepository
     {
+        bool InsertWord(FullWordDto parameters);
+
         IEnumerable<string> GetWords();
 
-        NewWordDto SaveWord(FullWordDto word, ConfigOptionsDto config);
+        IEnumerable<string> GetMatchingWords(string inputWord);
 
-        WordsPerPageDto GetWordsByPage(int page, int totalAmount);
-
-        byte[] GetFileWithWords();
-
-        WordsPerPageDto GetMatchingWords(string inputWord, int page, int pageSize);
+        bool IsWordExists(string inputWord);
 
         IEnumerable<string> GetAnagrams(string word);
-
-        void LogSearchInfo(SearchLogDto model);
-
-        SearchLogDto GetLastSearchInfo();
     }
 }

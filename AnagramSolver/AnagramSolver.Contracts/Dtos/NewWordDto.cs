@@ -1,5 +1,8 @@
-﻿namespace AnagramSolver.Contracts.Dtos;
+﻿using AnagramSolver.Contracts.Dtos.Obsolete;
 
+namespace AnagramSolver.Contracts.Dtos;
+
+// perdaryti, kad erroras butu atskirai?
 public class NewWordDto
 {
     public bool IsSaved { get; set; }
