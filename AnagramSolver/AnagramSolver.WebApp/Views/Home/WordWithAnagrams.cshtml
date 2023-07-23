@@ -11,7 +11,12 @@
 
 	@ViewData["SavedMessage"]
 
-	@if (Model.Anagrams.Count > 0)
+	@if(Model.ErrorMessage != null)
+	{
+		<p>@Model.ErrorMessage.Message</p>
+	}
+
+	else if (Model.Anagrams.Count > 0)
 	{
 		<p>Anagramos:</p>
 		<ul>

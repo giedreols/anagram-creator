@@ -13,9 +13,9 @@ namespace AnagramSolver.WebApp.Controllers
     {
         private readonly IWordServer _wordServer;
         private readonly MyConfiguration _config;
-        private readonly FileService _fileService;
+        private readonly IFileService _fileService;
 
-        public WordListController(IWordServer wordServer, FileService fileService, MyConfiguration congif)
+        public WordListController(IWordServer wordServer, IFileService fileService, MyConfiguration congif)
         {
             _wordServer = wordServer;
             _fileService = fileService;
@@ -35,7 +35,7 @@ namespace AnagramSolver.WebApp.Controllers
         }
 
         [HttpGet]
-        public IActionResult Search(string inputWord, int page = 1)
+        public IActionResult Search(string inputWord = "", int page = 1)
         {
             if (inputWord.IsNullOrEmpty())
             {

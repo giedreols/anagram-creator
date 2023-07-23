@@ -3,7 +3,9 @@
 public class AnagramViewModel
 {
     public string Word { get; private set; }
+    
     public IList<string> Anagrams { get; set; }
+    public ErrorModel ErrorMessage { get; private set; }
 
     public AnagramViewModel(string word, IList<string> anagrams)
     {
@@ -16,4 +18,11 @@ public class AnagramViewModel
         Word = word;
         Anagrams = new List<string>();
     }
+
+	public AnagramViewModel(string word, string errMessage)
+	{
+		Word = word;
+        ErrorMessage = new ErrorModel(errMessage);
+		Anagrams = new List<string>();
+	}
 }

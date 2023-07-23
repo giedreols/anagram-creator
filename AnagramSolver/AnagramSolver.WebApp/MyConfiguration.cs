@@ -3,8 +3,8 @@ using System.Configuration;
 
 namespace AnagramSolver.WebApp
 {
-    public class MyConfiguration
-    {
+	public class MyConfiguration
+	{
 		public ConfigOptionsDto? ConfigOptions { get; private set; }
 
 		private IConfigurationRoot _config { get; set; }
@@ -19,7 +19,8 @@ namespace AnagramSolver.WebApp
 
 			ConfigOptions = new ConfigOptionsDto(ReadConfiguration("AnagramSettings:TotalAmount")
 				, ReadConfiguration("AnagramSettings:MinLength")
-				, ReadConfiguration("AnagramSettings:MaxLength"));
+				, ReadConfiguration("AnagramSettings:MaxLength")
+				, ReadConfiguration("AnagramSettings:SearchCount"));
 		}
 
 		private int ReadConfiguration(string settings)

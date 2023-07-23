@@ -3,7 +3,7 @@ using AnagramSolver.Contracts.Interfaces;
 
 namespace AnagramSolver.BusinessLogic
 {
-	public class FileService
+	public class FileService : IFileService
     {
         private readonly IWordRepository _wordRepo;
 

@@ -15,7 +15,8 @@ namespace AnagramSolver.EF.DbFirst
 
             IQueryable<string> matchingItems = context.Words
                         .Where(item => item.OtherForm.Contains(inputWord))
-                        .Select(w => w.OtherForm);
+                        .Select(w => w.OtherForm)
+                        .Distinct();
 
             return matchingItems.ToList();
         }
@@ -26,7 +27,7 @@ namespace AnagramSolver.EF.DbFirst
 
             using var context = new AnagramSolverDataContext();
 
-            var words = context.Words.Select(w => w.OtherForm).ToList();
+            var words = context.Words.Select(w => w.OtherForm).Distinct().ToList();
 
             return words;
         }

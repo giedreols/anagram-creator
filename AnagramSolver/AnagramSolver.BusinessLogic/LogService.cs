@@ -3,7 +3,7 @@ using AnagramSolver.Contracts.Interfaces;
 
 namespace AnagramSolver.BusinessLogic
 {
-    public class LogService
+    public class LogService : ILogService
     {
         private readonly ILogRepository _logRepo;
 
@@ -12,12 +12,11 @@ namespace AnagramSolver.BusinessLogic
             _logRepo = logRepo;
         }
 
-        // i app config iskelti skaiciu, kiek turi paiesku
-        public bool HasSpareSearch(string ipAddress)
+        public bool HasSpareSearch(string ipAddress, int maxSearchCount)
         {
-            int searchCount = _logRepo.GetSearchCount(ipAddress);
+            int currentSearchCount = _logRepo.GetSearchCount(ipAddress);
 
-            return searchCount < 5;
+            return currentSearchCount < maxSearchCount;
         }
 
         public void LogSearch(string inputWord, string ipAddress)

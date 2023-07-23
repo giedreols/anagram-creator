@@ -1,4 +1,5 @@
-﻿using AnagramSolver.Contracts.Dtos;
+﻿using AnagramSolver.BusinessLogic;
+using AnagramSolver.Contracts.Dtos;
 using AnagramSolver.Contracts.Interfaces;
 using AnagramSolver.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -10,10 +11,10 @@ namespace AnagramSolver.WebApp.Controllers
     [Route("[Controller]/[Action]")]
     public class UserInfoController : Controller
     {
-        private readonly BusinessLogic.LogService _logService;
+        private readonly ILogService _logService;
         private readonly IWordServer _wordServer;
 
-        public UserInfoController(BusinessLogic.LogService logService, IWordServer wordServer)
+        public UserInfoController(ILogService logService, IWordServer wordServer)
         {
             _logService = logService;
             _wordServer = wordServer;

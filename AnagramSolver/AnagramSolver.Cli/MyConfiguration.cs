@@ -22,7 +22,8 @@ namespace AnagramSolver.Cli
 
 			ConfigOptions = new ConfigOptionsDto(ReadConfiguration("AnagramSettings:TotalAmount")
 				, ReadConfiguration("AnagramSettings:MinLength")
-				, ReadConfiguration("AnagramSettings:MaxLength"));
+				, ReadConfiguration("AnagramSettings:MaxLength")
+				, ReadConfiguration("AnagramSettings:SearchCount"));
 		}
 
 		private int ReadConfiguration(string settings)
