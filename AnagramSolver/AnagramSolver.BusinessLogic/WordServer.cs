@@ -59,13 +59,14 @@ namespace AnagramSolver.BusinessLogic
             }
             else
             {
-                newWord.IsSaved = _wordRepo.InsertWord(word);
+                newWord.Id = _wordRepo.Add(word);
+                newWord.IsSaved = newWord.Id > 0;
 
                 if (!newWord.IsSaved)
                 {
                     newWord.ErrorMessage = ErrorMessages.UnknowReason;
                 }
-            }
+            }            
 
             return newWord;
         }

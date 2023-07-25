@@ -6,7 +6,7 @@ using System.Data.SqlClient;
 namespace AnagramSolver.SqlActions
 {
     [Obsolete]
-    public class logRepo : DbAccessHelper, ILogRepository
+    public class logRepo : DbAccessHelper, ISearchLogRepository
     {
         public void Add(SearchLogDto item)
         {

@@ -7,7 +7,7 @@ using System.Data.SqlClient;
 
 namespace AnagramSolver.SqlActions
 {
-    [Obsolete]
+    [Obsolete("Use EF.Code.First instead")]
     public class WordsActions : DbAccessHelper, IWordRepository
     {
         public void InsertWord(FullWordDto parameters)
@@ -130,11 +130,6 @@ namespace AnagramSolver.SqlActions
             return false;
         }
 
-        bool IWordRepository.InsertWord(FullWordDto parameters)
-        {
-            throw new NotImplementedException();
-        }
-
         public int InsertAnagrams(WordWithAnagramsDto anagrams)
         {
             var connectionString = "Data Source=.\\MSSQLSERVER01;Initial Catalog=AnagramSolverData;Integrated Security=True";
@@ -231,6 +226,21 @@ namespace AnagramSolver.SqlActions
             var result = dataTable.AsEnumerable().Select(row => row.Field<string>("a"));
 
             return result.ToList();
+        }
+
+        public int Add(FullWordDto parameters)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Update(FullWordDto parameters)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Delete(string word)
+        {
+            throw new NotImplementedException();
         }
     }
 }

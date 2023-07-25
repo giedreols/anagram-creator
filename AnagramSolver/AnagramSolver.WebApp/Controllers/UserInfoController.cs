@@ -11,10 +11,10 @@ namespace AnagramSolver.WebApp.Controllers
     [Route("[Controller]/[Action]")]
     public class UserInfoController : Controller
     {
-        private readonly ILogService _logService;
+        private readonly ISearchLogService _logService;
         private readonly IWordServer _wordServer;
 
-        public UserInfoController(ILogService logService, IWordServer wordServer)
+        public UserInfoController(ISearchLogService logService, IWordServer wordServer)
         {
             _logService = logService;
             _wordServer = wordServer;

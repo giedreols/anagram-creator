@@ -5,6 +5,7 @@ namespace AnagramSolver.Contracts.Dtos;
 // perdaryti, kad erroras butu atskirai?
 public class NewWordDto
 {
+    public int Id { get; set; }
     public bool IsSaved { get; set; }
 
     public string? ErrorMessage { get; set; }

@@ -5,8 +5,6 @@ using AnagramSolver.EF.DbFirst.Entities;
 
 namespace AnagramSolver.EF.DbFirst
 {
-    // WordRepository
-
     public class WordRepo : IWordRepository
     {
         public IEnumerable<string> GetMatchingWords(string inputWord)
@@ -15,6 +13,7 @@ namespace AnagramSolver.EF.DbFirst
 
             IQueryable<string> matchingItems = context.Words
                         .Where(item => item.OtherForm.Contains(inputWord))
+                        .Where(item => !item.IsDeleted)
                         .Select(w => w.OtherForm)
                         .Distinct();
 
@@ -27,16 +26,16 @@ namespace AnagramSolver.EF.DbFirst
 
             using var context = new AnagramSolverDataContext();
 
-            var words = context.Words.Select(w => w.OtherForm).Distinct().ToList();
+            var words = context.Words
+                .Where(item => !item.IsDeleted)
+                .Select(w => w.OtherForm)
+                .Distinct()
+                .ToList();
 
             return words;
         }
 
-        // bukesni repo metodai privalumas
-        // galima insert part of speech iskelti i business logic ir butu gal ir geriau
-        // insert part of speech if does not exist
-
-        public bool InsertWord(FullWordDto parameters)
+        public int Add(FullWordDto parameters)
         {
             using var context = new AnagramSolverDataContext();
 
@@ -75,6 +74,49 @@ namespace AnagramSolver.EF.DbFirst
             }
 
             context.Words.Add(newWord);
+
+            bool isSaved = context.SaveChanges() > 0;
+
+            if (isSaved)
+                return newWord.Id;
+
+            return 0;
+        }
+
+        public bool Update(FullWordDto parameters)
+        {
+            using var context = new AnagramSolverDataContext();
+
+            var wordToUpdate = context.Words
+                .Where(w => !w.IsDeleted)
+                .FirstOrDefault(w => w.Id == parameters.Id);
+
+            if (wordToUpdate != null)
+            {
+                wordToUpdate.OtherForm = parameters.OtherForm;
+                wordToUpdate.MainForm = parameters.MainForm;
+                wordToUpdate.OrderedForm = new(parameters.OtherForm.ToLower(System.Globalization.CultureInfo.CurrentCulture).OrderByDescending(a => a).ToArray());
+            }
+
+            //context.Words.Update(wordToUpdate);
+
+            bool result = context.SaveChanges() > 0;
+
+            return result;
+        }
+
+        public bool Delete(int id)
+        {
+            using var context = new AnagramSolverDataContext();
+
+            var wordToUpdate = context.Words
+                .Where(w => !w.IsDeleted)
+                .FirstOrDefault(w => w.Id == id);
+
+            if (wordToUpdate != null)
+                wordToUpdate.IsDeleted = true;
+
+            //context.Words.Update(wordToUpdate);
 
             bool result = context.SaveChanges() > 0;
 
@@ -118,7 +160,7 @@ namespace AnagramSolver.EF.DbFirst
             context.SaveChanges();
         }
 
-        public int InsertAnagrams(WordWithAnagramsDto anagrams)
+        public bool Delete(string word)
         {
             throw new NotImplementedException();
         }

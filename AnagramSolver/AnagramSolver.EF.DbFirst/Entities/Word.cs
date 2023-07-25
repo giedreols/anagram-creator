@@ -13,4 +13,6 @@ public partial class Word
     public int? PartOfSpeechId { get; set; }
 
     public virtual PartOfSpeech? PartOfSpeech { get; set; }
+
+    public bool IsDeleted { get; set; } = false;
 }

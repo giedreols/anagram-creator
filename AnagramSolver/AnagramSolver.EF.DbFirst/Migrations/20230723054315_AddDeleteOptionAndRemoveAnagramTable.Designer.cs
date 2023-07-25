@@ -4,6 +4,7 @@ using AnagramSolver.EF.DbFirst.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AnagramSolver.EF.DbFirst.Migrations
 {
     [DbContext(typeof(AnagramSolverDataContext))]
-    partial class AnagramSolverDataContextModelSnapshot : ModelSnapshot
+    [Migration("20230723054315_AddDeleteOptionAndRemoveAnagramTable")]
+    partial class AddDeleteOptionAndRemoveAnagramTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -111,38 +114,6 @@ namespace AnagramSolver.EF.DbFirst.Migrations
                     b.ToTable("Words");
                 });
 
-            modelBuilder.Entity("AnagramSolver.EF.DbFirst.Entities.WordLog", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("Operation")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("TimeStamp")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("UserIp")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("WordId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("WordId1")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("WordId1");
-
-                    b.ToTable("WordLog");
-                });
-
             modelBuilder.Entity("AnagramSolver.EF.DbFirst.Entities.Word", b =>
                 {
                     b.HasOne("AnagramSolver.EF.DbFirst.Entities.PartOfSpeech", "PartOfSpeech")
@@ -151,15 +122,6 @@ namespace AnagramSolver.EF.DbFirst.Migrations
                         .HasConstraintName("FK__Words__AnagramId__60A75C0F");
 
                     b.Navigation("PartOfSpeech");
-                });
-
-            modelBuilder.Entity("AnagramSolver.EF.DbFirst.Entities.WordLog", b =>
-                {
-                    b.HasOne("AnagramSolver.EF.DbFirst.Entities.Word", "Word")
-                        .WithMany()
-                        .HasForeignKey("WordId1");
-
-                    b.Navigation("Word");
                 });
 
             modelBuilder.Entity("AnagramSolver.EF.DbFirst.Entities.PartOfSpeech", b =>

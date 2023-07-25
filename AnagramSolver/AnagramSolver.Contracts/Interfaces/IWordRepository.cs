@@ -5,7 +5,11 @@ namespace AnagramSolver.Contracts.Interfaces
 {
     public interface IWordRepository
     {
-        bool InsertWord(FullWordDto parameters);
+        int Add(FullWordDto parameters);
+        
+        bool Update(FullWordDto parameters);
+
+        bool Delete(string word);
 
         IEnumerable<string> GetWords();
 

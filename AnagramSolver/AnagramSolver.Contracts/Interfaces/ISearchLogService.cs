@@ -2,7 +2,7 @@
 
 namespace AnagramSolver.BusinessLogic
 {
-	public interface ILogService
+	public interface ISearchLogService
 	{
 		SearchLogDto GetLastSearchInfo();
 		void LogSearch(string inputWord, string ipAddress);

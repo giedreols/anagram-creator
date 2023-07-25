@@ -2,33 +2,36 @@
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 
 @{
-	ViewData["Title"] = "Anagramos";
+    ViewData["Title"] = "Anagramos";
 }
 
 <div class="text-left">
 
-	<h2>@Model.Word</h2>
+    <h2>@Model.Word</h2>
 
-	@ViewData["SavedMessage"]
+    @ViewData["SavedMessage"]
 
-	@if(Model.ErrorMessage != null)
-	{
-		<p>@Model.ErrorMessage.Message</p>
-	}
+    @if (Model.ErrorMessage != null)
+    {
+        <p>
+            @Model.ErrorMessage.Message
+            <a asp-area="" asp-controller="NewWord" asp-action="Index"> Įtrauk naują žodį.</a>
+        </p>
+    }
 
-	else if (Model.Anagrams.Count > 0)
-	{
-		<p>Anagramos:</p>
-		<ul>
-			@foreach (var item in @Model.Anagrams)
-			{
-				<li>@item</li>
-			}
-		</ul>
-	}
-	else
-	{
-		<p> Deja, anagramų žodis neturi.</p>
-	}
+    else if (Model.Anagrams.Count > 0)
+    {
+        <p>Anagramos:</p>
+        <ul>
+            @foreach (var item in @Model.Anagrams)
+            {
+                <li>@item</li>
+            }
+        </ul>
+    }
+    else
+    {
+        <p> Deja, anagramų žodis neturi.</p>
+    }
 
 </div>

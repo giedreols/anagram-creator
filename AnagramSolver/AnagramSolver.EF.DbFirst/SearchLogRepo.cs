@@ -4,7 +4,7 @@ using AnagramSolver.EF.DbFirst.Entities;
 
 namespace AnagramSolver.EF.DbFirst
 {
-    public class LogRepo : ILogRepository
+    public class SearchLogRepo : ISearchLogRepository
     {
         public void Add(SearchLogDto item)
         {
@@ -35,14 +35,14 @@ namespace AnagramSolver.EF.DbFirst
             else return new SearchLogDto(string.Empty, DateTime.MinValue, string.Empty);
 		}
 
-		// galimai sitas neveikia
 		public int GetSearchCount(string ipAddress)
         {
             using var context = new AnagramSolverDataContext();
 
             int totalCount = context.SearchLog.Where(item => item.UserIp.Equals(ipAddress)).Count();
-
-            return totalCount;
+            int newWordsCount = context.WordLog.Where(item => item.UserIp.Equals(ipAddress)).Count();
+            
+            return totalCount - newWordsCount;
         }
     }
 }

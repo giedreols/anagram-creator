@@ -25,7 +25,10 @@
 
     @if (Model != null)
     {
-        <p>@Model.Message</p>
+        <p>
+            @Model.Message
+            <a asp-area="" asp-controller="NewWord" asp-action="Index"> Įtrauk naują žodį.</a>
+        </p>
     }
     else
     {

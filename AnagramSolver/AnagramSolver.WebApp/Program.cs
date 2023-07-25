@@ -8,12 +8,16 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddScoped<IWordServer, WordServer>();
-builder.Services.AddScoped<ILogService, LogService>();
-builder.Services.AddScoped<IFileService, FileService>();
-builder.Services.AddScoped<MyConfiguration>();
 
-builder.Services.AddScoped<ILogRepository, LogRepo>();
+builder.Services.AddScoped<ISearchLogService, SearchLogService>();
+builder.Services.AddScoped<IFileService, FileService>();
+builder.Services.AddScoped<IWordLogService, WordLogService>();
+
+builder.Services.AddScoped<IWordLogRepository, WordLogRepo>();
+builder.Services.AddScoped<ISearchLogRepository, SearchLogRepo>();
 builder.Services.AddScoped<IWordRepository, WordRepo>();
+
+builder.Services.AddScoped<MyConfiguration>();
 
 
 builder.Services.AddControllersWithViews();

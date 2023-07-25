@@ -19,6 +19,8 @@ public partial class AnagramSolverDataContext : DbContext
 
     public virtual DbSet<Word> Words { get; set; }
 
+    public DbSet<WordLog> WordLog { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder.UseSqlServer("Data Source=.\\MSSQLSERVER01;Initial Catalog=AnagramSolverData;Integrated Security=True;TrustServerCertificate=true");

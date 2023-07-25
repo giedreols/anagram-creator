@@ -3,6 +3,8 @@
 // perdaryti, akd errora grazintu atskirai
 public class NewWordViewModel
 {
+    public int Id { get; set; }
+
     public bool IsSaved { get; set; }
 
     public string? ErrorMessage { get; set; }

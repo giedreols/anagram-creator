@@ -2,7 +2,7 @@
 
 namespace AnagramSolver.Contracts.Interfaces
 {
-    public interface ILogRepository
+    public interface ISearchLogRepository
     {
         void Add(SearchLogDto item);
         SearchLogDto GetLastSearch();

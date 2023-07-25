@@ -28,7 +28,7 @@ namespace AnagramSolver.DbSeeding
 
             foreach (var word in lines)
             {
-                wtable.InsertWord(new FullWordDto(word));
+                wtable.Add(new FullWordDto(word));
             }
 
             Console.WriteLine("end");

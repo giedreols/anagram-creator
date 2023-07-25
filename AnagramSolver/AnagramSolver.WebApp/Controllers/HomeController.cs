@@ -15,11 +15,11 @@ namespace AnagramSolver.WebApp.Controllers
 	public class HomeController : Controller
 	{
 		private readonly IWordServer _wordServer;
-		private readonly ILogService _logService;
+		private readonly ISearchLogService _logService;
 		private readonly IHttpContextAccessor _httpContextAccessor;
 		private readonly MyConfiguration _config;
 
-		public HomeController(IWordServer wordServer, ILogService logService, IHttpContextAccessor httpContextAccessor, MyConfiguration config)
+		public HomeController(IWordServer wordServer, ISearchLogService logService, IHttpContextAccessor httpContextAccessor, MyConfiguration config)
 		{
 			_wordServer = wordServer;
 			_logService = logService;
@@ -35,7 +35,7 @@ namespace AnagramSolver.WebApp.Controllers
 			if (_logService.HasSpareSearch(ipAddress, _config.ConfigOptions.SearchCount))
 				return View();
 
-			else return View(new ErrorModel("Anagramų paieškų limitas iš šio IP adreso išnaudotas"));
+			else return View(new ErrorModel("Anagramų paieškų limitas iš šio IP adreso išnaudotas. Nori daugiau paieškų?"));
 		}
 	}
 }
