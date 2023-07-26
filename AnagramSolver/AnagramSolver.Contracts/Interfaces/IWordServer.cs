@@ -13,5 +13,7 @@ namespace AnagramSolver.Contracts.Interfaces
         WordsPerPageDto GetMatchingWords(string inputWord, int page, int pageSize);
 
         IEnumerable<string> GetAnagrams(string word);
+
+        int DeleteWord(string word);
     }
 }

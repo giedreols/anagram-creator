@@ -1,40 +1,54 @@
 ﻿@model WordListViewModel
 
+
 @{
-	ViewData["Title"] = "Žodžių sąrašas";
+    ViewData["Title"] = "Žodžių sąrašas";
 }
+
+<head>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+</head>
 
 <div class="text-left">
 
-	<form asp-action="Search" method="get">
-		<div class="form-actions no-color">
-			<p>
-				<input type="text" name="inputWord" placeholder="Žodis ar jo dalis" value="@ViewData["CurrentWord"]" />
-				<input type="submit" value="Ieškoti" class="btn btn-default" />
-			</p>
-		</div>
-	</form>
+    <form asp-action="Search" method="get">
+        <div class="form-actions no-color">
+            <p>
+                <input type="text" name="inputWord" placeholder="Žodis ar jo dalis" value="@ViewData["CurrentWord"]" />
+                <input type="submit" value="Ieškoti" class="btn btn-default" />
+            </p>
+        </div>
+    </form>
 
-	@if (Model.CurrentPageWords.Count == 0)
-	{
-		<p>Deja, žodžių neradome.</p>
-	}
+    @if (Model.CurrentPageWords.Count == 0)
+    {
+        <p>Deja, žodžių neradome.</p>
+    }
 
-	<ul>
-		@foreach (var word in @Model.CurrentPageWords)
-		{
-			<li><a href="@Url.Action("Get", "Anagrams", new { inputWord = @word })">@(word)</a></li>
-		}
-	</ul>
+    <ul>
+        @foreach (var word in @Model.CurrentPageWords)
+        {
+            <li>
+                <a href="@Url.Action("Get", "Anagrams", new { inputWord = @word })">@(word)</a>
+                <a href="@Url.Action("Delete", "Word", new {inputWord = @word})" title="Delete">
+                    <i class="material-icons" style="font-size:18px;color:grey">delete</i>
+                </a>
+                <a href="@Url.Action("Update", "Word", new {inputWord = @word})" title="Edit">
+                    <i class="material-icons" style="font-size:18px;color:grey">edit</i>
+                </a>
 
-	<div>
-		@if (Model.TotalPages > 1)
-		{
-			@for (var page = 1; page <= Model.TotalPages; page++)
-			{
-				<a href="?page=@(page)&inputWord=@ViewData["CurrentWord"]" class="@(Model.CurrentPage == page ? "active" : "")">@(page)</a>
-			}
-		}
-	</div>
+            </li>
+        }
+    </ul>
+
+    <div>
+        @if (Model.TotalPages > 1)
+        {
+            @for (var page = 1; page <= Model.TotalPages; page++)
+            {
+                <a href="?page=@(page)&inputWord=@ViewData["CurrentWord"]" class="@(Model.CurrentPage == page ? "active" : "")">@(page)</a>
+            }
+        }
+    </div>
 
 </div>

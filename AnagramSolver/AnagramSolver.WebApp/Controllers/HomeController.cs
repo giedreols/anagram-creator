@@ -1,5 +1,4 @@
-﻿using AnagramSolver.BusinessLogic;
-using AnagramSolver.Contracts.Interfaces;
+﻿using AnagramSolver.Contracts.Interfaces;
 using AnagramSolver.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -8,7 +7,7 @@ using System.Net;
 
 namespace AnagramSolver.WebApp.Controllers
 {
-	[ApiController]
+    [ApiController]
 	[Route("[Controller]")]
 	[Route("{action=Index}")]
 

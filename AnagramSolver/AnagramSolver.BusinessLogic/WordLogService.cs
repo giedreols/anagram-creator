@@ -1,6 +1,5 @@
 ﻿using AnagramSolver.Contracts.Dtos;
 using AnagramSolver.Contracts.Interfaces;
-using AnagramSolver.EF.DbFirst;
 
 namespace AnagramSolver.BusinessLogic
 {
@@ -13,9 +12,9 @@ namespace AnagramSolver.BusinessLogic
             _wordLogRepo = wordLogRepo;
         }
 
-        public void LogNewWord(int wordId, string ipAddress)
+        public void Log(int wordId, string ipAddress, WordOpEnum action)
         {
-            _wordLogRepo.Add(new WordLogDto(ipAddress, WordOpEnum.ADD, wordId));
+            _wordLogRepo.Add(new WordLogDto(ipAddress, action, wordId));
         }
     }
 }

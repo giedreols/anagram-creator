@@ -105,22 +105,25 @@ namespace AnagramSolver.EF.DbFirst
             return result;
         }
 
-        public bool Delete(int id)
+        public int Delete(string word)
         {
             using var context = new AnagramSolverDataContext();
 
-            var wordToUpdate = context.Words
+            var wordTodelete = context.Words
                 .Where(w => !w.IsDeleted)
-                .FirstOrDefault(w => w.Id == id);
+                .FirstOrDefault(w => w.OtherForm == word);
 
-            if (wordToUpdate != null)
-                wordToUpdate.IsDeleted = true;
+            if (wordTodelete != null)
+                wordTodelete.IsDeleted = true;
 
-            //context.Words.Update(wordToUpdate);
+            bool isDeleted = context.SaveChanges() > 0;
 
-            bool result = context.SaveChanges() > 0;
+            if(isDeleted)
+            {
+                return wordTodelete.Id;
+            }
 
-            return result;
+            return 0;
         }
 
         public bool IsWordExists(string inputWord)
@@ -158,11 +161,6 @@ namespace AnagramSolver.EF.DbFirst
             }
 
             context.SaveChanges();
-        }
-
-        public bool Delete(string word)
-        {
-            throw new NotImplementedException();
         }
     }
 }

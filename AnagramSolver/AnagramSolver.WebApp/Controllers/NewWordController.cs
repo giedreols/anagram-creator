@@ -1,5 +1,4 @@
-﻿using AnagramSolver.BusinessLogic;
-using AnagramSolver.Contracts.Dtos;
+﻿using AnagramSolver.Contracts.Dtos;
 using AnagramSolver.Contracts.Interfaces;
 using AnagramSolver.EF.DbFirst;
 using AnagramSolver.WebApp.Models;
@@ -51,7 +50,7 @@ namespace AnagramSolver.WebApp.Controllers
             if (savedWord.IsSaved)
             {
                 string ipAddress = _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString();
-                _wordLogService.LogNewWord(savedWord.Id, ipAddress);
+                _wordLogService.Log(savedWord.Id, ipAddress, WordOpEnum.ADD);
                 
                 newWordModel.AnagramWords.Anagrams = _wordServer.GetAnagrams(newWord).ToList();
                 

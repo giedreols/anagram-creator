@@ -6,7 +6,7 @@ using AnagramSolver.Contracts.Interfaces;
 namespace AnagramSolver.BusinessLogic.DictionaryFromFile
 {
     [Obsolete("new implementation uses database")]
-    public class DictionaryFromFileActions : Contracts.Interfaces.IWordServer
+    public class DictionaryFromFileActions : IWordServer
     {
         private readonly IFileReader _fileReader;
 
@@ -97,6 +97,11 @@ namespace AnagramSolver.BusinessLogic.DictionaryFromFile
         }
 
         public int GetSearchCount(string ipAddress)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int DeleteWord(string word)
         {
             throw new NotImplementedException();
         }

@@ -40,9 +40,8 @@ namespace AnagramSolver.EF.DbFirst
             using var context = new AnagramSolverDataContext();
 
             int totalCount = context.SearchLog.Where(item => item.UserIp.Equals(ipAddress)).Count();
-            int newWordsCount = context.WordLog.Where(item => item.UserIp.Equals(ipAddress)).Count();
             
-            return totalCount - newWordsCount;
+            return totalCount;
         }
     }
 }

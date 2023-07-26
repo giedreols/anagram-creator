@@ -242,5 +242,10 @@ namespace AnagramSolver.SqlActions
         {
             throw new NotImplementedException();
         }
+
+        int IWordRepository.Delete(string word)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

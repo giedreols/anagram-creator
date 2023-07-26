@@ -9,7 +9,7 @@ namespace AnagramSolver.Contracts.Interfaces
         
         bool Update(FullWordDto parameters);
 
-        bool Delete(string word);
+        int Delete(string word);
 
         IEnumerable<string> GetWords();
 

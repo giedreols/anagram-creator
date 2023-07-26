@@ -1,12 +1,11 @@
-﻿using AnagramSolver.BusinessLogic;
-using AnagramSolver.Contracts.Interfaces;
+﻿using AnagramSolver.Contracts.Interfaces;
 using AnagramSolver.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 
 namespace AnagramSolver.WebApp.Controllers
 {
-	[ApiController]
+    [ApiController]
 	[Route("[Controller]/[Action]")]
 	public class AnagramsController : Controller
 	{

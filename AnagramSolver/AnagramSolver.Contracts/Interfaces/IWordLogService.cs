@@ -1,7 +1,9 @@
-﻿namespace AnagramSolver.BusinessLogic
+﻿using AnagramSolver.Contracts.Dtos;
+
+namespace AnagramSolver.Contracts.Interfaces
 {
     public interface IWordLogService
     {
-        void LogNewWord(int id, string ipAddress);
+        void Log(int id, string ipAddress, WordOpEnum action);
     }
 }

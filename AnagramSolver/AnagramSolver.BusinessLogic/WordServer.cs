@@ -77,5 +77,10 @@ namespace AnagramSolver.BusinessLogic
 
             return anagrams.ToList();
         }
+
+        public int DeleteWord(string word)
+        {
+            return _wordRepo.Delete(word);
+        }
     }
 }
