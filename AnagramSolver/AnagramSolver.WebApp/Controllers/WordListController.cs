@@ -12,21 +12,20 @@ namespace AnagramSolver.WebApp.Controllers
     public class WordListController : Controller
     {
         private readonly IWordServer _wordServer;
-        private readonly MyConfiguration _config;
         private readonly IFileService _fileService;
+
+        private readonly int pageSize;
 
         public WordListController(IWordServer wordServer, IFileService fileService, MyConfiguration congif)
         {
             _wordServer = wordServer;
             _fileService = fileService;
-            _config = congif;
+            pageSize = congif.ConfigOptions.TotalAmount;
         }
 
         [HttpGet]
         public IActionResult Index(int page = 1)
         {
-            int pageSize = _config.ConfigOptions.TotalAmount;
-
             WordsPerPageDto wordsPerPage = _wordServer.GetWordsByPage(page, pageSize);
 
             WordListViewModel viewModel = new(wordsPerPage.Words, page, wordsPerPage.TotalWordsCount, pageSize);
@@ -43,8 +42,6 @@ namespace AnagramSolver.WebApp.Controllers
             }
 
             ViewData["CurrentWord"] = inputWord;
-
-            int pageSize = _config.ConfigOptions.TotalAmount;
 
             WordsPerPageDto matchingWords = _wordServer.GetMatchingWords(inputWord, page, pageSize);
 
