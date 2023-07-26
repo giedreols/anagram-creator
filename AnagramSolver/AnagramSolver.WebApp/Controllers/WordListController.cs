@@ -1,4 +1,5 @@
-﻿using AnagramSolver.Contracts.Dtos;
+﻿using AnagramSolver.BusinessLogic;
+using AnagramSolver.Contracts.Dtos;
 using AnagramSolver.Contracts.Interfaces;
 using AnagramSolver.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;

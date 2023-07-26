@@ -82,5 +82,11 @@ namespace AnagramSolver.BusinessLogic
         {
             return _wordRepo.Delete(word);
         }
+
+        public int UpdateWord(string oldForm, string newForm)
+        {
+            //return _wordRepo.Update(oldForm, newForm);
+
+        }
     }
 }

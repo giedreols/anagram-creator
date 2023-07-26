@@ -15,5 +15,6 @@ namespace AnagramSolver.Contracts.Interfaces
         IEnumerable<string> GetAnagrams(string word);
 
         int DeleteWord(string word);
+        int UpdateWord(string oldForm, string newForm);
     }
 }

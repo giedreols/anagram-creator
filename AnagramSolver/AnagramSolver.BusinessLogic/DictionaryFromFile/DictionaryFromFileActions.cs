@@ -105,5 +105,10 @@ namespace AnagramSolver.BusinessLogic.DictionaryFromFile
         {
             throw new NotImplementedException();
         }
+
+        int UpdateWord(string oldForm, string newForm)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

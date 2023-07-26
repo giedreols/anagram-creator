@@ -36,5 +36,20 @@ namespace AnagramSolver.WebApp.Controllers
 
             return RedirectToAction("Index", "WordList");
         }
+
+        [HttpGet]
+        public ActionResult Update(string oldForm, string newForm)
+        {
+            int wordId = _wordServer.UpdateWord(oldForm, newForm);
+
+            if (wordId > 0)
+            {
+                string ipAddress = _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString();
+                _wordLogService.Log(wordId, ipAddress, WordOpEnum.EDIT);
+            }
+            // alikti tame paciame lape, kuriame buvo
+
+            return RedirectToAction("Index", "WordList");
+        }
     }
 }
