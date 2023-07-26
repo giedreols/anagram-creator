@@ -6,7 +6,7 @@
 
 <div class="text-left">
 
-    <form asp-action="Create" method="post">
+    <form asp-controller="Word" asp-action="Create" method="post">
         <div class="form-actions no-color">
             <p>
                 Įrašykite žodį: <input type="text" name="newWord" value="@ViewData["CurrentWord"]" />

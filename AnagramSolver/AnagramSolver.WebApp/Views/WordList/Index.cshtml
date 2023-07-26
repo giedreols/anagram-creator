@@ -29,7 +29,7 @@
         @foreach (var word in @Model.CurrentPageWords)
         {
             <li>
-                <a href="@Url.Action("Get", "Anagrams", new { inputWord = @word })">@(word)</a>
+                <a href="@Url.Action("Get", "Word", new { inputWord = @word })">@(word)</a>
                 <a href="@Url.Action("Delete", "Word", new {inputWord = @word})" title="Delete">
                     <i class="material-icons" style="font-size:18px;color:grey">delete</i>
                 </a>

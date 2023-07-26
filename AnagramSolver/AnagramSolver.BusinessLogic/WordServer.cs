@@ -86,7 +86,7 @@ namespace AnagramSolver.BusinessLogic
         public int UpdateWord(string oldForm, string newForm)
         {
             //return _wordRepo.Update(oldForm, newForm);
-
+            return 0;
         }
     }
 }
