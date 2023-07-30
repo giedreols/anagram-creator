@@ -24,12 +24,7 @@ namespace AnagramSolver.BusinessLogic.DictionaryFromFile
 
         public WordsPerPageDto GetWordsByPage(int page = 1, int pageSize = 100)
         {
-            var allWords = GetWords().OrderBy(w => w).ToList();
-            var totalPages = (int)Math.Ceiling(allWords.Count / (double)pageSize);
-
-            List<string> currentPageItems = allWords.Skip((page - 1) * pageSize).Select(w => w).Take(pageSize).ToList();
-
-            return new WordsPerPageDto(currentPageItems, pageSize, allWords.Count);
+            throw new NotImplementedException();
         }
 
         public bool SaveWord(string word)
@@ -101,12 +96,12 @@ namespace AnagramSolver.BusinessLogic.DictionaryFromFile
             throw new NotImplementedException();
         }
 
-        public int DeleteWord(string word)
+        public bool DeleteWord(int wordId)
         {
             throw new NotImplementedException();
         }
 
-        int IWordServer.UpdateWord(string oldForm, string newForm)
+        public bool UpdateWord(int wordId, string newForm)
         {
             throw new NotImplementedException();
         }

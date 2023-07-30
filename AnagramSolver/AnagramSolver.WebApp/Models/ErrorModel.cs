@@ -1,6 +1,8 @@
-﻿namespace AnagramSolver.WebApp.Models
+﻿using Microsoft.AspNetCore.Mvc.RazorPages;
+
+namespace AnagramSolver.WebApp.Models
 {
-    public class ErrorModel
+    public class ErrorModel : PageModel
     {
         public string Message { get; private set; }
 

@@ -238,12 +238,22 @@ namespace AnagramSolver.SqlActions
             throw new NotImplementedException();
         }
 
-        public bool Delete(string word)
+        public int Delete(string word)
         {
             throw new NotImplementedException();
         }
 
-        int IWordRepository.Delete(string word)
+        Dictionary<int, string> IWordRepository.GetWords()
+        {
+            throw new NotImplementedException();
+        }
+
+        Dictionary<int, string> IWordRepository.GetMatchingWords(string inputWord)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Delete(int wordId)
         {
             throw new NotImplementedException();
         }

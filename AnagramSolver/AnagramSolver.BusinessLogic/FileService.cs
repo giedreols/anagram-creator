@@ -14,7 +14,7 @@ namespace AnagramSolver.BusinessLogic
 
         public byte[] GetFileWithWords()
         {
-            IList<string> wordList = _wordRepo.GetWords().ToList();
+            IList<string> wordList = _wordRepo.GetWords().Values.ToList();
 
             return wordList.ConvertListToByteArr();
         }

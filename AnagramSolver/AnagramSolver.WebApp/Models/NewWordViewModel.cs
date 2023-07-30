@@ -1,7 +1,9 @@
-﻿namespace AnagramSolver.WebApp.Models;
+﻿using Microsoft.AspNetCore.Mvc.RazorPages;
+
+namespace AnagramSolver.WebApp.Models;
 
 // perdaryti, akd errora grazintu atskirai
-public class NewWordViewModel
+public class NewWordViewModel : PageModel
 {
     public int Id { get; set; }
 

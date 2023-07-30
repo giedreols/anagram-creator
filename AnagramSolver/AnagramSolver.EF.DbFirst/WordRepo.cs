@@ -7,30 +7,27 @@ namespace AnagramSolver.EF.DbFirst
 {
     public class WordRepo : IWordRepository
     {
-        public IEnumerable<string> GetMatchingWords(string inputWord)
+        public Dictionary<int, string> GetMatchingWords(string inputWord)
         {
             using var context = new AnagramSolverDataContext();
 
-            IQueryable<string> matchingItems = context.Words
+            Dictionary<int, string> matchingItems = context.Words
                         .Where(item => item.OtherForm.Contains(inputWord))
                         .Where(item => !item.IsDeleted)
-                        .Select(w => w.OtherForm)
-                        .Distinct();
+                        .ToDictionary(w => w.Id, w => w.OtherForm);
 
-            return matchingItems.ToList();
+            return matchingItems;
         }
 
-        public IEnumerable<string> GetWords()
+        public Dictionary<int, string> GetWords()
         {
             var FullWordList = new List<FullWordDto>();
 
             using var context = new AnagramSolverDataContext();
 
-            var words = context.Words
+            Dictionary<int, string> words = context.Words
                 .Where(item => !item.IsDeleted)
-                .Select(w => w.OtherForm)
-                .Distinct()
-                .ToList();
+                .ToDictionary(w => w.Id, w => w.OtherForm);
 
             return words;
         }
@@ -105,25 +102,19 @@ namespace AnagramSolver.EF.DbFirst
             return result;
         }
 
-        public int Delete(string word)
+        public bool Delete(int wordId)
         {
             using var context = new AnagramSolverDataContext();
 
             var wordTodelete = context.Words
                 .Where(w => !w.IsDeleted)
-                .FirstOrDefault(w => w.OtherForm == word);
+                .FirstOrDefault(w => w.Id == wordId);
 
             if (wordTodelete != null)
                 wordTodelete.IsDeleted = true;
 
-            bool isDeleted = context.SaveChanges() > 0;
+            return context.SaveChanges() > 0;
 
-            if(isDeleted)
-            {
-                return wordTodelete.Id;
-            }
-
-            return 0;
         }
 
         public bool IsWordExists(string inputWord)

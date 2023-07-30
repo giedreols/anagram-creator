@@ -1,9 +1,10 @@
-﻿namespace AnagramSolver.WebApp.Models;
+﻿using Microsoft.AspNetCore.Mvc.RazorPages;
 
-public class AnagramViewModel
+namespace AnagramSolver.WebApp.Models;
+
+public class AnagramViewModel : PageModel
 {
     public string Word { get; private set; }
-    
     public IList<string> Anagrams { get; set; }
     public ErrorModel ErrorMessage { get; private set; }
 
@@ -19,10 +20,10 @@ public class AnagramViewModel
         Anagrams = new List<string>();
     }
 
-	public AnagramViewModel(string word, string errMessage)
-	{
-		Word = word;
+    public AnagramViewModel(string word, string errMessage)
+    {
+        Word = word;
         ErrorMessage = new ErrorModel(errMessage);
-		Anagrams = new List<string>();
-	}
+        Anagrams = new List<string>();
+    }
 }

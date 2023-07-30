@@ -16,29 +16,30 @@ namespace AnagramSolver.BusinessLogic
             this._wordRepo = _wordRepo;
         }
 
-        public IEnumerable<string> GetWords()
-        {
-            List<string> words = _wordRepo.GetWords().ToList();
-            return words;
-        }
-
         public WordsPerPageDto GetMatchingWords(string inputWord, int page = 1, int pageSize = 100)
         {
-            List<string> words = _wordRepo.GetMatchingWords(inputWord).OrderBy(a => a).ToList();
+            Dictionary<int, string> matchingWords = _wordRepo.GetMatchingWords(inputWord);
 
-            var totalPages = (int)Math.Ceiling(words.Count / (double)pageSize);
-
-            List<string> currentPageItems = words.Skip((page - 1) * pageSize).Select(w => w).Take(pageSize).ToList();
-
-            return new WordsPerPageDto(currentPageItems, pageSize, words.Count);
+            return SordWordsByPage(matchingWords, page, pageSize);
         }
 
         public WordsPerPageDto GetWordsByPage(int page = 1, int pageSize = 100)
         {
-            var allWords = GetWords().OrderBy(w => w).ToList();
+            Dictionary<int, string> allWords = _wordRepo.GetWords();
+
+            return SordWordsByPage(allWords, page, pageSize);
+        }
+
+        private static WordsPerPageDto SordWordsByPage(Dictionary<int, string> words, int page, int pageSize)
+        {
+            Dictionary<int, string> allWords = words.OrderBy(w => w.Value).ToDictionary(w => w.Key, w => w.Value);
+
             var totalPages = (int)Math.Ceiling(allWords.Count / (double)pageSize);
 
-            List<string> currentPageItems = allWords.Skip((page - 1) * pageSize).Select(w => w).Take(pageSize).ToList();
+            Dictionary<int, string> currentPageItems = allWords
+                    .Skip((page - 1) * pageSize)
+                    .Take(pageSize)
+                    .ToDictionary(w => w.Key, w => w.Value);
 
             return new WordsPerPageDto(currentPageItems, pageSize, allWords.Count);
         }
@@ -47,7 +48,7 @@ namespace AnagramSolver.BusinessLogic
         {
             var errorMessage = InputWordValidator.Validate(word.OtherForm, config.MinLength, config.MaxLength);
 
-            NewWordDto newWord = new NewWordDto();
+            NewWordDto newWord = new();
 
             if (errorMessage != null)
             {
@@ -66,7 +67,7 @@ namespace AnagramSolver.BusinessLogic
                 {
                     newWord.ErrorMessage = ErrorMessages.UnknowReason;
                 }
-            }            
+            }
 
             return newWord;
         }
@@ -78,15 +79,15 @@ namespace AnagramSolver.BusinessLogic
             return anagrams.ToList();
         }
 
-        public int DeleteWord(string word)
+        public bool DeleteWord(int wordId)
         {
-            return _wordRepo.Delete(word);
+            return _wordRepo.Delete(wordId);
         }
 
-        public int UpdateWord(string oldForm, string newForm)
+        public bool UpdateWord(int wordId, string newForm)
         {
-            //return _wordRepo.Update(oldForm, newForm);
-            return 0;
+            //return _wordRepo.Update(wordId, newForm);
+            throw new NotImplementedException();
         }
     }
 }

@@ -9,11 +9,11 @@ namespace AnagramSolver.Contracts.Interfaces
         
         bool Update(FullWordDto parameters);
 
-        int Delete(string word);
+        bool Delete(int wordId);
 
-        IEnumerable<string> GetWords();
+        Dictionary<int, string> GetWords();
 
-        IEnumerable<string> GetMatchingWords(string inputWord);
+        Dictionary<int, string> GetMatchingWords(string inputWord);
 
         bool IsWordExists(string inputWord);
 

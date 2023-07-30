@@ -4,7 +4,7 @@ namespace AnagramSolver.WebApp.Models
 {
     public class WordListViewModel : PageModel
     {
-        public List<string> CurrentPageWords { get; private set; }
+        public Dictionary<int, string> CurrentPageWords { get; private set; }
 
         public int CurrentPage { get; private set; }
 
@@ -14,7 +14,7 @@ namespace AnagramSolver.WebApp.Models
 
         public int TotalPages { get; private set; }
 
-        public WordListViewModel(List<string> currentPageWords, int currentPage, int totalWords, int pageSize)
+        public WordListViewModel(Dictionary<int, string> currentPageWords, int currentPage, int totalWords, int pageSize)
         {
             CurrentPageWords = currentPageWords;
             CurrentPage = currentPage;

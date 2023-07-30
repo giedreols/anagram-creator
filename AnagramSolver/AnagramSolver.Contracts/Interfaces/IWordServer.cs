@@ -4,8 +4,6 @@ namespace AnagramSolver.Contracts.Interfaces
 {
     public interface IWordServer
     {
-        IEnumerable<string> GetWords();
-
         NewWordDto SaveWord(FullWordDto word, ConfigOptionsDto config);
 
         WordsPerPageDto GetWordsByPage(int page, int totalAmount);
@@ -14,7 +12,8 @@ namespace AnagramSolver.Contracts.Interfaces
 
         IEnumerable<string> GetAnagrams(string word);
 
-        int DeleteWord(string word);
-        int UpdateWord(string oldForm, string newForm);
+        bool DeleteWord(int wordId);
+
+        bool UpdateWord(int wordId, string newForm);
     }
 }

@@ -25,7 +25,7 @@ namespace AnagramSolver.WebApp.Controllers
             _configOptions = config.ConfigOptions;
             _httpContextAccessor = httpContextAccessor;
             _searchLogService = searchLogService;
-            
+
             ipAddress = _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString();
         }
 
@@ -76,11 +76,11 @@ namespace AnagramSolver.WebApp.Controllers
         }
 
         [HttpGet]
-        public ActionResult Delete(string inputWord)
+        public ActionResult Delete(int wordId)
         {
-            int wordId = _wordServer.DeleteWord(inputWord);
+            bool isDeleted = _wordServer.DeleteWord(wordId);
 
-            if (wordId > 0)
+            if (isDeleted)
             {
                 _wordLogService.Log(wordId, ipAddress, WordOpEnum.DELETE);
             }
@@ -89,11 +89,11 @@ namespace AnagramSolver.WebApp.Controllers
         }
 
         [HttpGet]
-        public ActionResult Update(string oldForm, string newForm)
+        public ActionResult Update(int wordId, string newForm)
         {
-            int wordId = _wordServer.UpdateWord(oldForm, newForm);
+            bool isUpdated = _wordServer.UpdateWord(wordId, newForm);
 
-            if (wordId > 0)
+            if (isUpdated)
             {
                 _wordLogService.Log(wordId, ipAddress, WordOpEnum.EDIT);
             }
