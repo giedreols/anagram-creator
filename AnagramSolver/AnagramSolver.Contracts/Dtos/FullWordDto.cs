@@ -14,6 +14,13 @@
             PartOfSpeechAbbreviation = partOfSpeechAbbreviation;
         }
 
+        public FullWordDto(int wordId, string anyForm)
+        {
+            Id = wordId;
+            MainForm = anyForm;
+            OtherForm = anyForm;
+        }
+
         public FullWordDto(string anyForm)
         {
             MainForm = anyForm;

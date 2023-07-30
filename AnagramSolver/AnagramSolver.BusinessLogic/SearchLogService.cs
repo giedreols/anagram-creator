@@ -19,8 +19,10 @@ namespace AnagramSolver.BusinessLogic
             int currentSearchCount = _searchLogRepo.GetSearchCount(ipAddress);
             int newWordsCount = _wordLogRepo.GetEntriesCount(ipAddress, WordOpEnum.ADD);
             int deletedWordsCount = _wordLogRepo.GetEntriesCount(ipAddress, WordOpEnum.DELETE);
+            int editedWordsCount = _wordLogRepo.GetEntriesCount(ipAddress, WordOpEnum.EDIT);
 
-            return (currentSearchCount - newWordsCount + deletedWordsCount) < maxSearchCount;
+
+            return (currentSearchCount - newWordsCount + deletedWordsCount - editedWordsCount) < maxSearchCount;
         }
 
         public void LogSearch(string inputWord, string ipAddress)

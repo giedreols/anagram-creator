@@ -29,14 +29,32 @@
         @foreach (var word in @Model.CurrentPageWords)
         {
             <li>
-                <a href="@Url.Action("Get", "Word", new { inputWord = @word })">@(word.Value)</a>
+                <a href="@Url.Action("Get", "Word", new { inputWord = @word.Value })">@(word.Value)</a>
                 <a href="@Url.Action("Delete", "Word", new {wordId = @word.Key})" title="Delete">
                     <i class="material-icons" style="font-size:18px;color:grey">delete</i>
                 </a>
-                <a href="@Url.Action("Update", "Word", new {inputWord = @word})" title="Edit">
-                    <i class="material-icons" style="font-size:18px;color:grey">edit</i>
-                </a>
 
+                <i class="material-icons" style="font-size:18px;color:grey" onclick="toggleFormVisibility(@word.Key)">edit</i>
+
+                <script>
+                    function toggleFormVisibility(wordKey) {
+                        var formDiv = document.getElementById("editForm_" + wordKey);
+                        formDiv.style.display = formDiv.style.display === "none" ? "block" : "none";
+                    }
+                </script>
+
+                <div id="editForm_@word.Key" style="display: none;">
+                    <form asp-controller="Word" asp-action="Update" method="post">
+                        <div class="form-actions no-color">
+                            <p>
+                                <input type="text" name="newForm" value="@word.Value" />
+                                <input name="wordId" value="@word.Key" type="hidden" />
+                                <input name="currentPage" value=@(Model.CurrentPage) type="hidden" />
+                                <input type="submit" value="Išsaugoti" class="btn btn-default" />
+                            </p>
+                        </div>
+                    </form>
+                </div>
             </li>
         }
     </ul>

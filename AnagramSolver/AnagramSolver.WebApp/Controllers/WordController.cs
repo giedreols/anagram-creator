@@ -88,19 +88,22 @@ namespace AnagramSolver.WebApp.Controllers
             return RedirectToAction("Index", "WordList");
         }
 
-        [HttpGet]
-        public ActionResult Update(int wordId, string newForm)
+        [HttpPost]
+        public ActionResult Update([FromForm] int wordId, [FromForm] int currentPage, [FromForm] string newForm = "")
         {
-            bool isUpdated = _wordServer.UpdateWord(wordId, newForm);
+            ViewData["newForm"] = newForm;
 
-            if (isUpdated)
+            if (!newForm.IsNullOrEmpty())
             {
-                _wordLogService.Log(wordId, ipAddress, WordOpEnum.EDIT);
+                bool isUpdated = _wordServer.UpdateWord(wordId, newForm);
+
+                if (isUpdated)
+                {
+                    _wordLogService.Log(wordId, ipAddress, WordOpEnum.EDIT);
+                }
             }
 
-            // palikti tame paciame lape, kuriame buvo?
-
-            return RedirectToAction("Index", "WordList");
+            return RedirectToAction("Index", "WordList", new { page = currentPage });
         }
     }
 }

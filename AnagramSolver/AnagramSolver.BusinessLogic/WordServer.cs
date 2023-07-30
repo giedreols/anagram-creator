@@ -86,8 +86,8 @@ namespace AnagramSolver.BusinessLogic
 
         public bool UpdateWord(int wordId, string newForm)
         {
-            //return _wordRepo.Update(wordId, newForm);
-            throw new NotImplementedException();
+            FullWordDto word = new(wordId, newForm);
+            return _wordRepo.Update(word);
         }
     }
 }
