@@ -1,7 +1,7 @@
-﻿namespace AnagramSolver.BusinessLogic
+﻿namespace AnagramSolver.Contracts.Interfaces
 {
-	public interface IFileService
-	{
-		byte[] GetFileWithWords();
-	}
+    public interface IFileService
+    {
+        byte[] GetFileWithWords();
+    }
 }

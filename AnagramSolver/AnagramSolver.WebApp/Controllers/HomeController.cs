@@ -6,31 +6,33 @@ using Microsoft.AspNetCore.Mvc;
 namespace AnagramSolver.WebApp.Controllers
 {
     [ApiController]
-	[Route("[Controller]")]
-	[Route("{action=Index}")]
+    [Route("[Controller]")]
+    [Route("{action=Index}")]
 
-	public class HomeController : Controller
-	{
-		private readonly ISearchLogService _logService;
-		private readonly IHttpContextAccessor _httpContextAccessor;
-		private readonly MyConfiguration _config;
+    public class HomeController : Controller
+    {
+        private readonly ISearchLogService _logService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly MyConfiguration _config;
 
-		public HomeController(ISearchLogService logService, IHttpContextAccessor httpContextAccessor, MyConfiguration config)
-		{
-			_logService = logService;
-			_httpContextAccessor = httpContextAccessor;
-			_config = config;
-		}
+        public HomeController(ISearchLogService logService, IHttpContextAccessor httpContextAccessor, MyConfiguration config)
+        {
+            _logService = logService;
+            _httpContextAccessor = httpContextAccessor;
+            _config = config;
+        }
 
-		[HttpGet]
-		public IActionResult Index()
-		{
-			string ipAddress = _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString();
+        // kaip teisingai reiktu daryti errora? 
 
-			if (_logService.HasSpareSearch(ipAddress, _config.ConfigOptions.SearchCount))
-				return View();
+        [HttpGet]
+        public IActionResult Index()
+        {
+            string ipAddress = _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString();
 
-			else return View(new ErrorModel("Anagramų paieškų limitas iš šio IP adreso išnaudotas. Nori daugiau paieškų?"));
-		}
-	}
+            if (_logService.HasSpareSearch(ipAddress, _config.ConfigOptions.SearchCount))
+                return View();
+
+            else return View(new ErrorModel("Anagramų paieškų limitas iš šio IP adreso išnaudotas. Nori daugiau paieškų?"));
+        }
+    }
 }

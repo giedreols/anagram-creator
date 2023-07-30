@@ -14,13 +14,13 @@ namespace AnagramSolver.BusinessLogic
             _wordLogRepo = wordLogRepo;
         }
 
+        // sitas metodas apima ir SearchLog, ir WordLog. ar reiketu ji iskelti i atskira sluoksni? ar tiesiog sujungti logu servisus i viena?
         public bool HasSpareSearch(string ipAddress, int maxSearchCount)
         {
             int currentSearchCount = _searchLogRepo.GetSearchCount(ipAddress);
             int newWordsCount = _wordLogRepo.GetEntriesCount(ipAddress, WordOpEnum.ADD);
             int deletedWordsCount = _wordLogRepo.GetEntriesCount(ipAddress, WordOpEnum.DELETE);
             int editedWordsCount = _wordLogRepo.GetEntriesCount(ipAddress, WordOpEnum.EDIT);
-
 
             return (currentSearchCount - newWordsCount + deletedWordsCount - editedWordsCount) < maxSearchCount;
         }

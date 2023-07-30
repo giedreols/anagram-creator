@@ -1,9 +1,7 @@
-﻿using AnagramSolver.Contracts.Dtos.Obsolete;
-
-namespace AnagramSolver.Contracts.Interfaces
+﻿namespace AnagramSolver.Contracts.Interfaces
 {
     public interface IPartOfSpeechRespository
     {
-        void Add(PartOfSpeechDto item);
+        int InsertPartOfSpeechIfDoesNotExist(string abbreviation);
     }
 }

@@ -1,19 +1,19 @@
 ﻿using AnagramSolver.BusinessLogic.Helpers;
 using AnagramSolver.Contracts.Dtos;
-using AnagramSolver.Contracts.Dtos.Obsolete;
 using AnagramSolver.Contracts.Interfaces;
 using System.Data;
-using System.Text;
 
 namespace AnagramSolver.BusinessLogic
 {
     public class WordServer : IWordServer
     {
         private readonly IWordRepository _wordRepo;
+        private readonly IPartOfSpeechRespository _partOfSpeechRepo;
 
-        public WordServer(IWordRepository _wordRepo)
+        public WordServer(IWordRepository _wordRepo, IPartOfSpeechRespository partOfSpeechRepo)
         {
             this._wordRepo = _wordRepo;
+            _partOfSpeechRepo = partOfSpeechRepo;
         }
 
         public WordsPerPageDto GetMatchingWords(string inputWord, int page = 1, int pageSize = 100)
@@ -60,6 +60,7 @@ namespace AnagramSolver.BusinessLogic
             }
             else
             {
+                word.PartOfSpeechId = _partOfSpeechRepo.InsertPartOfSpeechIfDoesNotExist(word.PartOfSpeechAbbreviation);
                 newWord.Id = _wordRepo.Add(word);
                 newWord.IsSaved = newWord.Id > 0;
 

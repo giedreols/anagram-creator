@@ -1,9 +1,4 @@
-﻿using AnagramSolver.BusinessLogic;
-using AnagramSolver.Contracts.Dtos;
-using AnagramSolver.Contracts.Interfaces;
-using Moq;
-
-namespace AnagramSolver.Tests.BusinessLogicTests.WordDataBaseAccessTests
+﻿namespace AnagramSolver.Tests.BusinessLogicTests.WordDataBaseAccessTests
 {
     public class WordDataBaseAccessTests
     {

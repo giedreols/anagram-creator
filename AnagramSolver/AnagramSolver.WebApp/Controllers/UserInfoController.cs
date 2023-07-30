@@ -26,9 +26,9 @@ namespace AnagramSolver.WebApp.Controllers
 
             var word = string.IsNullOrEmpty(lastSearchInfo.Word) ? "nėra" : lastSearchInfo.Word;
 
-			UserInfoViewModel model = new()
+            UserInfoViewModel model = new()
             {
-				AnagramWords = new AnagramViewModel(word),
+                AnagramWords = new AnagramViewModel(word),
                 SearchDateTime = lastSearchInfo.TimeStamp.Equals(DateTime.MinValue) ? "nėra" : lastSearchInfo.TimeStamp.ToString(),
                 Ip = string.IsNullOrEmpty(lastSearchInfo.UserIp) ? "nėra" : lastSearchInfo.UserIp,
             };

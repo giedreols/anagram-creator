@@ -51,8 +51,8 @@ namespace AnagramSolver.SqlActions
 
             if (dataTableLog.Rows.Count == 0)
             {
-				return new SearchLogDto(string.Empty, DateTime.MinValue, string.Empty);
-			}
+                return new SearchLogDto(string.Empty, DateTime.MinValue, string.Empty);
+            }
 
             SearchLogDto result = new(
                 dataTableLog.Rows[0].Field<string>("ip"), dataTableLog.Rows[0].Field<DateTime>("time"), dataTableLog.Rows[0].Field<string>("word"));
@@ -60,7 +60,7 @@ namespace AnagramSolver.SqlActions
             return result;
         }
 
-		public int GetSearchCount(string ipAddress)
+        public int GetSearchCount(string ipAddress)
         {
             throw new NotImplementedException();
         }

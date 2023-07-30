@@ -16,6 +16,7 @@ builder.Services.AddScoped<IWordLogService, WordLogService>();
 builder.Services.AddScoped<IWordLogRepository, WordLogRepo>();
 builder.Services.AddScoped<ISearchLogRepository, SearchLogRepo>();
 builder.Services.AddScoped<IWordRepository, WordRepo>();
+builder.Services.AddScoped<IPartOfSpeechRespository, PartOfSpeechRepo>();
 
 builder.Services.AddScoped<MyConfiguration>();
 

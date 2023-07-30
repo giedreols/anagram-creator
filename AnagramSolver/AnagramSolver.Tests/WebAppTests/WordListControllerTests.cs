@@ -1,11 +1,4 @@
-﻿using AnagramSolver.Contracts.Dtos;
-using AnagramSolver.Contracts.Interfaces;
-using AnagramSolver.WebApp.Controllers;
-using AnagramSolver.WebApp.Models;
-using Microsoft.AspNetCore.Mvc;
-using Moq;
-
-namespace AnagramSolver.Tests.WebAppTests
+﻿namespace AnagramSolver.Tests.WebAppTests
 {
     [TestFixture]
     internal class WordListControllerTests

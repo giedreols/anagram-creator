@@ -1,8 +1,4 @@
-﻿using AnagramSolver.BusinessLogic.DictionaryFromFile;
-using AnagramSolver.Contracts.Interfaces;
-using Moq;
-
-namespace AnagramSolver.Tests.BusinessLogicTests.DictionaryFromFileTests
+﻿namespace AnagramSolver.Tests.BusinessLogicTests.DictionaryFromFileTests
 {
     public class GetWordsTests
     {

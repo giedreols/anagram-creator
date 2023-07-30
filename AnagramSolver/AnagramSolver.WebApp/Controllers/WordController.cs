@@ -29,6 +29,7 @@ namespace AnagramSolver.WebApp.Controllers
             ipAddress = _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString();
         }
 
+        // kaip reiktu daryti errorus? 
         [HttpPost]
         public ActionResult Create([FromForm] string newWord, [FromForm] string newAbbreviation)
         {
@@ -59,6 +60,7 @@ namespace AnagramSolver.WebApp.Controllers
             return View("../NewWord/Index", newWordModel);
         }
 
+        // kaip reiktu daryti errora? 
         [HttpGet]
         public IActionResult Get(string inputWord)
         {
@@ -75,6 +77,7 @@ namespace AnagramSolver.WebApp.Controllers
             else return View("../Home/WordWithAnagrams", new AnagramViewModel(inputWord, "Anagramų paieškų limitas iš šio IP adreso išnaudotas. Nori daugiau paieškų?"));
         }
 
+        // kaip reiktu daryti errora? 
         [HttpGet]
         public ActionResult Delete(int wordId)
         {
@@ -88,6 +91,7 @@ namespace AnagramSolver.WebApp.Controllers
             return RedirectToAction("Index", "WordList");
         }
 
+        // kaip reiktu daryti errora? 
         [HttpPost]
         public ActionResult Update([FromForm] int wordId, [FromForm] int currentPage, [FromForm] string newForm = "")
         {

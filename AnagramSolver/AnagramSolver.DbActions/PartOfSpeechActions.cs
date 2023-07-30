@@ -5,7 +5,7 @@ using System.Data.SqlClient;
 
 namespace AnagramSolver.SqlActions
 {
-    [Obsolete]
+    [Obsolete("Out of date")]
     public class PartOfSpeechActions : DbAccessHelper, IPartOfSpeechRespository
     {
         public void Add(PartOfSpeechDto item)
@@ -21,6 +21,11 @@ namespace AnagramSolver.SqlActions
             command.Parameters.Add(new SqlParameter("@abbreviation", item.Abbreviation));
 
             ExecuteCommand(command);
+        }
+
+        public int InsertPartOfSpeechIfDoesNotExist(string abbreviation)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -5,5 +5,5 @@ public class UserInfoViewModel : PageModel
 {
     public required string Ip { get; set; }
     public required string SearchDateTime { get; set; }
-	public required AnagramViewModel? AnagramWords { get; set; }
+    public required AnagramViewModel? AnagramWords { get; set; }
 }

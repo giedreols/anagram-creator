@@ -1,23 +1,30 @@
-﻿using AnagramSolver.Contracts.Dtos.Obsolete;
-using AnagramSolver.Contracts.Interfaces;
+﻿using AnagramSolver.Contracts.Interfaces;
 using AnagramSolver.EF.DbFirst.Entities;
 
 namespace AnagramSolver.EF.DbFirst
 {
     public class PartOfSpeechRepo : IPartOfSpeechRespository
     {
-        public void Add(PartOfSpeechDto item)
+        public int InsertPartOfSpeechIfDoesNotExist(string abbr)
         {
             using var context = new AnagramSolverDataContext();
 
-            PartOfSpeech partsOfSpeech = new()
+            PartOfSpeech parameters = new()
             {
-                FullWord = item.FullWord,
-                Abbreviation = item.Abbreviation,
+                Abbreviation = abbr,
+                Id = context.PartsOfSpeech
+                .Where(x => x.Abbreviation.Equals(abbr))
+                .Select(x => x.Id).FirstOrDefault()
             };
 
-            context.Add(partsOfSpeech);
-            context.SaveChanges();
+            if (parameters.Id == 0)
+            {
+                context.PartsOfSpeech.Add(parameters);
+                context.SaveChanges();
+            }
+
+            return parameters.Id;
         }
     }
 }
+

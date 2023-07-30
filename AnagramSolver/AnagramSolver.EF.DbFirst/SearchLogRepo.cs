@@ -33,14 +33,14 @@ namespace AnagramSolver.EF.DbFirst
             }
 
             else return new SearchLogDto(string.Empty, DateTime.MinValue, string.Empty);
-		}
+        }
 
-		public int GetSearchCount(string ipAddress)
+        public int GetSearchCount(string ipAddress)
         {
             using var context = new AnagramSolverDataContext();
 
             int totalCount = context.SearchLog.Where(item => item.UserIp.Equals(ipAddress)).Count();
-            
+
             return totalCount;
         }
     }
