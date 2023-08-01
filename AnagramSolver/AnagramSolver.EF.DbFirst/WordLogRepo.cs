@@ -7,10 +7,15 @@ namespace AnagramSolver.EF.DbFirst
 {
     public class WordLogRepo : IWordLogRepository
     {
+        private readonly AnagramSolverDataContext _context;
+
+        public WordLogRepo(AnagramSolverDataContext context)
+        {
+            _context = context;
+        }
+
         public void Add(WordLogDto item)
         {
-            using var context = new AnagramSolverDataContext();
-
             WordLog model = new()
             {
                 UserIp = item.UserIp,
@@ -19,16 +24,14 @@ namespace AnagramSolver.EF.DbFirst
                 TimeStamp = DateTime.Now
             };
 
-            context.WordLog.Add(model);
-            context.SaveChanges();
+            _context.WordLog.Add(model);
+            _context.SaveChanges();
         }
 
         public int GetEntriesCount(string ipAddress, WordOpEnum operation)
         {
-            using var context = new AnagramSolverDataContext();
-
             int opToInt = (int)operation;
-            int wordsCount = context.WordLog.Where(item => item.UserIp.Equals(ipAddress) && (int)item.Operation == opToInt).Count();
+            int wordsCount = _context.WordLog.Where(item => item.UserIp.Equals(ipAddress) && (int)item.Operation == opToInt).Count();
 
             return wordsCount;
         }

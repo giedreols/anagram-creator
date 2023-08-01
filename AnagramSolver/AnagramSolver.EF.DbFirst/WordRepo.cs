@@ -6,11 +6,16 @@ namespace AnagramSolver.EF.DbFirst
 {
     public class WordRepo : IWordRepository
     {
+        private readonly AnagramSolverDataContext _context;
+
+        public WordRepo(AnagramSolverDataContext context)
+        {
+            _context = context;
+        }
+
         public Dictionary<int, string> GetMatchingWords(string inputWord)
         {
-            using var context = new AnagramSolverDataContext();
-
-            Dictionary<int, string> matchingItems = context.Words
+            Dictionary<int, string> matchingItems = _context.Words
                         .Where(item => item.OtherForm.Contains(inputWord))
                         .Where(item => !item.IsDeleted)
                         .ToDictionary(w => w.Id, w => w.OtherForm);
@@ -22,9 +27,7 @@ namespace AnagramSolver.EF.DbFirst
         {
             var FullWordList = new List<FullWordDto>();
 
-            using var context = new AnagramSolverDataContext();
-
-            Dictionary<int, string> words = context.Words
+            Dictionary<int, string> words = _context.Words
                 .Where(item => !item.IsDeleted)
                 .ToDictionary(w => w.Id, w => w.OtherForm);
 
@@ -33,8 +36,6 @@ namespace AnagramSolver.EF.DbFirst
 
         public int Add(FullWordDto parameters)
         {
-            using var context = new AnagramSolverDataContext();
-
             var newWord = new Word
             {
                 MainForm = parameters.MainForm,
@@ -42,9 +43,9 @@ namespace AnagramSolver.EF.DbFirst
                 OrderedForm = new(parameters.OtherForm.ToLower(System.Globalization.CultureInfo.CurrentCulture).OrderByDescending(a => a).ToArray()),
             };
 
-            context.Words.Add(newWord);
+            _context.Words.Add(newWord);
 
-            bool isSaved = context.SaveChanges() > 0;
+            bool isSaved = _context.SaveChanges() > 0;
 
             if (isSaved)
                 return newWord.Id;
@@ -54,9 +55,7 @@ namespace AnagramSolver.EF.DbFirst
 
         public bool Update(FullWordDto parameters)
         {
-            using var context = new AnagramSolverDataContext();
-
-            var wordToUpdate = context.Words
+            var wordToUpdate = _context.Words
                 .Where(w => !w.IsDeleted)
                 .FirstOrDefault(w => w.Id == parameters.Id);
 
@@ -67,40 +66,34 @@ namespace AnagramSolver.EF.DbFirst
                 wordToUpdate.OrderedForm = new(parameters.OtherForm.ToLower(System.Globalization.CultureInfo.CurrentCulture).OrderByDescending(a => a).ToArray());
             }
 
-            bool result = context.SaveChanges() > 0;
+            bool result = _context.SaveChanges() > 0;
 
             return result;
         }
 
         public bool Delete(int wordId)
         {
-            using var context = new AnagramSolverDataContext();
-
-            var wordTodelete = context.Words
+            var wordTodelete = _context.Words
                 .Where(w => !w.IsDeleted)
                 .FirstOrDefault(w => w.Id == wordId);
 
             if (wordTodelete != null)
                 wordTodelete.IsDeleted = true;
 
-            return context.SaveChanges() > 0;
+            return _context.SaveChanges() > 0;
 
         }
 
         public bool IsWordExists(string inputWord)
         {
-            using var context = new AnagramSolverDataContext();
-
-            return context.Words.Any(w => w.OtherForm.Equals(inputWord));
+            return _context.Words.Any(w => w.OtherForm.Equals(inputWord));
         }
 
         public IEnumerable<string> GetAnagrams(string word)
         {
-            using var context = new AnagramSolverDataContext();
-
             string orderedWord = new(word.Replace(" ", "").OrderByDescending(w => w).ToArray());
 
-            IEnumerable<string> anagrams = context.Words
+            IEnumerable<string> anagrams = _context.Words
                                                     .Where(w => w.OrderedForm == orderedWord && w.OtherForm != word)
                                                     .Select(x => x.OtherForm)
                                                     .Distinct()
@@ -111,17 +104,15 @@ namespace AnagramSolver.EF.DbFirst
 
         public void AddOrderedFormForAllWords()
         {
-            using var context = new AnagramSolverDataContext();
-
-            List<Word> words = context.Words.ToList();
+            List<Word> words = _context.Words.ToList();
 
             foreach (Word word in words)
             {
                 word.OrderedForm = new string(word.OtherForm.ToLower().OrderByDescending(c => c).ToArray());
-                context.Update(word);
+                _context.Update(word);
             }
 
-            context.SaveChanges();
+            _context.SaveChanges();
         }
     }
 }

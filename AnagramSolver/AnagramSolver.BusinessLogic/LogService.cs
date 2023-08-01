@@ -3,24 +3,23 @@ using AnagramSolver.Contracts.Interfaces;
 
 namespace AnagramSolver.BusinessLogic
 {
-    public class SearchLogService : ISearchLogService
+    public class LogService : ISearchLogService, IWordLogService
     {
         private readonly ISearchLogRepository _searchLogRepo;
         private readonly IWordLogRepository _wordLogRepo;
 
-        public SearchLogService(ISearchLogRepository searchLogRepo, IWordLogRepository wordLogRepo)
+        public LogService(ISearchLogRepository searchLogRepo, IWordLogRepository wordLogRepo)
         {
             _searchLogRepo = searchLogRepo;
             _wordLogRepo = wordLogRepo;
         }
 
-        // sitas metodas apima ir SearchLog, ir WordLog. ar reiketu ji iskelti i atskira sluoksni? ar tiesiog sujungti logu servisus i viena?
         public bool HasSpareSearch(string ipAddress, int maxSearchCount)
         {
             int currentSearchCount = _searchLogRepo.GetSearchCount(ipAddress);
-            int newWordsCount = _wordLogRepo.GetEntriesCount(ipAddress, WordOpEnum.ADD);
-            int deletedWordsCount = _wordLogRepo.GetEntriesCount(ipAddress, WordOpEnum.DELETE);
-            int editedWordsCount = _wordLogRepo.GetEntriesCount(ipAddress, WordOpEnum.EDIT);
+            int newWordsCount = _wordLogRepo.GetEntriesCount(ipAddress, WordOpEnum.Add);
+            int deletedWordsCount = _wordLogRepo.GetEntriesCount(ipAddress, WordOpEnum.Delete);
+            int editedWordsCount = _wordLogRepo.GetEntriesCount(ipAddress, WordOpEnum.Edit);
 
             return (currentSearchCount - newWordsCount + deletedWordsCount - editedWordsCount) < maxSearchCount;
         }
@@ -28,6 +27,11 @@ namespace AnagramSolver.BusinessLogic
         public void LogSearch(string inputWord, string ipAddress)
         {
             _searchLogRepo.Add(new SearchLogDto(ipAddress, DateTime.Now, inputWord));
+        }
+
+        public void LogWord(int wordId, string ipAddress, WordOpEnum action)
+        {
+            _wordLogRepo.Add(new WordLogDto(ipAddress, action, wordId));
         }
 
         public SearchLogDto GetLastSearchInfo()

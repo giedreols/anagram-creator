@@ -16,8 +16,8 @@
 
     public enum WordOpEnum
     {
-        ADD,
-        EDIT,
-        DELETE
+        Add,
+        Edit,
+        Delete
     }
 }

@@ -6,10 +6,15 @@ namespace AnagramSolver.EF.DbFirst
 {
     public class SearchLogRepo : ISearchLogRepository
     {
+        private readonly AnagramSolverDataContext _context;
+
+        public SearchLogRepo(AnagramSolverDataContext context)
+        {
+            _context = context;
+        }
+
         public void Add(SearchLogDto item)
         {
-            using var context = new AnagramSolverDataContext();
-
             SearchLog model = new()
             {
                 SearchWord = item.Word,
@@ -17,15 +22,13 @@ namespace AnagramSolver.EF.DbFirst
                 UserIp = item.UserIp,
             };
 
-            context.SearchLog.Add(model);
-            context.SaveChanges();
+            _context.SearchLog.Add(model);
+            _context.SaveChanges();
         }
 
         public SearchLogDto GetLastSearch()
         {
-            using var context = new AnagramSolverDataContext();
-
-            var lastItem = context.SearchLog.OrderByDescending(item => item.TimeStamp).FirstOrDefault();
+            var lastItem = _context.SearchLog.OrderByDescending(item => item.TimeStamp).FirstOrDefault();
 
             if (lastItem != null)
             {
@@ -37,9 +40,7 @@ namespace AnagramSolver.EF.DbFirst
 
         public int GetSearchCount(string ipAddress)
         {
-            using var context = new AnagramSolverDataContext();
-
-            int totalCount = context.SearchLog.Where(item => item.UserIp.Equals(ipAddress)).Count();
+            int totalCount = _context.SearchLog.Where(item => item.UserIp.Equals(ipAddress)).Count();
 
             return totalCount;
         }

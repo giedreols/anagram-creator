@@ -1,6 +1,9 @@
 ﻿using AnagramSolver.BusinessLogic;
 using AnagramSolver.Contracts.Interfaces;
 using AnagramSolver.EF.DbFirst;
+using AnagramSolver.EF.DbFirst.Entities;
+using Microsoft.EntityFrameworkCore;
+using System.Configuration;
 using MyConfiguration = AnagramSolver.WebApp.MyConfiguration;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,9 +12,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddScoped<IWordServer, WordServer>();
 
-builder.Services.AddScoped<ISearchLogService, SearchLogService>();
+builder.Services.AddScoped<ISearchLogService, LogService>();
 builder.Services.AddScoped<IFileService, FileService>();
-builder.Services.AddScoped<IWordLogService, WordLogService>();
+builder.Services.AddScoped<IWordLogService, LogService>();
 
 builder.Services.AddScoped<IWordLogRepository, WordLogRepo>();
 builder.Services.AddScoped<ISearchLogRepository, SearchLogRepo>();
@@ -25,6 +28,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddSession();
+builder.Services.AddDbContext<AnagramSolverDataContext>();
 
 var app = builder.Build();
 
