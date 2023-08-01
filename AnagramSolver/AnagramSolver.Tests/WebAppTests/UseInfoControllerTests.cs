@@ -32,7 +32,7 @@
         //	{
         //		Word = word,
         //		UserIp = "",
-        //		TimeStamp = DateTime.Now,
+        //		TimeStamp = DateTime.UtcNow,
         //	};
 
         //          _mockWordRepo.Setup(p => p.GetLastSearchInfo()).Returns(expectedResult);
@@ -54,7 +54,7 @@
         //	{
         //		Word = word,
         //		UserIp = "",
-        //		TimeStamp = DateTime.Now,
+        //		TimeStamp = DateTime.UtcNow,
         //	};
 
         //	_mockWordRepo.Setup(p => p.GetLastSearchInfo()).Returns(expectedResult);
@@ -81,7 +81,7 @@
         //	{
         //		Word = word,
         //		UserIp = "",
-        //		TimeStamp = DateTime.Now,
+        //		TimeStamp = DateTime.UtcNow,
         //	});
         //	_mockWordRepo.Setup(p => p.GetAnagrams(word)).Returns(expectedResult);
 

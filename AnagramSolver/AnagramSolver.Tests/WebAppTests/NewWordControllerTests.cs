@@ -18,7 +18,7 @@
         //                    .Callback<string>(inputWord =>
         //                    {
         //                        string ipAddress = "127.0.0.1";
-        //                        DateTime now = DateTime.Now;
+        //                        DateTime now = DateTime.UtcNow;
         //                    });
         //        _mockConfig.SetupAllProperties();
         //        _mockConfig.Object.ConfigOptions.TotalAmount = 10;

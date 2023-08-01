@@ -17,7 +17,7 @@
         //				.Callback<string>(inputWord =>
         //				{
         //					string ipAddress = "127.0.0.1";
-        //					DateTime now = DateTime.Now;
+        //					DateTime now = DateTime.UtcNow;
         //				});
 
         //	_anagramsController = new AnagramsController(_wordRepository.Object, _mockHelpers.Object);

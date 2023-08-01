@@ -26,7 +26,7 @@ namespace AnagramSolver.BusinessLogic
 
         public void LogSearch(string inputWord, string ipAddress)
         {
-            _searchLogRepo.Add(new SearchLogDto(ipAddress, DateTime.Now, inputWord));
+            _searchLogRepo.Add(new SearchLogDto(ipAddress, DateTime.UtcNow, inputWord));
         }
 
         public void LogWord(int wordId, string ipAddress, WordOpEnum action)

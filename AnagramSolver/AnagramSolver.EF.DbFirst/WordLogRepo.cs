@@ -21,7 +21,7 @@ namespace AnagramSolver.EF.DbFirst
                 UserIp = item.UserIp,
                 Operation = (Entities.WordOpEnum)item.Operation,
                 WordId = item.WordId,
-                TimeStamp = DateTime.Now
+                TimeStamp = DateTime.UtcNow
             };
 
             _context.WordLog.Add(model);
