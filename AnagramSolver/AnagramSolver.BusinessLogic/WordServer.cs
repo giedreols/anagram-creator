@@ -1,6 +1,7 @@
 ﻿using AnagramSolver.BusinessLogic.Helpers;
 using AnagramSolver.Contracts.Dtos;
 using AnagramSolver.Contracts.Interfaces;
+using Microsoft.IdentityModel.Tokens;
 using System.Data;
 
 namespace AnagramSolver.BusinessLogic
@@ -44,17 +45,29 @@ namespace AnagramSolver.BusinessLogic
             return new WordsPerPageDto(currentPageItems, pageSize, allWords.Count);
         }
 
+        public IEnumerable<string> GetAnagrams(string inputWord)
+        {
+            IEnumerable<string> anagrams = _wordRepo.GetAnagrams(inputWord);
+
+            return anagrams.ToList();
+        }
+
+        public bool DeleteWord(int wordId)
+        {
+            return _wordRepo.Delete(wordId);
+        }
+
         public NewWordDto SaveWord(FullWordDto word, ConfigOptionsDto config)
         {
-            var errorMessage = InputWordValidator.Validate(word.OtherForm, config.MinLength, config.MaxLength);
-
             NewWordDto newWord = new();
+
+            var errorMessage = InputWordValidator.Validate(word.OtherForm, config.MinLength, config.MaxLength);
 
             if (errorMessage != null)
             {
                 newWord.IsSaved = false; newWord.ErrorMessage = errorMessage;
             }
-            else if (_wordRepo.IsWordExists(word.OtherForm))
+            else if (_wordRepo.IsWordExists(word.OtherForm) != 0)
             {
                 newWord.IsSaved = false; newWord.ErrorMessage = ErrorMessages.AlreadyExists;
             }
@@ -73,22 +86,37 @@ namespace AnagramSolver.BusinessLogic
             return newWord;
         }
 
-        public IEnumerable<string> GetAnagrams(string inputWord)
+        public int GetWordId(string word)
         {
-            IEnumerable<string> anagrams = _wordRepo.GetAnagrams(inputWord);
-
-            return anagrams.ToList();
+            return _wordRepo.IsWordExists(word);
         }
 
-        public bool DeleteWord(int wordId)
+        public NewWordDto UpdateWord(int wordId, string newForm, ConfigOptionsDto config)
         {
-            return _wordRepo.Delete(wordId);
-        }
+            NewWordDto newWord = new();
 
-        public bool UpdateWord(int wordId, string newForm)
-        {
-            FullWordDto word = new(wordId, newForm);
-            return _wordRepo.Update(word);
+            var errorMessage = InputWordValidator.Validate(newForm, config.MinLength, config.MaxLength);
+
+            if (errorMessage != null)
+            {
+                newWord.IsSaved = false; newWord.ErrorMessage = errorMessage;
+            }
+            else if (_wordRepo.IsWordExists(newForm) != 0)
+            {
+                newWord.IsSaved = false; newWord.ErrorMessage = ErrorMessages.AlreadyExists;
+            }
+            else
+            {
+                FullWordDto word = new(wordId, newForm);
+                newWord.IsSaved = _wordRepo.Update(word);
+
+                if (!newWord.IsSaved)
+                {                    
+                    newWord.ErrorMessage = ErrorMessages.UnknowReason;
+                }
+            }
+
+            return newWord;
         }
     }
 }

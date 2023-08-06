@@ -1,6 +1,16 @@
 ﻿@model AnagramViewModel
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 
+
+<head>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <style>
+        .clickable-icon {
+            cursor: pointer; /* Change the cursor to a pointer (finger) */
+        }
+    </style>
+</head>
+
 @{
     ViewData["Title"] = "Anagramos";
 }
@@ -9,12 +19,48 @@
 
     <h2>@Model.Word</h2>
 
-    @ViewData["SavedMessage"]
+    <i class="material-icons clickable-icon editForm" style="font-size:18px;color:grey">edit</i>
 
-    @if (Model.ErrorMessage != null)
+    <a href="@Url.Action("Delete", "Word", new {wordId = @Model.WordId})" title="Delete">
+        <i class="material-icons" style="font-size:18px;color:grey">delete</i>
+    </a>
+
+    <p>@ViewData["Message"] </p>
+
+    <div id="editForm" style="display: @(ViewData["IsFormVisible"] as bool? == true ? "block" : "none")">
+        <form asp-controller="Word" asp-action="Update" method="post">
+            <div class="form-actions no-color">
+                <p>
+                    <input type="text" name="newForm" value="@((ViewData["newForm"] != null) ? ViewData["newForm"] : Model.Word)" />
+                    <input name="wordId" value=@Model.WordId type="hidden" />
+                    <input name="oldForm" value=@Model.Word type="hidden" />
+                    <input type="button" value="Atmesti" class="btn btn-default editForm" />
+                    <input type="submit" value="Išsaugoti" class="btn btn-default" />
+                </p>
+            </div>
+        </form>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $(".editForm").click(function (event) {
+                event.preventDefault();
+                var formDiv = document.getElementById("editForm");
+                formDiv.style.display = formDiv.style.display === "none" ? "block" : "none";
+
+                var isVisible = formDiv.style.display === "block";
+                $.post("/Word/ToggleFormVisibility", { isVisible: isVisible }, function (data) {
+                    console.log("Form visibility updated.");
+                });
+            });
+        });
+    </script>
+
+    @if (Model == null)
     {
         <p>
-            @Model.ErrorMessage.Message
+            Anagramų paieškų limitas iš šio IP adreso išnaudotas. Nori daugiau paieškų?
             <a asp-area="" asp-controller="NewWord" asp-action="Index"> Įtrauk naują žodį.</a>
         </p>
     }

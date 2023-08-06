@@ -1,4 +1,5 @@
 ﻿using AnagramSolver.Contracts.Dtos;
+using Microsoft.IdentityModel.Tokens;
 
 namespace AnagramSolver.BusinessLogic.Helpers
 {
@@ -6,7 +7,7 @@ namespace AnagramSolver.BusinessLogic.Helpers
     {
         public static string Validate(this string word, int minLength, int maxLength)
         {
-            if (word == null)
+            if (word.IsNullOrEmpty())
             {
                 return ErrorMessages.Empty;
             }

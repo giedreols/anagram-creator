@@ -1,7 +1,5 @@
-﻿@model NewWordViewModel
-
-@{
-	ViewData["Title"] = "Naujas žodis";
+﻿@{
+    ViewData["Title"] = "Naujas žodis";
 }
 
 <div class="text-left">
@@ -9,7 +7,7 @@
     <form asp-controller="Word" asp-action="Create" method="post">
         <div class="form-actions no-color">
             <p>
-                Įrašykite žodį: <input type="text" name="newWord" value="@ViewData["CurrentWord"]" />
+                Įrašykite žodį: <input type="text" name="newWord" value="@ViewData["Word"]" />
 
                 Kalbos dalies santrumpa: <input type="text" name="newAbbreviation" value="@ViewData["Abbreviation"]" />
 
@@ -17,9 +15,7 @@
             </p>
         </div>
 
-        @if (Model != null && !Model.IsSaved)
-        {
-            <p>@Model.ErrorMessage</p>
-        }
+        <p>@ViewData["Message"]</p>
+
     </form>
 </div>

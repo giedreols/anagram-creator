@@ -14,7 +14,7 @@ namespace AnagramSolver.Contracts.Interfaces
 
         Dictionary<int, string> GetMatchingWords(string inputWord);
 
-        bool IsWordExists(string inputWord);
+        int IsWordExists(string inputWord);
 
         IEnumerable<string> GetAnagrams(string word);
     }

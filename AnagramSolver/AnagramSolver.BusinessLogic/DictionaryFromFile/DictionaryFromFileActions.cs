@@ -105,5 +105,15 @@ namespace AnagramSolver.BusinessLogic.DictionaryFromFile
         {
             throw new NotImplementedException();
         }
+
+        public NewWordDto UpdateWord(int wordId, string newForm, ConfigOptionsDto config)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int GetWordId(string word)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

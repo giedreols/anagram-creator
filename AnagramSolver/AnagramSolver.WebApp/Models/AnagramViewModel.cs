@@ -5,8 +5,24 @@ namespace AnagramSolver.WebApp.Models;
 public class AnagramViewModel : PageModel
 {
     public string Word { get; private set; }
+
+    public int WordId { get; set; }
+
     public IList<string> Anagrams { get; set; }
-    public ErrorModel ErrorMessage { get; private set; }
+
+    public AnagramViewModel(int wordId, string word, IList<string> anagrams)
+    {
+        WordId = wordId;
+        Word = word;
+        Anagrams = anagrams;
+    }
+
+    public AnagramViewModel(int wordId, string word)
+    {
+        WordId = wordId;
+        Word = word;
+        Anagrams = new List<string>();
+    }
 
     public AnagramViewModel(string word, IList<string> anagrams)
     {
@@ -17,13 +33,6 @@ public class AnagramViewModel : PageModel
     public AnagramViewModel(string word)
     {
         Word = word;
-        Anagrams = new List<string>();
-    }
-
-    public AnagramViewModel(string word, string errMessage)
-    {
-        Word = word;
-        ErrorMessage = new ErrorModel(errMessage);
         Anagrams = new List<string>();
     }
 }

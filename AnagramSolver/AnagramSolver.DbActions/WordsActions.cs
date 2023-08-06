@@ -257,5 +257,10 @@ namespace AnagramSolver.SqlActions
         {
             throw new NotImplementedException();
         }
+
+        int IWordRepository.IsWordExists(string inputWord)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

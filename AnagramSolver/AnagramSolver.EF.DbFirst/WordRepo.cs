@@ -84,9 +84,11 @@ namespace AnagramSolver.EF.DbFirst
 
         }
 
-        public bool IsWordExists(string inputWord)
+        public int IsWordExists(string inputWord)
         {
-            return _context.Words.Any(w => w.OtherForm.Equals(inputWord));
+            var word = _context.Words.FirstOrDefault(w => w.OtherForm.Equals(inputWord));
+
+            return word != null ? word.Id : 0;
         }
 
         public IEnumerable<string> GetAnagrams(string word)

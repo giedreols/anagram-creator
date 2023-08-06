@@ -14,6 +14,8 @@ namespace AnagramSolver.Contracts.Interfaces
 
         bool DeleteWord(int wordId);
 
-        bool UpdateWord(int wordId, string newForm);
+        NewWordDto UpdateWord(int wordId, string newForm, ConfigOptionsDto config);
+
+        int GetWordId(string word);
     }
 }

@@ -29,85 +29,125 @@ namespace AnagramSolver.WebApp.Controllers
             ipAddress = _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString();
         }
 
-        // kaip reiktu daryti errorus? 
         [HttpPost]
-        public ActionResult Create([FromForm] string newWord, [FromForm] string newAbbreviation)
+        public ActionResult Create([FromForm] string newWord = "", [FromForm] string newAbbreviation = "")
         {
-            ViewData["CurrentWord"] = newWord;
+            ViewData["Word"] = newWord;
             ViewData["Abbreviation"] = newAbbreviation;
-
-            ViewData["SavedMessage"] = "Žodis išsaugotas žodyne";
 
             NewWordDto savedWord = _wordServer.SaveWord(new FullWordDto(newWord, newWord, newAbbreviation), _configOptions);
 
-            NewWordViewModel newWordModel = new()
-            {
-                IsSaved = savedWord.IsSaved,
-                ErrorMessage = savedWord.ErrorMessage,
-                Id = savedWord.Id,
-                AnagramWords = new AnagramViewModel(newWord)
-            };
-
             if (savedWord.IsSaved)
             {
-                _wordLogService.Log(savedWord.Id, ipAddress, WordOpEnum.ADD);
+                _wordLogService.LogWord(savedWord.Id, ipAddress, WordOpEnum.Add);
 
-                newWordModel.AnagramWords.Anagrams = _wordServer.GetAnagrams(newWord).ToList();
+                ViewData["Message"] = "Žodis išsaugotas žodyne";
 
-                return View("../Home/WordWithAnagrams", newWordModel.AnagramWords);
+                AnagramViewModel anagrams = new(savedWord.Id, newWord, _wordServer.GetAnagrams(newWord).ToList());
+
+                return View("../Home/WordWithAnagrams", anagrams);
             }
 
-            return View("../NewWord/Index", newWordModel);
+            ViewData["Message"] = savedWord.ErrorMessage;
+
+            return View("../NewWord/Index");
         }
 
-        // kaip reiktu daryti errora? 
         [HttpGet]
-        public IActionResult Get(string inputWord)
+        public IActionResult Get(string inputWord = "")
         {
+            // patikrinti, ar toks zodis egzistuoja. jei taip - rodyti redagavima ir trynima. jei ne -rodyti itraukima i zodyna?
+
+            ViewData["IsFormVisible"] = false;
+            ViewData["Word"] = inputWord;
+
             if (inputWord.IsNullOrEmpty())
                 return View("../Home/Index");
 
-            if (_searchLogService.HasSpareSearch(ipAddress, _configOptions.SearchCount))
+
+            if (!_searchLogService.HasSpareSearch(ipAddress, _configOptions.SearchCount))
             {
-                AnagramViewModel model = new(inputWord, _wordServer.GetAnagrams(inputWord).ToList());
-                _searchLogService.LogSearch(inputWord, ipAddress);
-                return View("../Home/WordWithAnagrams", model);
+                View("../Home/WordWithAnagrams");
             }
 
-            else return View("../Home/WordWithAnagrams", new AnagramViewModel(inputWord, "Anagramų paieškų limitas iš šio IP adreso išnaudotas. Nori daugiau paieškų?"));
+            int wordId = _wordServer.GetWordId(inputWord);
+
+            if (wordId == 0)
+            {
+                // nerodyti redagavimo ir trynimo mygtuku
+            }
+
+            AnagramViewModel model = new(wordId, inputWord, _wordServer.GetAnagrams(inputWord).ToList());
+            _searchLogService.LogSearch(inputWord, ipAddress);
+            return View("../Home/WordWithAnagrams", model);
+
         }
 
-        // kaip reiktu daryti errora? 
+        // NEVEIKIA
+
         [HttpGet]
-        public ActionResult Delete(int wordId)
+        public ActionResult Delete(int wordId = 0, int currentPage = 1)
         {
+            if (wordId == 0)
+            {
+                TempData["Message"] = "Pasirink žodį, kurį nori ištrinti.";
+            }
+
             bool isDeleted = _wordServer.DeleteWord(wordId);
 
             if (isDeleted)
             {
-                _wordLogService.Log(wordId, ipAddress, WordOpEnum.DELETE);
+                _wordLogService.LogWord(wordId, ipAddress, WordOpEnum.Delete);
+                TempData["Message"] = "Žodis ištrintas.";
             }
-
-            return RedirectToAction("Index", "WordList");
-        }
-
-        // kaip reiktu daryti errora? 
-        [HttpPost]
-        public ActionResult Update([FromForm] int wordId, [FromForm] int currentPage, [FromForm] string newForm = "")
-        {
-            ViewData["newForm"] = newForm;
-
-            if (!newForm.IsNullOrEmpty())
+            else
             {
-                bool isUpdated = _wordServer.UpdateWord(wordId, newForm);
-
-                if (isUpdated)
-                {
-                    _wordLogService.Log(wordId, ipAddress, WordOpEnum.EDIT);
-                }
+                TempData["Message"] = "Žodžio ištrinti nepavyko. Kažkas blogai suprogramuota, sorry.";
             }
 
             return RedirectToAction("Index", "WordList", new { page = currentPage });
+        }
+
+        [HttpPost]
+        public ActionResult Update([FromForm] int wordId, [FromForm] string oldForm, [FromForm] string newForm = "")
+        {
+            ViewData["newForm"] = newForm;
+            ViewData["oldForm"] = oldForm;
+            ViewData["WordId"] = wordId;
+
+            if (newForm == oldForm)
+            {
+                ViewData["IsFormVisible"] = true;
+
+                AnagramViewModel model = new(wordId, oldForm, _wordServer.GetAnagrams(oldForm).ToList());
+                return View("../Home/WordWithAnagrams", model);
+            }
+
+            var updatedWord = _wordServer.UpdateWord(wordId, newForm, _configOptions);
+
+            if (updatedWord.IsSaved)
+            {
+                ViewData["Message"] = "Žodis atnaujintas.";
+
+                _wordLogService.LogWord(wordId, ipAddress, WordOpEnum.Edit);
+                ViewData["IsFormVisible"] = false;
+
+                AnagramViewModel model = new(wordId, newForm, _wordServer.GetAnagrams(newForm).ToList());
+                return View("../Home/WordWithAnagrams", model);
+            }
+
+            ViewData["Message"] = updatedWord.ErrorMessage;
+            ViewData["IsFormVisible"] = true;
+
+            return View("../Home/WordWithAnagrams", new AnagramViewModel(wordId, oldForm, _wordServer.GetAnagrams(oldForm).ToList()));
+
+        }
+
+        [HttpPost]
+        public IActionResult ToggleFormVisibility(bool isVisible)
+        {
+            ViewData["IsFormVisible"] = isVisible;
+            return Json(new { success = true });
         }
     }
 }
