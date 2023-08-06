@@ -29,7 +29,8 @@ namespace AnagramSolver.WebApp.Controllers
             UserInfoViewModel model = new()
             {
                 AnagramWords = new AnagramViewModel(word),
-                SearchDateTime = lastSearchInfo.TimeStamp.Equals(DateTime.MinValue) ? "nėra" : lastSearchInfo.TimeStamp.ToString(),
+                SearchDateTime = lastSearchInfo.TimeStamp.Equals(DateTime.MinValue) ? "nėra"
+                        : TimeZoneInfo.ConvertTimeFromUtc((DateTime)lastSearchInfo.TimeStamp, TimeZoneInfo.FindSystemTimeZoneById("Europe/Vilnius")).ToString(),
                 Ip = string.IsNullOrEmpty(lastSearchInfo.UserIp) ? "nėra" : lastSearchInfo.UserIp,
             };
 

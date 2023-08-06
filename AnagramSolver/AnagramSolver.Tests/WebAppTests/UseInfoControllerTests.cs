@@ -1,27 +1,33 @@
-﻿namespace AnagramSolver.Tests.WebAppTests
+﻿using AnagramSolver.Contracts.Interfaces;
+using AnagramSolver.WebApp.Controllers;
+using Moq;
+
+namespace AnagramSolver.Tests.WebAppTests
 {
     [TestFixture]
     internal class UseInfoControllerTests
     {
-        //private UserInfoController _userInfoController;
-        //private Mock<IwordServer> _mockWordRepo;
+        private UserInfoController _userInfoController;
+        private Mock<IWordServer> _mockWordServer;
+        private Mock<ISearchLogService> _mockLogService;
 
-        //[SetUp]
-        //public void SetUp()
-        //{
-        //	_mockWordRepo = new Mock<IwordServer>(MockBehavior.Strict);
-        //	_userInfoController = new UserInfoController(_mockWordRepo.Object);
-        //}
+        [SetUp]
+        public void SetUp()
+        {
+            _mockWordServer = new Mock<IWordServer>(MockBehavior.Default);
+            _mockLogService = new Mock<ISearchLogService>(MockBehavior.Default);
+            _userInfoController = new UserInfoController(_mockLogService.Object, _mockWordServer.Object);
+        }
 
         //[Test]
         //public void Index_ReturnsUserInfoModel()
         //{
-        //          _mockWordRepo.Setup(p => p.GetLastSearchInfo()).Returns(new SearchLogDto());
+        //    _mockWordServer.Setup(p => p.GetLastSearchInfo()).Returns(new SearchLogDto());
 
-        //	var result = (ViewResult)_userInfoController.Index();
+        //    var result = (ViewResult)_userInfoController.Index();
 
-        //	Assert.That(result, Is.Not.Null);
-        //	Assert.That(result.Model, Is.InstanceOf<UserInfoModel>());
+        //    Assert.That(result, Is.Not.Null);
+        //    Assert.That(result.Model, Is.InstanceOf<UserInfoModel>());
         //}
 
         //[Test]
@@ -35,8 +41,8 @@
         //		TimeStamp = DateTime.UtcNow,
         //	};
 
-        //          _mockWordRepo.Setup(p => p.GetLastSearchInfo()).Returns(expectedResult);
-        //          _mockWordRepo.Setup(p => p.GetAnagrams(word)).Returns(new List<string>());
+        //          _mockWordServer.Setup(p => p.GetLastSearchInfo()).Returns(expectedResult);
+        //          _mockWordServer.Setup(p => p.GetAnagrams(word)).Returns(new List<string>());
 
         //          var result = (ViewResult)_userInfoController.Index();
 
@@ -57,8 +63,8 @@
         //		TimeStamp = DateTime.UtcNow,
         //	};
 
-        //	_mockWordRepo.Setup(p => p.GetLastSearchInfo()).Returns(expectedResult);
-        //          _mockWordRepo.Setup(p => p.GetAnagrams(word)).Returns(new List<string>());
+        //	_mockWordServer.Setup(p => p.GetLastSearchInfo()).Returns(expectedResult);
+        //          _mockWordServer.Setup(p => p.GetAnagrams(word)).Returns(new List<string>());
 
         //          var result = (ViewResult)_userInfoController.Index();
 
@@ -77,13 +83,13 @@
         //		"marakonas"
         //	};
 
-        //	_mockWordRepo.Setup(p => p.GetLastSearchInfo()).Returns(new SearchLogDto()
+        //	_mockWordServer.Setup(p => p.GetLastSearchInfo()).Returns(new SearchLogDto()
         //	{
         //		Word = word,
         //		UserIp = "",
         //		TimeStamp = DateTime.UtcNow,
         //	});
-        //	_mockWordRepo.Setup(p => p.GetAnagrams(word)).Returns(expectedResult);
+        //	_mockWordServer.Setup(p => p.GetAnagrams(word)).Returns(expectedResult);
 
         //	var result = (ViewResult)_userInfoController.Index();
 
@@ -96,7 +102,7 @@
         //public void Index_DoesNotThrowError_IfNoLastSearchInfo()
         //{
         //	SearchLogDto expectedResult = new();
-        //	_mockWordRepo.Setup(p => p.GetLastSearchInfo()).Returns(expectedResult);
+        //	_mockWordServer.Setup(p => p.GetLastSearchInfo()).Returns(expectedResult);
 
         //	var result = (ViewResult)_userInfoController.Index();
 
@@ -113,7 +119,7 @@
         //{
         //	SearchLogDto expectedResult = new();
 
-        //	_mockWordRepo.Setup(p => p.GetLastSearchInfo()).Returns(expectedResult);
+        //	_mockWordServer.Setup(p => p.GetLastSearchInfo()).Returns(expectedResult);
 
         //	Assert.DoesNotThrow(() =>
         //	{
