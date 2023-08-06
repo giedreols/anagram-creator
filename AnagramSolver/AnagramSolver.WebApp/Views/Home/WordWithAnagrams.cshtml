@@ -19,11 +19,14 @@
 
     <h2>@Model.Word</h2>
 
-    <i class="material-icons clickable-icon editForm" style="font-size:18px;color:grey">edit</i>
+    @if (Model.WordId != 0)
+    {
+        <i class="material-icons clickable-icon editForm" style="font-size:18px;color:grey">edit</i>
 
-    <a href="@Url.Action("Delete", "Word", new {wordId = @Model.WordId})" title="Delete">
-        <i class="material-icons" style="font-size:18px;color:grey">delete</i>
-    </a>
+        <a href="@Url.Action("Delete", "Word", new {wordId = @Model.WordId, word = Model.Word})" title="Delete">
+            <i class="material-icons" style="font-size:18px;color:grey">delete</i>
+        </a>
+    }
 
     <p>@ViewData["Message"] </p>
 

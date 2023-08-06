@@ -56,14 +56,11 @@ namespace AnagramSolver.WebApp.Controllers
         [HttpGet]
         public IActionResult Get(string inputWord = "")
         {
-            // patikrinti, ar toks zodis egzistuoja. jei taip - rodyti redagavima ir trynima. jei ne -rodyti itraukima i zodyna?
-
             ViewData["IsFormVisible"] = false;
             ViewData["Word"] = inputWord;
 
             if (inputWord.IsNullOrEmpty())
                 return View("../Home/Index");
-
 
             if (!_searchLogService.HasSpareSearch(ipAddress, _configOptions.SearchCount))
             {
@@ -71,41 +68,26 @@ namespace AnagramSolver.WebApp.Controllers
             }
 
             int wordId = _wordServer.GetWordId(inputWord);
-
-            if (wordId == 0)
-            {
-                // nerodyti redagavimo ir trynimo mygtuku
-            }
-
             AnagramViewModel model = new(wordId, inputWord, _wordServer.GetAnagrams(inputWord).ToList());
             _searchLogService.LogSearch(inputWord, ipAddress);
             return View("../Home/WordWithAnagrams", model);
-
         }
 
-        // NEVEIKIA
-
         [HttpGet]
-        public ActionResult Delete(int wordId = 0, int currentPage = 1)
+        public ActionResult Delete(int wordId, string word)
         {
-            if (wordId == 0)
-            {
-                TempData["Message"] = "Pasirink žodį, kurį nori ištrinti.";
-            }
-
             bool isDeleted = _wordServer.DeleteWord(wordId);
 
             if (isDeleted)
             {
                 _wordLogService.LogWord(wordId, ipAddress, WordOpEnum.Delete);
-                TempData["Message"] = "Žodis ištrintas.";
-            }
-            else
-            {
-                TempData["Message"] = "Žodžio ištrinti nepavyko. Kažkas blogai suprogramuota, sorry.";
+                ViewData["Message"] = "Žodis ištrintas.";
+                AnagramViewModel model = new(word, _wordServer.GetAnagrams(word).ToList());
+                return View("../Home/WordWithAnagrams", model);
             }
 
-            return RedirectToAction("Index", "WordList", new { page = currentPage });
+            ViewData["Message"] = "Žodžio ištrinti nepavyko. Kažkas blogai suprogramuota, sorry.";
+            return View("../Home/WordWithAnagrams", new AnagramViewModel(wordId, word, _wordServer.GetAnagrams(word).ToList()));
         }
 
         [HttpPost]
@@ -140,7 +122,6 @@ namespace AnagramSolver.WebApp.Controllers
             ViewData["IsFormVisible"] = true;
 
             return View("../Home/WordWithAnagrams", new AnagramViewModel(wordId, oldForm, _wordServer.GetAnagrams(oldForm).ToList()));
-
         }
 
         [HttpPost]
