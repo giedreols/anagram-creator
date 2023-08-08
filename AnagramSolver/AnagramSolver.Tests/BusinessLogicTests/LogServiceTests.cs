@@ -1,10 +1,9 @@
 ﻿using AnagramSolver.BusinessLogic;
-using AnagramSolver.BusinessLogic.Helpers;
 using AnagramSolver.Contracts.Dtos;
 using AnagramSolver.Contracts.Interfaces;
 using Moq;
 
-namespace AnagramSolver.Tests.BusinessLogicTests
+namespace AnagramSolver.Tests.EfDbFirstTests
 {
     public class LogServiceTests
     {
