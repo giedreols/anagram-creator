@@ -1,7 +1,6 @@
 ﻿using AnagramSolver.BusinessLogic.Helpers;
 using AnagramSolver.Contracts.Dtos;
 using AnagramSolver.Contracts.Interfaces;
-using Microsoft.IdentityModel.Tokens;
 using System.Data;
 
 namespace AnagramSolver.BusinessLogic
