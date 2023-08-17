@@ -46,6 +46,7 @@ namespace AnagramSolver.BusinessLogic
 
         public IEnumerable<string> GetAnagrams(string inputWord)
         {
+            // tai vietoj sito callo i db turi buti iskviecimas anagramica controlleris, ane?
             IEnumerable<string> anagrams = _wordRepo.GetAnagrams(inputWord);
 
             return anagrams.ToList();

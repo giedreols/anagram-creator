@@ -14,6 +14,9 @@ namespace AnagramSolver.WebApp.Controllers
             _httpClient = httpClient;
         }
 
+        // kur deti kontroleri? cia ar business logikoj? ar isvis ji taip daryti ar kazkaip kitaip?
+        // siaip nelabai suprantu uzduoti, nes mano funkcionalumas skiriasi nuo tu controlleriu, kurie yra anagramicoj
+        // aa turbut uzduotis sako, kad anagramas generuoti turi sita anagramica, o ne mano Business logica. bet pas mane ne business logika ir generuoja...
         [HttpGet("all/{letters}")]
         public async Task<IActionResult> GetAllWordsAsync(string letters = "")
         {
@@ -24,6 +27,9 @@ namespace AnagramSolver.WebApp.Controllers
             {
                 string responseBody = await response.Content.ReadAsStringAsync();
                 AnagramApiResponse apiResponse = JsonConvert.DeserializeObject<AnagramApiResponse>(responseBody);
+
+                // pasikonvertuot i kazka, ka priima mano frontas
+
                 return Ok(apiResponse);
             }
             else
