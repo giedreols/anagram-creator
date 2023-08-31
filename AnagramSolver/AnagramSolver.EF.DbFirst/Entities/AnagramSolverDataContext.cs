@@ -4,10 +4,6 @@ namespace AnagramSolver.EF.DbFirst.Entities;
 
 public partial class AnagramSolverDataContext : DbContext
 {
-    public AnagramSolverDataContext()
-    {
-    }
-
     public AnagramSolverDataContext(DbContextOptions<AnagramSolverDataContext> options)
         : base(options)
     {
@@ -20,11 +16,6 @@ public partial class AnagramSolverDataContext : DbContext
     public virtual DbSet<Word> Words { get; set; }
 
     public DbSet<WordLog> WordLog { get; set; }
-
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        optionsBuilder.UseSqlServer("Data Source=.\\MSSQLSERVER01;Initial Catalog=AnagramSolverData;Integrated Security=True;TrustServerCertificate=true");
-    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
