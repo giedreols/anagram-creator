@@ -40,9 +40,7 @@ namespace AnagramSolver.WebApp.Controllers
         public IActionResult Search(string inputWord = "", int page = 1)
         {
             if (inputWord.IsNullOrEmpty())
-            {
                 return Index();
-            }
 
             ViewData["Word"] = inputWord;
 

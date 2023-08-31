@@ -8,6 +8,10 @@ namespace AnagramSolver.EF.DbFirst
     {
         private readonly AnagramSolverDataContext _context;
 
+        public WordRepo()
+        {
+                    }
+
         public WordRepo(AnagramSolverDataContext context)
         {
             _context = context;
