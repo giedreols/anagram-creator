@@ -262,5 +262,10 @@ namespace AnagramSolver.SqlActions
         {
             throw new NotImplementedException();
         }
+
+        public bool AddList(IList<FullWordDto> list)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

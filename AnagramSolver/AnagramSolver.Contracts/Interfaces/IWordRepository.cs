@@ -6,6 +6,8 @@ namespace AnagramSolver.Contracts.Interfaces
     {
         int Add(FullWordDto parameters);
 
+        bool AddList(IList<FullWordDto> list);
+
         bool Update(FullWordDto parameters);
 
         bool Delete(int wordId);

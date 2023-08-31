@@ -8,10 +8,6 @@ namespace AnagramSolver.EF.DbFirst
     {
         private readonly AnagramSolverDataContext _context;
 
-        public WordRepo()
-        {
-                    }
-
         public WordRepo(AnagramSolverDataContext context)
         {
             _context = context;
@@ -44,6 +40,7 @@ namespace AnagramSolver.EF.DbFirst
             {
                 MainForm = parameters.MainForm,
                 OtherForm = parameters.OtherForm,
+                PartOfSpeechId = parameters.PartOfSpeechId > 0 ? parameters.PartOfSpeechId : null,
                 OrderedForm = new(parameters.OtherForm.ToLower(System.Globalization.CultureInfo.CurrentCulture).OrderByDescending(a => a).ToArray()),
             };
 
@@ -55,6 +52,28 @@ namespace AnagramSolver.EF.DbFirst
                 return newWord.Id;
 
             return 0;
+        }
+
+        public bool AddList(IList<FullWordDto> words)
+        {
+            List<Word> list = new();
+
+            foreach (var word in words)
+            {
+                list.Add(new Word
+                {
+                    MainForm = word.MainForm,
+                    OtherForm = word.OtherForm,
+                    PartOfSpeechId = word.PartOfSpeechId > 0 ? word.PartOfSpeechId : null,
+                    OrderedForm = new(word.OtherForm.ToLower(System.Globalization.CultureInfo.CurrentCulture).OrderByDescending(a => a).ToArray()),
+                });
+            }
+
+            _context.Words.AddRangeAsync(list);
+
+            bool isSaved = _context.SaveChanges() == words.Count;
+
+            return isSaved;
         }
 
         public bool Update(FullWordDto parameters)
@@ -106,19 +125,6 @@ namespace AnagramSolver.EF.DbFirst
                                                     .OrderBy(w => w)
                                                     .ToList();
             return anagrams;
-        }
-
-        public void AddOrderedFormForAllWords()
-        {
-            List<Word> words = _context.Words.ToList();
-
-            foreach (Word word in words)
-            {
-                word.OrderedForm = new string(word.OtherForm.ToLower().OrderByDescending(c => c).ToArray());
-                _context.Update(word);
-            }
-
-            _context.SaveChanges();
         }
     }
 }

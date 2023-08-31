@@ -1,37 +1,49 @@
 ﻿using AnagramSolver.BusinessLogic.DictionaryFromFile;
 using AnagramSolver.BusinessLogic.Helpers;
 using AnagramSolver.Contracts.Dtos;
-using AnagramSolver.EF.DbFirst;
+using AnagramSolver.Contracts.Interfaces;
 
 namespace AnagramSolver.DbSeeding
 {
-    internal static class SeedOneLineDictionary
+    internal class SeedOneLineDictionary
     {
+        private readonly IWordRepository _wordRepo;
+        private readonly IPartOfSpeechRespository _partOfSpeechRepo;
 
-        public static void Seed()
+        public SeedOneLineDictionary(IWordRepository wordRepository, IPartOfSpeechRespository partOfSpeechRespository)
+        {
+            _wordRepo = wordRepository;
+            _partOfSpeechRepo = partOfSpeechRespository;
+        }
+
+        public void Seed()
         {
             FileReader fileReader = new();
-            var stringText = fileReader.ReadFile("lithuanian-words-list.txt");
+            var stringText = fileReader.ReadFile("zodynas.txt");
+            //var stringText = fileReader.ReadFile("lithuanian-words-list.txt");
             IEnumerable<string> lines = Parser.ParseSingleLines(stringText).DistinctBy(l => l).ToList();
 
-            var newList = new List<string>();
+            var newList = new List<FullWordDto>();
 
             foreach (var line in lines)
             {
-                if (!line.Contains(".") && !line.Contains("-") && !line.Any(char.IsDigit))
+                if (!line.Contains('.') && !line.Contains('-') && line.Any(char.IsLetter))
                 {
-                    newList.Add(line);
+                    string[] values = line.Split('\t');
+                    newList.Add(new FullWordDto(mainForm: values[0], otherForm: values[2], partOfSpeechAbbreviation: values[1]));
+
+                    // newList.Add(new FullWordDto(line));
                 }
             }
 
-            var wtable = new WordRepo();
-
-            foreach (var word in lines)
+            foreach (var word in newList)
             {
-                wtable.Add(new FullWordDto(word));
+                word.PartOfSpeechId = _partOfSpeechRepo.InsertPartOfSpeechIfDoesNotExist(word.PartOfSpeechAbbreviation);
             }
 
-            Console.WriteLine("end");
+            string result = _wordRepo.AddList(newList) ? "Success." : "Failed.";
+
+            Console.WriteLine("Seeding finished. Result: " + result);
         }
     }
 }
