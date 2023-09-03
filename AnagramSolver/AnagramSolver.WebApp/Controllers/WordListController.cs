@@ -26,8 +26,6 @@ namespace AnagramSolver.WebApp.Controllers
         public IActionResult Index(int page = 1)
         {
             ViewData["Message"] = TempData["Message"];
-            ViewData["IsFormVisible"] = TempData["IsFormVisible"];
-            ViewData["WordId"] = TempData["WordId"];
 
             WordsPerPageDto wordsPerPage = _wordServer.GetWordsByPage(page, pageSize);
 

@@ -81,9 +81,8 @@ namespace AnagramSolver.WebApp.Controllers
             if (isDeleted)
             {
                 _wordLogService.LogWord(wordId, ipAddress, WordOpEnum.Delete);
-                ViewData["Message"] = "Žodis ištrintas.";
-                AnagramViewModel model = new(word, _wordServer.GetAnagrams(word).ToList());
-                return View("../Home/WordWithAnagrams", model);
+                TempData["Message"] = "Žodis ištrintas.";
+                return RedirectToAction("Index", "WordList");
             }
 
             ViewData["Message"] = "Žodžio ištrinti nepavyko. Kažkas blogai suprogramuota, sorry.";

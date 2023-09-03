@@ -109,7 +109,7 @@ namespace AnagramSolver.EF.DbFirst
 
         public int IsWordExists(string inputWord)
         {
-            var word = _context.Words.FirstOrDefault(w => w.OtherForm.Equals(inputWord));
+            var word = _context.Words.Where(w => !w.IsDeleted).FirstOrDefault(w => w.OtherForm.Equals(inputWord));
 
             return word != null ? word.Id : 0;
         }
