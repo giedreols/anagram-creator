@@ -35,9 +35,9 @@ namespace AnagramSolver.WebApp.Controllers
             ViewData["Word"] = newWord;
             ViewData["Abbreviation"] = newAbbreviation;
 
-            NewWordDto savedWord = _wordServer.SaveWord(new FullWordDto(newWord, newWord, newAbbreviation), _configOptions);
+            WordResultDto savedWord = _wordServer.SaveWord(new FullWordDto(newWord, newWord, newAbbreviation), _configOptions);
 
-            if (savedWord.IsSaved)
+            if (savedWord.Id > 0)
             {
                 _wordLogService.LogWord(savedWord.Id, ipAddress, WordOpEnum.Add);
 
@@ -124,9 +124,9 @@ namespace AnagramSolver.WebApp.Controllers
                 return View("../Home/WordWithAnagrams", model);
             }
 
-            var updatedWord = _wordServer.UpdateWord(wordId, newForm, _configOptions);
+            WordResultDto updatedWord = _wordServer.UpdateWord(wordId, newForm, _configOptions);
 
-            if (updatedWord.IsSaved)
+            if (updatedWord.Word == newForm)
             {
                 ViewData["Message"] = "Žodis atnaujintas.";
 

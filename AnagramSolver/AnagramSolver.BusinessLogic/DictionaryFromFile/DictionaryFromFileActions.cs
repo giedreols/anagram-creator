@@ -61,7 +61,7 @@ namespace AnagramSolver.BusinessLogic.DictionaryFromFile
         }
 
 
-        public NewWordDto SaveWord(FullWordDto word, ConfigOptionsDto config)
+        public WordResultDto SaveWord(FullWordDto word, ConfigOptionsDto config)
         {
             throw new NotImplementedException();
         }
@@ -106,7 +106,7 @@ namespace AnagramSolver.BusinessLogic.DictionaryFromFile
             throw new NotImplementedException();
         }
 
-        public NewWordDto UpdateWord(int wordId, string newForm, ConfigOptionsDto config)
+        public WordResultDto UpdateWord(int wordId, string newForm, ConfigOptionsDto config)
         {
             throw new NotImplementedException();
         }

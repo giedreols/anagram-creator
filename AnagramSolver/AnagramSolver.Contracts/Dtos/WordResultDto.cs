@@ -2,15 +2,14 @@
 
 namespace AnagramSolver.Contracts.Dtos;
 
-// perdaryti, kad erroras butu atskirai?
-public class NewWordDto
+// galima butu perdaryti, kad erroras butu atskirai
+public class WordResultDto
 {
     public int Id { get; set; }
-    public bool IsSaved { get; set; }
+
+    public string Word { get; set; }
 
     public string? ErrorMessage { get; set; }
-
-    public WordWithAnagramsDto? AnagramWords { get; set; }
 }
 
 public class ErrorMessages
@@ -21,5 +20,4 @@ public class ErrorMessages
     public const string Empty = "Neįvedėte žodžio.";
     public const string AlreadyExists = "Toks žodis jau yra.";
     public const string UnknowReason = "Išsaugoti nepavyko.";
-
 }

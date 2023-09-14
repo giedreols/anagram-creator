@@ -81,27 +81,26 @@ namespace AnagramSolver.BusinessLogic
             return _wordRepo.Delete(wordId);
         }
 
-        public NewWordDto SaveWord(FullWordDto word, ConfigOptionsDto config)
+        public WordResultDto SaveWord(FullWordDto word, ConfigOptionsDto config)
         {
-            NewWordDto newWord = new();
+            WordResultDto newWord = new();
 
             var errorMessage = InputWordValidator.Validate(word.OtherForm, config.MinLength, config.MaxLength);
 
             if (errorMessage != null)
             {
-                newWord.IsSaved = false; newWord.ErrorMessage = errorMessage;
+                newWord.ErrorMessage = errorMessage;
             }
             else if (_wordRepo.IsWordExists(word.OtherForm) != 0)
             {
-                newWord.IsSaved = false; newWord.ErrorMessage = ErrorMessages.AlreadyExists;
+                newWord.ErrorMessage = ErrorMessages.AlreadyExists;
             }
             else
             {
                 word.PartOfSpeechId = _partOfSpeechRepo.InsertPartOfSpeechIfDoesNotExist(word.PartOfSpeechAbbreviation);
                 newWord.Id = _wordRepo.Add(word);
-                newWord.IsSaved = newWord.Id > 0;
 
-                if (!newWord.IsSaved)
+                if (newWord.Id  == 0)
                 {
                     newWord.ErrorMessage = ErrorMessages.UnknowReason;
                 }
@@ -115,32 +114,35 @@ namespace AnagramSolver.BusinessLogic
             return _wordRepo.IsWordExists(word);
         }
 
-        public NewWordDto UpdateWord(int wordId, string newForm, ConfigOptionsDto config)
+        public WordResultDto UpdateWord(int wordId, string newForm, ConfigOptionsDto config)
         {
-            NewWordDto newWord = new();
+            WordResultDto updatedWord = new();
 
             var errorMessage = InputWordValidator.Validate(newForm, config.MinLength, config.MaxLength);
 
             if (errorMessage != null)
             {
-                newWord.IsSaved = false; newWord.ErrorMessage = errorMessage;
+                updatedWord.ErrorMessage = errorMessage;
             }
             else if (_wordRepo.IsWordExists(newForm) != 0)
             {
-                newWord.IsSaved = false; newWord.ErrorMessage = ErrorMessages.AlreadyExists;
+                updatedWord.ErrorMessage = ErrorMessages.AlreadyExists;
             }
             else
             {
                 FullWordDto word = new(wordId, newForm);
-                newWord.IsSaved = _wordRepo.Update(word);
+                bool isUpdated = _wordRepo.Update(word);
 
-                if (!newWord.IsSaved)
+                if (!isUpdated)
                 {
-                    newWord.ErrorMessage = ErrorMessages.UnknowReason;
+                    updatedWord.ErrorMessage = ErrorMessages.UnknowReason;
+                }
+                else
+                {
+                    updatedWord.Word = newForm;
                 }
             }
-
-            return newWord;
+            return updatedWord;
         }
     }
 }
