@@ -12,6 +12,8 @@ namespace AnagramSolver.Contracts.Interfaces
 
         IEnumerable<string> GetAnagrams(string word);
 
+        Task<IEnumerable<string>> GetAnagramsUsingAnagramicaAsync(string word);
+
         bool DeleteWord(int wordId);
 
         NewWordDto UpdateWord(int wordId, string newForm, ConfigOptionsDto config);

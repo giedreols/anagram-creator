@@ -22,7 +22,7 @@ namespace AnagramSolver.WebApp.Controllers
             _config = config;
         }
 
-        // kaip teisingai reiktu daryti errora? 
+        // jei neturiu ka veikt, galiu errora pataisyt cia dar
 
         [HttpGet]
         public IActionResult Index()

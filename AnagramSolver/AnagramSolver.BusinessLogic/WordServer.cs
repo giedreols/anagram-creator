@@ -1,6 +1,8 @@
 ﻿using AnagramSolver.BusinessLogic.Helpers;
 using AnagramSolver.Contracts.Dtos;
 using AnagramSolver.Contracts.Interfaces;
+using AnagramSolver.WebApp.Models;
+using Newtonsoft.Json;
 using System.Data;
 
 namespace AnagramSolver.BusinessLogic
@@ -9,11 +11,14 @@ namespace AnagramSolver.BusinessLogic
     {
         private readonly IWordRepository _wordRepo;
         private readonly IPartOfSpeechRespository _partOfSpeechRepo;
+        private readonly HttpClient _httpClient;
 
-        public WordServer(IWordRepository _wordRepo, IPartOfSpeechRespository partOfSpeechRepo)
+
+        public WordServer(IWordRepository _wordRepo, IPartOfSpeechRespository partOfSpeechRepo, HttpClient httpClient)
         {
             this._wordRepo = _wordRepo;
             _partOfSpeechRepo = partOfSpeechRepo;
+            _httpClient = httpClient;
         }
 
         public WordsPerPageDto GetMatchingWords(string inputWord, int page = 1, int pageSize = 100)
@@ -46,10 +51,29 @@ namespace AnagramSolver.BusinessLogic
 
         public IEnumerable<string> GetAnagrams(string inputWord)
         {
-            // tai vietoj sito callo i db turi buti iskviecimas anagramica controlleris, ane?
             IEnumerable<string> anagrams = _wordRepo.GetAnagrams(inputWord);
 
             return anagrams.ToList();
+        }
+
+        public async Task<IEnumerable<string>> GetAnagramsUsingAnagramicaAsync(string inputWordAnagramica)
+        {
+            string apiUrl = $"http://www.anagramica.com/all/{inputWordAnagramica}";
+            HttpResponseMessage response = await _httpClient.GetAsync(apiUrl);
+
+            if (response.IsSuccessStatusCode)
+            {
+                string responseBody = await response.Content.ReadAsStringAsync();
+                AnagramApiResponse apiResponse = JsonConvert.DeserializeObject<AnagramApiResponse>(responseBody);
+
+                var result = apiResponse.All.AsEnumerable().Where(w => w != inputWordAnagramica).Distinct().ToList();
+
+                return result;
+            }
+            else
+            {
+                throw new Exception("Bad request. An error occurred while fetching data from the API.");
+            }
         }
 
         public bool DeleteWord(int wordId)
@@ -111,7 +135,7 @@ namespace AnagramSolver.BusinessLogic
                 newWord.IsSaved = _wordRepo.Update(word);
 
                 if (!newWord.IsSaved)
-                {                    
+                {
                     newWord.ErrorMessage = ErrorMessages.UnknowReason;
                 }
             }

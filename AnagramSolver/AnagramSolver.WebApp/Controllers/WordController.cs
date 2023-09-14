@@ -74,6 +74,26 @@ namespace AnagramSolver.WebApp.Controllers
         }
 
         [HttpGet]
+        public IActionResult GetAnagramica(string inputWordAnagramica = "")
+        {
+            ViewData["IsFormVisible"] = false;
+            ViewData["Word"] = inputWordAnagramica;
+
+            if (inputWordAnagramica.IsNullOrEmpty())
+                return View("../Home/Index");
+
+            if (!_searchLogService.HasSpareSearch(ipAddress, _configOptions.SearchCount))
+            {
+                View("../Home/WordWithAnagrams");
+            }
+
+            var result = _wordServer.GetAnagramsUsingAnagramicaAsync(inputWordAnagramica).Result;
+            AnagramViewModel model = new(inputWordAnagramica, result.ToList());
+            _searchLogService.LogSearch(inputWordAnagramica, ipAddress);
+            return View("../Home/WordWithAnagrams", model);
+        }
+
+        [HttpGet]
         public ActionResult Delete(int wordId, string word)
         {
             bool isDeleted = _wordServer.DeleteWord(wordId);

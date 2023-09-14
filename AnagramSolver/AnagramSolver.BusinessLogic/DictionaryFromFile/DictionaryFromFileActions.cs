@@ -115,5 +115,15 @@ namespace AnagramSolver.BusinessLogic.DictionaryFromFile
         {
             throw new NotImplementedException();
         }
+
+        public IEnumerable<string> GetAnagramsUsingAnagramicaAsync(string word)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<IEnumerable<string>> IWordServer.GetAnagramsUsingAnagramicaAsync(string word)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
