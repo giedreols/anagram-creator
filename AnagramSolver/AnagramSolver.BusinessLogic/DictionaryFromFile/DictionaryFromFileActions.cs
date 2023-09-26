@@ -22,7 +22,7 @@ namespace AnagramSolver.BusinessLogic.DictionaryFromFile
             return words;
         }
 
-        public WordsPerPageDto GetWordsByPage(int page = 1, int pageSize = 100)
+        public WordsPerPageDto GetWordsByPageAsync(int page = 1, int pageSize = 100)
         {
             throw new NotImplementedException();
         }
@@ -58,72 +58,6 @@ namespace AnagramSolver.BusinessLogic.DictionaryFromFile
             List<string> wordList = Parser.ParseWordsFromDictionaryFile(linesList);
 
             return wordList;
-        }
-
-
-        public WordResultDto SaveWord(FullWordDto word, ConfigOptionsDto config)
-        {
-            throw new NotImplementedException();
-        }
-
-        public WordsPerPageDto GetMatchingWords(string inputWord, int page, int pageSize)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<string> GetAnagrams(string word)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void CacheAnagrams(WordWithAnagramsDto anagrams)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void LogSearchInfo(SearchLogDto model)
-        {
-            throw new NotImplementedException();
-        }
-
-        public SearchLogDto GetLastSearchInfo()
-        {
-            throw new NotImplementedException();
-        }
-
-        public int GetSearchCount(string ipAddress)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool DeleteWord(int wordId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool UpdateWord(int wordId, string newForm)
-        {
-            throw new NotImplementedException();
-        }
-
-        public WordResultDto UpdateWord(int wordId, string newForm, ConfigOptionsDto config)
-        {
-            throw new NotImplementedException();
-        }
-
-        public int GetWordId(string word)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<string> GetAnagramsUsingAnagramicaAsync(string word)
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<IEnumerable<string>> IWordServer.GetAnagramsUsingAnagramicaAsync(string word)
-        {
-            throw new NotImplementedException();
         }
     }
 }

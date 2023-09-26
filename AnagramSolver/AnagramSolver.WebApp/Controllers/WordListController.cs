@@ -27,7 +27,7 @@ namespace AnagramSolver.WebApp.Controllers
         {
             ViewData["Message"] = TempData["Message"];
 
-            WordsPerPageDto wordsPerPage = _wordServer.GetWordsByPage(page, pageSize);
+            WordsPerPageDto wordsPerPage = _wordServer.GetWordsByPageAsync(page, pageSize);
 
             WordListViewModel viewModel = new(wordsPerPage.Words, page, wordsPerPage.TotalWordsCount, pageSize);
 
@@ -35,14 +35,14 @@ namespace AnagramSolver.WebApp.Controllers
         }
 
         [HttpGet]
-        public IActionResult Search(string inputWord = "", int page = 1)
+        public async Task<IActionResult> SearchAsync(string inputWord = "", int page = 1)
         {
             if (inputWord.IsNullOrEmpty())
                 return Index();
 
             ViewData["Word"] = inputWord;
 
-            WordsPerPageDto matchingWords = _wordServer.GetMatchingWords(inputWord, page, pageSize);
+            WordsPerPageDto matchingWords = await _wordServer.GetMatchingWordsAsync(inputWord, page, pageSize);
 
             WordListViewModel viewModel = new(matchingWords.Words, page, matchingWords.TotalWordsCount, pageSize);
 

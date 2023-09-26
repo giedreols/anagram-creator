@@ -12,11 +12,13 @@ namespace AnagramSolver.BusinessLogic
             _wordRepo = wordRepo;
         }
 
-        public byte[] GetFileWithWords()
+        public async Task<byte[]> GetFileWithWords()
         {
-            IList<string> wordList = _wordRepo.GetWords().Values.ToList();
+            var words = await _wordRepo.GetWordsAsync();
 
-            return wordList.ConvertListToByteArr();
+            byte[] wordList = words.Values.ToList().ConvertListToByteArr();
+
+            return wordList;
         }
     }
 }

@@ -21,32 +21,32 @@ namespace AnagramSolver.BusinessLogic
             _httpClient = httpClient;
         }
 
-        public WordsPerPageDto GetMatchingWords(string inputWord, int page = 1, int pageSize = 100)
+        public async Task<WordsPerPageDto> GetMatchingWordsAsync(string inputWord, int page = 1, int pageSize = 100)
         {
-            Dictionary<int, string> matchingWords = _wordRepo.GetMatchingWords(inputWord);
+            Dictionary<int, string> matchingWords = await _wordRepo.GetMatchingWordsAsync(inputWord);
 
-            return SordWordsByPage(matchingWords, page, pageSize);
+            return await SordWordsByPageAsync(matchingWords, page, pageSize);
         }
 
-        public WordsPerPageDto GetWordsByPage(int page = 1, int pageSize = 100)
+        public async Task<WordsPerPageDto> GetWordsByPageAsync(int page = 1, int pageSize = 100)
         {
-            Dictionary<int, string> allWords = _wordRepo.GetWords();
+            Dictionary<int, string> allWords = await _wordRepo.GetWordsAsync();
 
-            return SordWordsByPage(allWords, page, pageSize);
+            return await SordWordsByPageAsync(allWords, page, pageSize);
         }
 
-        private static WordsPerPageDto SordWordsByPage(Dictionary<int, string> words, int page, int pageSize)
+        private static async Task<WordsPerPageDto> SordWordsByPageAsync(Dictionary<int, string> words, int page, int pageSize)
         {
-            Dictionary<int, string> allWords = words.OrderBy(w => w.Value).ToDictionary(w => w.Key, w => w.Value);
+            var allWords = await Task.Run(() => words.OrderBy(w => w.Value).ToList());
 
             var totalPages = (int)Math.Ceiling(allWords.Count / (double)pageSize);
 
-            Dictionary<int, string> currentPageItems = allWords
-                    .Skip((page - 1) * pageSize)
-                    .Take(pageSize)
-                    .ToDictionary(w => w.Key, w => w.Value);
+            List<KeyValuePair<int, string>> currentPageItems = allWords
+                        .Skip((page - 1) * pageSize)
+                        .Take(pageSize)
+                        .ToList();
 
-            return new WordsPerPageDto(currentPageItems, pageSize, allWords.Count);
+            return new WordsPerPageDto(currentPageItems.ToDictionary(kv => kv.Key, kv => kv.Value), pageSize, allWords.Count);
         }
 
         public IEnumerable<string> GetAnagrams(string inputWord)
@@ -100,7 +100,7 @@ namespace AnagramSolver.BusinessLogic
                 word.PartOfSpeechId = _partOfSpeechRepo.InsertPartOfSpeechIfDoesNotExist(word.PartOfSpeechAbbreviation);
                 newWord.Id = _wordRepo.Add(word);
 
-                if (newWord.Id  == 0)
+                if (newWord.Id == 0)
                 {
                     newWord.ErrorMessage = ErrorMessages.UnknowReason;
                 }

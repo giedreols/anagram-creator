@@ -1,6 +1,7 @@
 ﻿using AnagramSolver.Contracts.Dtos;
 using AnagramSolver.Contracts.Interfaces;
 using AnagramSolver.EF.DbFirst.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace AnagramSolver.EF.DbFirst
 {
@@ -13,23 +14,23 @@ namespace AnagramSolver.EF.DbFirst
             _context = context;
         }
 
-        public Dictionary<int, string> GetMatchingWords(string inputWord)
+        public async Task<Dictionary<int, string>> GetMatchingWordsAsync(string inputWord)
         {
-            Dictionary<int, string> matchingItems = _context.Words
+            Dictionary<int, string> matchingItems = await _context.Words
                         .Where(item => item.OtherForm.Contains(inputWord))
                         .Where(item => !item.IsDeleted)
-                        .ToDictionary(w => w.Id, w => w.OtherForm);
+                        .ToDictionaryAsync(w => w.Id, w => w.OtherForm);
 
             return matchingItems;
         }
 
-        public Dictionary<int, string> GetWords()
+        public async Task<Dictionary<int, string>> GetWordsAsync()
         {
             var FullWordList = new List<FullWordDto>();
 
-            Dictionary<int, string> words = _context.Words
+            Dictionary<int, string> words = await _context.Words
                 .Where(item => !item.IsDeleted)
-                .ToDictionary(w => w.Id, w => w.OtherForm);
+                .ToDictionaryAsync(w => w.Id, w => w.OtherForm);
 
             return words;
         }

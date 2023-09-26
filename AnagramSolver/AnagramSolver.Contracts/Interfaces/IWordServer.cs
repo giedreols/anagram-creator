@@ -6,9 +6,9 @@ namespace AnagramSolver.Contracts.Interfaces
     {
         WordResultDto SaveWord(FullWordDto word, ConfigOptionsDto config);
 
-        WordsPerPageDto GetWordsByPage(int page, int totalAmount);
+        Task<WordsPerPageDto> GetWordsByPageAsync(int page, int totalAmount);
 
-        WordsPerPageDto GetMatchingWords(string inputWord, int page, int pageSize);
+        Task<WordsPerPageDto> GetMatchingWordsAsync(string inputWord, int page, int pageSize);
 
         IEnumerable<string> GetAnagrams(string word);
 

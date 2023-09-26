@@ -12,9 +12,9 @@ namespace AnagramSolver.Contracts.Interfaces
 
         bool Delete(int wordId);
 
-        Dictionary<int, string> GetWords();
+        Task<Dictionary<int, string>> GetWordsAsync();
 
-        Dictionary<int, string> GetMatchingWords(string inputWord);
+        Task<Dictionary<int, string>> GetMatchingWordsAsync(string inputWord);
 
         int IsWordExists(string inputWord);
 
