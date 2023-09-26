@@ -6,7 +6,7 @@ using AnagramSolver.Contracts.Interfaces;
 namespace AnagramSolver.BusinessLogic.DictionaryFromFile
 {
     [Obsolete("new implementation uses database")]
-    public class DictionaryFromFileActions : IWordServer
+    public class DictionaryFromFileActions
     {
         private readonly IFileReader _fileReader;
 

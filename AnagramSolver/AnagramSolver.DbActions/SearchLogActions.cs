@@ -59,5 +59,10 @@ namespace AnagramSolver.SqlActions
 
             return result;
         }
+
+        public int GetSearchCount(string ipAddress)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -227,5 +227,40 @@ namespace AnagramSolver.SqlActions
 
             return result.ToList();
         }
+
+        public int Add(FullWordDto parameters)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool AddList(IList<FullWordDto> list)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Update(FullWordDto parameters)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Delete(int wordId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Dictionary<int, string>> GetWordsAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Dictionary<int, string>> GetMatchingWordsAsync(string inputWord)
+        {
+            throw new NotImplementedException();
+        }
+
+        int IWordRepository.IsWordExists(string inputWord)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

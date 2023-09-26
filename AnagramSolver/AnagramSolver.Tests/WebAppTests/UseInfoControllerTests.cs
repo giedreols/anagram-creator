@@ -7,17 +7,17 @@ namespace AnagramSolver.Tests.WebAppTests
     [TestFixture]
     internal class UseInfoControllerTests
     {
-        private UserInfoController _userInfoController;
-        private Mock<IWordServer> _mockWordServer;
-        private Mock<ISearchLogService> _mockLogService;
+        //private UserInfoController _userInfoController;
+        //private Mock<IWordServer> _mockWordServer;
+        //private Mock<ISearchLogService> _mockLogService;
 
-        [SetUp]
-        public void SetUp()
-        {
-            _mockWordServer = new Mock<IWordServer>(MockBehavior.Default);
-            _mockLogService = new Mock<ISearchLogService>(MockBehavior.Default);
-            _userInfoController = new UserInfoController(_mockLogService.Object, _mockWordServer.Object);
-        }
+        //[SetUp]
+        //public void SetUp()
+        //{
+        //    _mockWordServer = new Mock<IWordServer>(MockBehavior.Default);
+        //    _mockLogService = new Mock<ISearchLogService>(MockBehavior.Default);
+        //    _userInfoController = new UserInfoController(_mockLogService.Object, _mockWordServer.Object);
+        //}
 
         //[Test]
         //public void Index_ReturnsUserInfoModel()

@@ -22,5 +22,10 @@ namespace AnagramSolver.SqlActions
 
             ExecuteCommand(command);
         }
+
+        public int InsertPartOfSpeechIfDoesNotExist(string abbreviation)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
