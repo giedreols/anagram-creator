@@ -18,4 +18,4 @@ var partOfSpeechRepo = serviceProvider.GetService<IPartOfSpeechRespository>();
 
 SeedOneLineDictionary seeder = new(wordRepo, partOfSpeechRepo);
 
-seeder.Seed();
+seeder.SeedAsync();

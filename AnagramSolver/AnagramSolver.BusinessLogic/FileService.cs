@@ -12,7 +12,7 @@ namespace AnagramSolver.BusinessLogic
             _wordRepo = wordRepo;
         }
 
-        public async Task<byte[]> GetFileWithWords()
+        public async Task<byte[]> GetFileWithWordsAsync()
         {
             var words = await _wordRepo.GetWordsAsync();
 

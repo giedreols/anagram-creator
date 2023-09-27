@@ -23,11 +23,11 @@ namespace AnagramSolver.WebApp.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index(int page = 1)
+        public async Task<IActionResult> IndexAsync(int page = 1)
         {
             ViewData["Message"] = TempData["Message"];
 
-            WordsPerPageDto wordsPerPage = _wordServer.GetWordsByPageAsync(page, pageSize);
+            WordsPerPageDto wordsPerPage = await _wordServer.GetWordsByPageAsync(page, pageSize);
 
             WordListViewModel viewModel = new(wordsPerPage.Words, page, wordsPerPage.TotalWordsCount, pageSize);
 
@@ -38,7 +38,7 @@ namespace AnagramSolver.WebApp.Controllers
         public async Task<IActionResult> SearchAsync(string inputWord = "", int page = 1)
         {
             if (inputWord.IsNullOrEmpty())
-                return Index();
+                return await IndexAsync();
 
             ViewData["Word"] = inputWord;
 
@@ -50,9 +50,9 @@ namespace AnagramSolver.WebApp.Controllers
         }
 
         [HttpGet]
-        public IActionResult DownloadFile()
+        public async Task<IActionResult> DownloadFileAsync()
         {
-            byte[] fileInBytes = _fileService.GetFileWithWords();
+            byte[] fileInBytes = await _fileService.GetFileWithWordsAsync();
 
             return File(fileInBytes, "text/plain", "zodynas.txt");
         }

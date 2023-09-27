@@ -1,5 +1,6 @@
 ﻿using AnagramSolver.Contracts.Dtos;
 using AnagramSolver.Contracts.Interfaces;
+using AnagramSolver.EF.DbFirst.Entities;
 using AnagramSolver.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -30,22 +31,22 @@ namespace AnagramSolver.WebApp.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create([FromForm] string newWord = "", [FromForm] string newAbbreviation = "")
+        public async Task<ActionResult> CreateAsync([FromForm] string newWord = "", [FromForm] string newAbbreviation = "")
         {
             ViewData["Word"] = newWord;
             ViewData["Abbreviation"] = newAbbreviation;
 
-            WordResultDto savedWord = _wordServer.SaveWord(new FullWordDto(newWord, newWord, newAbbreviation), _configOptions);
+            WordResultDto savedWord = await _wordServer.SaveWordAsync(new FullWordDto(newWord, newWord, newAbbreviation), _configOptions);
 
             if (savedWord.Id > 0)
             {
-                _wordLogService.LogWord(savedWord.Id, ipAddress, WordOpEnum.Add);
+                _wordLogService.LogWord(savedWord.Id, ipAddress, Contracts.Dtos.WordOpEnum.Add);
 
                 ViewData["Message"] = "Žodis išsaugotas žodyne";
 
-                AnagramViewModel anagrams = new(savedWord.Id, newWord, _wordServer.GetAnagrams(newWord).ToList());
+                var anagrams = await _wordServer.GetAnagramsAsync(newWord);
 
-                return View("../Home/WordWithAnagrams", anagrams);
+                return View("../Home/WordWithAnagrams", new AnagramViewModel(savedWord.Id, newWord, anagrams.ToList()));
             }
 
             ViewData["Message"] = savedWord.ErrorMessage;
@@ -54,7 +55,7 @@ namespace AnagramSolver.WebApp.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get(string inputWord = "")
+        public async Task<IActionResult> GetAsync(string inputWord = "")
         {
             ViewData["IsFormVisible"] = false;
             ViewData["Word"] = inputWord;
@@ -67,10 +68,13 @@ namespace AnagramSolver.WebApp.Controllers
                 View("../Home/WordWithAnagrams");
             }
 
-            int wordId = _wordServer.GetWordId(inputWord);
-            AnagramViewModel model = new(wordId, inputWord, _wordServer.GetAnagrams(inputWord).ToList());
+            int wordId = await _wordServer.GetWordIdAsync(inputWord);
+
+            var anagrams = await _wordServer.GetAnagramsAsync(inputWord);
+
             _searchLogService.LogSearch(inputWord, ipAddress);
-            return View("../Home/WordWithAnagrams", model);
+
+            return View("../Home/WordWithAnagrams", new AnagramViewModel(wordId, inputWord, anagrams.ToList()));
         }
 
         [HttpGet]
@@ -94,53 +98,62 @@ namespace AnagramSolver.WebApp.Controllers
         }
 
         [HttpGet]
-        public ActionResult Delete(int wordId, string word)
+        public async Task<ActionResult> DeleteAsync(int wordId, string word)
         {
-            bool isDeleted = _wordServer.DeleteWord(wordId);
+            bool isDeleted = await _wordServer.DeleteWordAsync(wordId);
 
             if (isDeleted)
             {
-                _wordLogService.LogWord(wordId, ipAddress, WordOpEnum.Delete);
+                _wordLogService.LogWord(wordId, ipAddress, Contracts.Dtos.WordOpEnum.Delete);
                 TempData["Message"] = "Žodis ištrintas.";
                 return RedirectToAction("Index", "WordList");
             }
 
             ViewData["Message"] = "Žodžio ištrinti nepavyko. Kažkas blogai suprogramuota, sorry.";
-            return View("../Home/WordWithAnagrams", new AnagramViewModel(wordId, word, _wordServer.GetAnagrams(word).ToList()));
+
+            var anagrams = await _wordServer.GetAnagramsAsync(word);
+
+            return View("../Home/WordWithAnagrams", new AnagramViewModel(wordId, word, anagrams.ToList()));
         }
 
         [HttpPost]
-        public ActionResult Update([FromForm] int wordId, [FromForm] string oldForm, [FromForm] string newForm = "")
+        public async Task<ActionResult> UpdateAsync([FromForm] int wordId, [FromForm] string oldForm, [FromForm] string newForm = "")
         {
             ViewData["newForm"] = newForm;
             ViewData["oldForm"] = oldForm;
             ViewData["WordId"] = wordId;
 
+            IEnumerable<string> anagrams;
+
             if (newForm == oldForm)
             {
                 ViewData["IsFormVisible"] = true;
 
-                AnagramViewModel model = new(wordId, oldForm, _wordServer.GetAnagrams(oldForm).ToList());
-                return View("../Home/WordWithAnagrams", model);
+                anagrams = await _wordServer.GetAnagramsAsync(oldForm);
+
+                return View("../Home/WordWithAnagrams", new AnagramViewModel(wordId, oldForm, anagrams.ToList()));
             }
 
-            WordResultDto updatedWord = _wordServer.UpdateWord(wordId, newForm, _configOptions);
+            WordResultDto updatedWord = await _wordServer.UpdateWordAsync(wordId, newForm, _configOptions);
 
             if (updatedWord.Word == newForm)
             {
                 ViewData["Message"] = "Žodis atnaujintas.";
 
-                _wordLogService.LogWord(wordId, ipAddress, WordOpEnum.Edit);
+                _wordLogService.LogWord(wordId, ipAddress, Contracts.Dtos.WordOpEnum.Edit);
                 ViewData["IsFormVisible"] = false;
 
-                AnagramViewModel model = new(wordId, newForm, _wordServer.GetAnagrams(newForm).ToList());
-                return View("../Home/WordWithAnagrams", model);
+                anagrams = await _wordServer.GetAnagramsAsync(newForm);
+
+                return View("../Home/WordWithAnagrams", new AnagramViewModel(wordId, newForm, anagrams.ToList()));
             }
 
             ViewData["Message"] = updatedWord.ErrorMessage;
             ViewData["IsFormVisible"] = true;
 
-            return View("../Home/WordWithAnagrams", new AnagramViewModel(wordId, oldForm, _wordServer.GetAnagrams(oldForm).ToList()));
+            anagrams = await _wordServer.GetAnagramsAsync(oldForm);
+
+            return View("../Home/WordWithAnagrams", new AnagramViewModel(wordId, oldForm, anagrams.ToList()));
         }
 
         [HttpPost]

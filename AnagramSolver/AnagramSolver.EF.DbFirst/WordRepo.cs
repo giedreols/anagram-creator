@@ -35,7 +35,7 @@ namespace AnagramSolver.EF.DbFirst
             return words;
         }
 
-        public int Add(FullWordDto parameters)
+        public async Task<int> AddAsync(FullWordDto parameters)
         {
             var newWord = new Word
             {
@@ -45,9 +45,9 @@ namespace AnagramSolver.EF.DbFirst
                 OrderedForm = new(parameters.OtherForm.ToLower(System.Globalization.CultureInfo.CurrentCulture).OrderByDescending(a => a).ToArray()),
             };
 
-            _context.Words.Add(newWord);
+            await _context.Words.AddAsync(newWord);
 
-            bool isSaved = _context.SaveChanges() > 0;
+            bool isSaved = await _context.SaveChangesAsync() > 0;
 
             if (isSaved)
                 return newWord.Id;
@@ -55,7 +55,7 @@ namespace AnagramSolver.EF.DbFirst
             return 0;
         }
 
-        public bool AddList(IList<FullWordDto> words)
+        public async Task<bool> AddListAsync(IList<FullWordDto> words)
         {
             List<Word> list = new();
 
@@ -70,18 +70,18 @@ namespace AnagramSolver.EF.DbFirst
                 });
             }
 
-            _context.Words.AddRangeAsync(list);
+            await _context.Words.AddRangeAsync(list);
 
-            bool isSaved = _context.SaveChanges() == words.Count;
+            bool isSaved = await _context.SaveChangesAsync() == words.Count;
 
             return isSaved;
         }
 
-        public bool Update(FullWordDto parameters)
+        public async Task<bool> UpdateAsync(FullWordDto parameters)
         {
-            var wordToUpdate = _context.Words
+            var wordToUpdate = await _context.Words
                 .Where(w => !w.IsDeleted)
-                .FirstOrDefault(w => w.Id == parameters.Id);
+                .FirstOrDefaultAsync(w => w.Id == parameters.Id);
 
             if (wordToUpdate != null)
             {
@@ -90,41 +90,42 @@ namespace AnagramSolver.EF.DbFirst
                 wordToUpdate.OrderedForm = new(parameters.OtherForm.ToLower(System.Globalization.CultureInfo.CurrentCulture).OrderByDescending(a => a).ToArray());
             }
 
-            bool result = _context.SaveChanges() > 0;
+            bool result = await _context.SaveChangesAsync() > 0;
 
             return result;
         }
 
-        public bool Delete(int wordId)
+        public async Task<bool> DeleteAsync(int wordId)
         {
-            var wordTodelete = _context.Words
+            var wordTodelete = await _context.Words
                 .Where(w => !w.IsDeleted)
-                .FirstOrDefault(w => w.Id == wordId);
+                .FirstOrDefaultAsync(w => w.Id == wordId);
 
             if (wordTodelete != null)
                 wordTodelete.IsDeleted = true;
 
-            return _context.SaveChanges() > 0;
+            return await _context.SaveChangesAsync() > 0;
 
         }
 
-        public int IsWordExists(string inputWord)
+        public async Task<int> IsWordExistsAsync(string inputWord)
         {
-            var word = _context.Words.Where(w => !w.IsDeleted).FirstOrDefault(w => w.OtherForm.Equals(inputWord));
+            var word = await _context.Words.Where(w => !w.IsDeleted).FirstOrDefaultAsync(w => w.OtherForm.Equals(inputWord));
 
             return word != null ? word.Id : 0;
         }
 
-        public IEnumerable<string> GetAnagrams(string word)
+        public async Task<IEnumerable<string>> GetAnagramsAsync(string word)
         {
             string orderedWord = new(word.Replace(" ", "").OrderByDescending(w => w).ToArray());
 
-            IEnumerable<string> anagrams = _context.Words
+            var anagrams = await _context.Words
                                                     .Where(w => w.OrderedForm == orderedWord && w.OtherForm != word)
                                                     .Select(x => x.OtherForm)
                                                     .Distinct()
                                                     .OrderBy(w => w)
-                                                    .ToList();
+                                                    .ToListAsync();
+
             return anagrams;
         }
     }

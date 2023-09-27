@@ -2,6 +2,6 @@
 {
     public interface IFileService
     {
-        Task<byte[]> GetFileWithWords();
+        Task<byte[]> GetFileWithWordsAsync();
     }
 }

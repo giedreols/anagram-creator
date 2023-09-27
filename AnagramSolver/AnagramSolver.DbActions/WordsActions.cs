@@ -228,22 +228,22 @@ namespace AnagramSolver.SqlActions
             return result.ToList();
         }
 
-        public int Add(FullWordDto parameters)
+        public int AddAsync(FullWordDto parameters)
         {
             throw new NotImplementedException();
         }
 
-        public bool AddList(IList<FullWordDto> list)
+        public bool AddListAsync(IList<FullWordDto> list)
         {
             throw new NotImplementedException();
         }
 
-        public bool Update(FullWordDto parameters)
+        public bool UpdateAsync(FullWordDto parameters)
         {
             throw new NotImplementedException();
         }
 
-        public bool Delete(int wordId)
+        public bool DeleteAsync(int wordId)
         {
             throw new NotImplementedException();
         }
@@ -258,7 +258,32 @@ namespace AnagramSolver.SqlActions
             throw new NotImplementedException();
         }
 
-        int IWordRepository.IsWordExists(string inputWord)
+        Task<int> IWordRepository.AddAsync(FullWordDto parameters)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<bool> IWordRepository.AddListAsync(IList<FullWordDto> list)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<bool> IWordRepository.UpdateAsync(FullWordDto parameters)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<bool> IWordRepository.DeleteAsync(int wordId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<int> IsWordExistsAsync(string inputWord)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<IEnumerable<string>> IWordRepository.GetAnagramsAsync(string word)
         {
             throw new NotImplementedException();
         }

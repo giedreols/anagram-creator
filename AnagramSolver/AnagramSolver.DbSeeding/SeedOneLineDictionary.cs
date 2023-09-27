@@ -16,7 +16,7 @@ namespace AnagramSolver.DbSeeding
             _partOfSpeechRepo = partOfSpeechRespository;
         }
 
-        public void Seed()
+        public async Task SeedAsync()
         {
             FileReader fileReader = new();
             var stringText = fileReader.ReadFile("zodynas.txt");
@@ -41,7 +41,7 @@ namespace AnagramSolver.DbSeeding
                 word.PartOfSpeechId = _partOfSpeechRepo.InsertPartOfSpeechIfDoesNotExist(word.PartOfSpeechAbbreviation);
             }
 
-            string result = _wordRepo.AddList(newList) ? "Success." : "Failed.";
+            string result = await _wordRepo.AddListAsync(newList) ? "Success." : "Failed.";
 
             Console.WriteLine("Seeding finished. Result: " + result);
         }

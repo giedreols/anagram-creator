@@ -49,11 +49,9 @@ namespace AnagramSolver.BusinessLogic
             return new WordsPerPageDto(currentPageItems.ToDictionary(kv => kv.Key, kv => kv.Value), pageSize, allWords.Count);
         }
 
-        public IEnumerable<string> GetAnagrams(string inputWord)
+        public async Task<IEnumerable<string>> GetAnagramsAsync(string inputWord)
         {
-            IEnumerable<string> anagrams = _wordRepo.GetAnagrams(inputWord);
-
-            return anagrams.ToList();
+            return await _wordRepo.GetAnagramsAsync(inputWord);
         }
 
         public async Task<IEnumerable<string>> GetAnagramsUsingAnagramicaAsync(string inputWordAnagramica)
@@ -76,12 +74,12 @@ namespace AnagramSolver.BusinessLogic
             }
         }
 
-        public bool DeleteWord(int wordId)
+        public async Task<bool> DeleteWordAsync(int wordId)
         {
-            return _wordRepo.Delete(wordId);
+            return await _wordRepo.DeleteAsync(wordId);
         }
 
-        public WordResultDto SaveWord(FullWordDto word, ConfigOptionsDto config)
+        public async Task<WordResultDto> SaveWordAsync(FullWordDto word, ConfigOptionsDto config)
         {
             WordResultDto newWord = new();
 
@@ -91,14 +89,14 @@ namespace AnagramSolver.BusinessLogic
             {
                 newWord.ErrorMessage = errorMessage;
             }
-            else if (_wordRepo.IsWordExists(word.OtherForm) != 0)
+            else if (await _wordRepo.IsWordExistsAsync(word.OtherForm) != 0)
             {
                 newWord.ErrorMessage = ErrorMessages.AlreadyExists;
             }
             else
             {
                 word.PartOfSpeechId = _partOfSpeechRepo.InsertPartOfSpeechIfDoesNotExist(word.PartOfSpeechAbbreviation);
-                newWord.Id = _wordRepo.Add(word);
+                newWord.Id = await _wordRepo.AddAsync(word);
 
                 if (newWord.Id == 0)
                 {
@@ -109,12 +107,12 @@ namespace AnagramSolver.BusinessLogic
             return newWord;
         }
 
-        public int GetWordId(string word)
+        public async Task<int> GetWordIdAsync(string word)
         {
-            return _wordRepo.IsWordExists(word);
+            return await _wordRepo.IsWordExistsAsync(word);
         }
 
-        public WordResultDto UpdateWord(int wordId, string newForm, ConfigOptionsDto config)
+        public async Task<WordResultDto> UpdateWordAsync(int wordId, string newForm, ConfigOptionsDto config)
         {
             WordResultDto updatedWord = new();
 
@@ -124,14 +122,14 @@ namespace AnagramSolver.BusinessLogic
             {
                 updatedWord.ErrorMessage = errorMessage;
             }
-            else if (_wordRepo.IsWordExists(newForm) != 0)
+            else if (await _wordRepo.IsWordExistsAsync(newForm) != 0)
             {
                 updatedWord.ErrorMessage = ErrorMessages.AlreadyExists;
             }
             else
             {
                 FullWordDto word = new(wordId, newForm);
-                bool isUpdated = _wordRepo.Update(word);
+                bool isUpdated = await _wordRepo.UpdateAsync(word);
 
                 if (!isUpdated)
                 {

@@ -4,20 +4,20 @@ namespace AnagramSolver.Contracts.Interfaces
 {
     public interface IWordRepository
     {
-        int Add(FullWordDto parameters);
+        Task<int> AddAsync(FullWordDto parameters);
 
-        bool AddList(IList<FullWordDto> list);
+        Task<bool> AddListAsync(IList<FullWordDto> list);
 
-        bool Update(FullWordDto parameters);
+        Task<bool> UpdateAsync(FullWordDto parameters);
 
-        bool Delete(int wordId);
+        Task<bool> DeleteAsync(int wordId);
 
         Task<Dictionary<int, string>> GetWordsAsync();
 
         Task<Dictionary<int, string>> GetMatchingWordsAsync(string inputWord);
 
-        int IsWordExists(string inputWord);
+        Task<int> IsWordExistsAsync(string inputWord);
 
-        IEnumerable<string> GetAnagrams(string word);
+        Task<IEnumerable<string>> GetAnagramsAsync(string word);
     }
 }

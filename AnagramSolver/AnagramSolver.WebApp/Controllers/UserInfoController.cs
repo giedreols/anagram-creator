@@ -20,7 +20,7 @@ namespace AnagramSolver.WebApp.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> IndexAsync()
         {
             SearchLogDto lastSearchInfo = _logService.GetLastSearchInfo();
 
@@ -36,8 +36,8 @@ namespace AnagramSolver.WebApp.Controllers
 
             if (!lastSearchInfo.Word.IsNullOrEmpty())
             {
-                IList<string> anagrams = _wordServer.GetAnagrams(lastSearchInfo.Word).ToList();
-                model.AnagramWords.Anagrams = anagrams;
+                var anagrams = await _wordServer.GetAnagramsAsync(lastSearchInfo.Word);
+                model.AnagramWords.Anagrams = anagrams.ToList();
             }
 
             return View(model);
