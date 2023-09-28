@@ -38,7 +38,7 @@ namespace AnagramSolver.DbSeeding
 
             foreach (var word in newList)
             {
-                word.PartOfSpeechId = _partOfSpeechRepo.InsertPartOfSpeechIfDoesNotExist(word.PartOfSpeechAbbreviation);
+                word.PartOfSpeechId = await _partOfSpeechRepo.InsertPartOfSpeechIfDoesNotExistAsync(word.PartOfSpeechAbbreviation);
             }
 
             string result = await _wordRepo.AddListAsync(newList) ? "Success." : "Failed.";

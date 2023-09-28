@@ -95,7 +95,7 @@ namespace AnagramSolver.BusinessLogic
             }
             else
             {
-                word.PartOfSpeechId = _partOfSpeechRepo.InsertPartOfSpeechIfDoesNotExist(word.PartOfSpeechAbbreviation);
+                word.PartOfSpeechId = await _partOfSpeechRepo.InsertPartOfSpeechIfDoesNotExistAsync(word.PartOfSpeechAbbreviation);
                 newWord.Id = await _wordRepo.AddAsync(word);
 
                 if (newWord.Id == 0)

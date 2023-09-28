@@ -12,7 +12,7 @@ namespace AnagramSolver.EF.DbFirst
             _context = context;
         }
 
-        public int InsertPartOfSpeechIfDoesNotExist(string abbr)
+        public async Task<int> InsertPartOfSpeechIfDoesNotExistAsync(string abbr)
         {
             PartOfSpeech parameters = new()
             {
@@ -24,8 +24,8 @@ namespace AnagramSolver.EF.DbFirst
 
             if (parameters.Id == 0)
             {
-                _context.PartsOfSpeech.Add(parameters);
-                _context.SaveChanges();
+                await _context.PartsOfSpeech.AddAsync(parameters);
+                await _context.SaveChangesAsync();
             }
 
             return parameters.Id;

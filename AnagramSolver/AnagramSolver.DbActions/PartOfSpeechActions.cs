@@ -23,7 +23,7 @@ namespace AnagramSolver.SqlActions
             ExecuteCommand(command);
         }
 
-        public int InsertPartOfSpeechIfDoesNotExist(string abbreviation)
+        public int InsertPartOfSpeechIfDoesNotExistAsync(string abbreviation)
         {
             throw new NotImplementedException();
         }

@@ -2,6 +2,6 @@
 {
     public interface IPartOfSpeechRespository
     {
-        int InsertPartOfSpeechIfDoesNotExist(string abbreviation);
+        Task<int> InsertPartOfSpeechIfDoesNotExistAsync(string abbreviation);
     }
 }
