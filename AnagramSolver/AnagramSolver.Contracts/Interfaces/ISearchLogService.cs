@@ -6,6 +6,6 @@ namespace AnagramSolver.Contracts.Interfaces
     {
         SearchLogDto GetLastSearchInfo();
         void LogSearch(string inputWord, string ipAddress);
-        bool HasSpareSearch(string ipAddress, int searchCount);
+        Task<bool> HasSpareSearchAsync(string ipAddress, int searchCount);
     }
 }

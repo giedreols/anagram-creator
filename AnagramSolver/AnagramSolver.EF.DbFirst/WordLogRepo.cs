@@ -1,7 +1,7 @@
 ﻿using AnagramSolver.Contracts.Dtos;
 using AnagramSolver.Contracts.Interfaces;
 using AnagramSolver.EF.DbFirst.Entities;
-using WordOpEnum = AnagramSolver.Contracts.Dtos.WordOpEnum;
+using Microsoft.EntityFrameworkCore;
 
 namespace AnagramSolver.EF.DbFirst
 {
@@ -14,26 +14,27 @@ namespace AnagramSolver.EF.DbFirst
             _context = context;
         }
 
-        public void Add(WordLogDto item)
+        public async Task<int> AddAsync(WordLogDto item)
         {
             WordLog model = new()
             {
                 UserIp = item.UserIp,
-                Operation = (Entities.WordOpEnum)item.Operation,
+                Operation = item.Operation,
                 WordId = item.WordId,
                 TimeStamp = DateTime.UtcNow
             };
 
-            _context.WordLog.Add(model);
-            _context.SaveChanges();
+            await _context.WordLog.AddAsync(model);
+            return await _context.SaveChangesAsync();
         }
 
-        public int GetEntriesCount(string ipAddress, WordOpEnum operation)
+        public async Task<int> GetEntriesCountAsync(string ipAddress, WordOpEnum operation)
         {
-            int opToInt = (int)operation;
-            int wordsCount = _context.WordLog.Where(item => item.UserIp.Equals(ipAddress) && (int)item.Operation == opToInt).Count();
+            var count = await _context.WordLog
+                                        .Where(item => item.UserIp.Equals(ipAddress) && (int)item.Operation == (int)operation)
+                                        .CountAsync();
 
-            return wordsCount;
+            return count;
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using AnagramSolver.Contracts.Dtos;
 using AnagramSolver.Contracts.Interfaces;
-using AnagramSolver.EF.DbFirst.Entities;
 using AnagramSolver.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -40,7 +39,7 @@ namespace AnagramSolver.WebApp.Controllers
 
             if (savedWord.Id > 0)
             {
-                _wordLogService.LogWord(savedWord.Id, ipAddress, Contracts.Dtos.WordOpEnum.Add);
+                await _wordLogService.LogWordAsync(savedWord.Id, ipAddress, WordOpEnum.Add);
 
                 ViewData["Message"] = "Žodis išsaugotas žodyne";
 
@@ -63,7 +62,7 @@ namespace AnagramSolver.WebApp.Controllers
             if (inputWord.IsNullOrEmpty())
                 return View("../Home/Index");
 
-            if (!_searchLogService.HasSpareSearch(ipAddress, _configOptions.SearchCount))
+            if (!await _searchLogService.HasSpareSearchAsync(ipAddress, _configOptions.SearchCount))
             {
                 View("../Home/WordWithAnagrams");
             }
@@ -78,7 +77,7 @@ namespace AnagramSolver.WebApp.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAnagramica(string inputWordAnagramica = "")
+        public async Task<IActionResult> GetAnagramicaAsync(string inputWordAnagramica = "")
         {
             ViewData["IsFormVisible"] = false;
             ViewData["Word"] = inputWordAnagramica;
@@ -86,15 +85,14 @@ namespace AnagramSolver.WebApp.Controllers
             if (inputWordAnagramica.IsNullOrEmpty())
                 return View("../Home/Index");
 
-            if (!_searchLogService.HasSpareSearch(ipAddress, _configOptions.SearchCount))
-            {
+            if (!await _searchLogService.HasSpareSearchAsync(ipAddress, _configOptions.SearchCount))
                 View("../Home/WordWithAnagrams");
-            }
 
-            var result = _wordServer.GetAnagramsUsingAnagramicaAsync(inputWordAnagramica).Result;
-            AnagramViewModel model = new(inputWordAnagramica, result.ToList());
+            var anagrams = await _wordServer.GetAnagramsUsingAnagramicaAsync(inputWordAnagramica);
+
             _searchLogService.LogSearch(inputWordAnagramica, ipAddress);
-            return View("../Home/WordWithAnagrams", model);
+
+            return View("../Home/WordWithAnagrams", new AnagramViewModel(inputWordAnagramica, anagrams.ToList()));
         }
 
         [HttpGet]
@@ -104,7 +102,7 @@ namespace AnagramSolver.WebApp.Controllers
 
             if (isDeleted)
             {
-                _wordLogService.LogWord(wordId, ipAddress, Contracts.Dtos.WordOpEnum.Delete);
+                await _wordLogService.LogWordAsync(wordId, ipAddress, WordOpEnum.Delete);
                 TempData["Message"] = "Žodis ištrintas.";
                 return RedirectToAction("Index", "WordList");
             }
@@ -140,7 +138,7 @@ namespace AnagramSolver.WebApp.Controllers
             {
                 ViewData["Message"] = "Žodis atnaujintas.";
 
-                _wordLogService.LogWord(wordId, ipAddress, Contracts.Dtos.WordOpEnum.Edit);
+                await _wordLogService.LogWordAsync(wordId, ipAddress, WordOpEnum.Edit);
                 ViewData["IsFormVisible"] = false;
 
                 anagrams = await _wordServer.GetAnagramsAsync(newForm);

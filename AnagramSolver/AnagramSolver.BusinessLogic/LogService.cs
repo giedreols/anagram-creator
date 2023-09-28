@@ -14,12 +14,13 @@ namespace AnagramSolver.BusinessLogic
             _wordLogRepo = wordLogRepo;
         }
 
-        public bool HasSpareSearch(string ipAddress, int maxSearchCount)
+        public async Task<bool> HasSpareSearchAsync(string ipAddress, int maxSearchCount)
         {
             int currentSearchCount = _searchLogRepo.GetSearchCount(ipAddress);
-            int newWordsCount = _wordLogRepo.GetEntriesCount(ipAddress, WordOpEnum.Add);
-            int deletedWordsCount = _wordLogRepo.GetEntriesCount(ipAddress, WordOpEnum.Delete);
-            int editedWordsCount = _wordLogRepo.GetEntriesCount(ipAddress, WordOpEnum.Edit);
+
+            int newWordsCount = await _wordLogRepo.GetEntriesCountAsync(ipAddress, WordOpEnum.Add);
+            int deletedWordsCount = await _wordLogRepo.GetEntriesCountAsync(ipAddress, WordOpEnum.Delete);
+            int editedWordsCount = await _wordLogRepo.GetEntriesCountAsync(ipAddress, WordOpEnum.Edit);
 
             return (currentSearchCount - newWordsCount + deletedWordsCount - editedWordsCount) < maxSearchCount;
         }
@@ -29,9 +30,9 @@ namespace AnagramSolver.BusinessLogic
             _searchLogRepo.Add(new SearchLogDto(ipAddress, DateTime.UtcNow, inputWord));
         }
 
-        public void LogWord(int wordId, string ipAddress, WordOpEnum action)
+        public async Task<int> LogWordAsync(int wordId, string ipAddress, WordOpEnum action)
         {
-            _wordLogRepo.Add(new WordLogDto(ipAddress, action, wordId));
+            return await _wordLogRepo.AddAsync(new WordLogDto(ipAddress, action, wordId));
         }
 
         public SearchLogDto GetLastSearchInfo()

@@ -4,6 +4,6 @@ namespace AnagramSolver.Contracts.Interfaces
 {
     public interface IWordLogService
     {
-        void LogWord(int id, string ipAddress, WordOpEnum action);
+        Task<int> LogWordAsync(int id, string ipAddress, WordOpEnum action);
     }
 }

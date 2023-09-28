@@ -4,7 +4,7 @@ namespace AnagramSolver.Contracts.Interfaces
 {
     public interface IWordLogRepository
     {
-        void Add(WordLogDto word);
-        int GetEntriesCount(string ipAddress, WordOpEnum operation);
+        Task<int> AddAsync(WordLogDto word);
+        Task<int> GetEntriesCountAsync(string ipAddress, WordOpEnum operation);
     }
 }

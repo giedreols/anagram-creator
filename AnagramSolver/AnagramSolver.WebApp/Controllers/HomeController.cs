@@ -25,11 +25,11 @@ namespace AnagramSolver.WebApp.Controllers
         // jei neturiu ka veikt, galiu errora pataisyt cia dar
 
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> IndexAsync()
         {
             string ipAddress = _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString();
 
-            if (_logService.HasSpareSearch(ipAddress, _config.ConfigOptions.SearchCount))
+            if (await _logService.HasSpareSearchAsync(ipAddress, _config.ConfigOptions.SearchCount))
                 return View();
 
             else return View(new ErrorModel("Anagramų paieškų limitas iš šio IP adreso išnaudotas. Nori daugiau paieškų?"));

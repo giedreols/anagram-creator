@@ -1,4 +1,6 @@
-﻿namespace AnagramSolver.EF.DbFirst.Entities;
+﻿using AnagramSolver.Contracts.Dtos;
+
+namespace AnagramSolver.EF.DbFirst.Entities;
 
 public partial class WordLog
 {
@@ -13,11 +15,4 @@ public partial class WordLog
     public WordOpEnum Operation { get; set; }
 
     public DateTime? TimeStamp { get; set; }
-}
-
-public enum WordOpEnum
-{
-    ADD,
-    EDIT,
-    DELETE
 }
