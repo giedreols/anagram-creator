@@ -7,7 +7,7 @@ namespace AnagramSolver.WebApp.Controllers
     public class NewWordController : Controller
     {
         [HttpGet]
-        public ActionResult Index()
+        public async Task<ActionResult> IndexAsync()
         {
             return View();
         }
