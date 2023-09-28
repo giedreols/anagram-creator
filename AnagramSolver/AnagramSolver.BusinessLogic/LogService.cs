@@ -16,8 +16,7 @@ namespace AnagramSolver.BusinessLogic
 
         public async Task<bool> HasSpareSearchAsync(string ipAddress, int maxSearchCount)
         {
-            int currentSearchCount = _searchLogRepo.GetSearchCount(ipAddress);
-
+            int currentSearchCount = await _searchLogRepo.GetSearchCountAsync(ipAddress);
             int newWordsCount = await _wordLogRepo.GetEntriesCountAsync(ipAddress, WordOpEnum.Add);
             int deletedWordsCount = await _wordLogRepo.GetEntriesCountAsync(ipAddress, WordOpEnum.Delete);
             int editedWordsCount = await _wordLogRepo.GetEntriesCountAsync(ipAddress, WordOpEnum.Edit);
@@ -25,9 +24,9 @@ namespace AnagramSolver.BusinessLogic
             return (currentSearchCount - newWordsCount + deletedWordsCount - editedWordsCount) < maxSearchCount;
         }
 
-        public void LogSearch(string inputWord, string ipAddress)
+        public async Task<int> LogSearchAsync(string inputWord, string ipAddress)
         {
-            _searchLogRepo.Add(new SearchLogDto(ipAddress, DateTime.UtcNow, inputWord));
+            return await _searchLogRepo.AddAsync(new SearchLogDto(ipAddress, DateTime.UtcNow, inputWord));
         }
 
         public async Task<int> LogWordAsync(int wordId, string ipAddress, WordOpEnum action)
@@ -35,9 +34,9 @@ namespace AnagramSolver.BusinessLogic
             return await _wordLogRepo.AddAsync(new WordLogDto(ipAddress, action, wordId));
         }
 
-        public SearchLogDto GetLastSearchInfo()
+        public async Task<SearchLogDto> GetLastSearchInfoAsync()
         {
-            return _searchLogRepo.GetLastSearch();
+            return await _searchLogRepo.GetLastSearchAsync();
         }
     }
 }

@@ -6,9 +6,9 @@ using System.Data.SqlClient;
 namespace AnagramSolver.SqlActions
 {
     [Obsolete]
-    public class logRepo : DbAccessHelper, ISearchLogRepository
+    public class SearchLogActions : DbAccessHelper, ISearchLogRepository
     {
-        public void Add(SearchLogDto item)
+        public void AddAsync(SearchLogDto item)
         {
             var query = @"INSERT INTO [dbo].[SearchLog]
 							([UserIp]
@@ -35,7 +35,7 @@ namespace AnagramSolver.SqlActions
             ExecuteCommand(command);
         }
 
-        public SearchLogDto GetLastSearch()
+        public SearchLogDto GetLastSearchAsync()
         {
             string queryLog = @"select top 1 
 								SearchWord as word, UserIp as ip, TimeStamp as time from SearchLog 
@@ -60,7 +60,17 @@ namespace AnagramSolver.SqlActions
             return result;
         }
 
-        public int GetSearchCount(string ipAddress)
+        public int GetSearchCountAsync(string ipAddress)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<int> ISearchLogRepository.AddAsync(SearchLogDto item)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<SearchLogDto> ISearchLogRepository.GetLastSearchAsync()
         {
             throw new NotImplementedException();
         }

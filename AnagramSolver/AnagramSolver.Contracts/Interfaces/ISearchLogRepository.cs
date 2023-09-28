@@ -4,8 +4,8 @@ namespace AnagramSolver.Contracts.Interfaces
 {
     public interface ISearchLogRepository
     {
-        void Add(SearchLogDto item);
-        SearchLogDto GetLastSearch();
-        int GetSearchCount(string ipAddress);
+        Task<int> AddAsync(SearchLogDto item);
+        Task<SearchLogDto> GetLastSearchAsync();
+        Task<int> GetSearchCountAsync(string ipAddress);
     }
 }

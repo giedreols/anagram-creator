@@ -1,6 +1,7 @@
 ﻿using AnagramSolver.Contracts.Dtos;
 using AnagramSolver.Contracts.Interfaces;
 using AnagramSolver.EF.DbFirst.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace AnagramSolver.EF.DbFirst
 {
@@ -13,7 +14,7 @@ namespace AnagramSolver.EF.DbFirst
             _context = context;
         }
 
-        public void Add(SearchLogDto item)
+        public async Task<int> AddAsync(SearchLogDto item)
         {
             SearchLog model = new()
             {
@@ -22,13 +23,13 @@ namespace AnagramSolver.EF.DbFirst
                 UserIp = item.UserIp,
             };
 
-            _context.SearchLog.Add(model);
-            _context.SaveChanges();
+            await _context.SearchLog.AddAsync(model);
+            return await _context.SaveChangesAsync();
         }
 
-        public SearchLogDto GetLastSearch()
+        public async Task<SearchLogDto> GetLastSearchAsync()
         {
-            var lastItem = _context.SearchLog.OrderByDescending(item => item.TimeStamp).FirstOrDefault();
+            var lastItem = await _context.SearchLog.OrderByDescending(item => item.TimeStamp).FirstOrDefaultAsync();
 
             if (lastItem != null)
             {
@@ -38,9 +39,9 @@ namespace AnagramSolver.EF.DbFirst
             else return new SearchLogDto(string.Empty, DateTime.MinValue, string.Empty);
         }
 
-        public int GetSearchCount(string ipAddress)
+        public async Task<int> GetSearchCountAsync(string ipAddress)
         {
-            int totalCount = _context.SearchLog.Where(item => item.UserIp.Equals(ipAddress)).Count();
+            int totalCount = await _context.SearchLog.Where(item => item.UserIp.Equals(ipAddress)).CountAsync();
 
             return totalCount;
         }

@@ -71,7 +71,7 @@ namespace AnagramSolver.WebApp.Controllers
 
             var anagrams = await _wordServer.GetAnagramsAsync(inputWord);
 
-            _searchLogService.LogSearch(inputWord, ipAddress);
+            await _searchLogService.LogSearchAsync(inputWord, ipAddress);
 
             return View("../Home/WordWithAnagrams", new AnagramViewModel(wordId, inputWord, anagrams.ToList()));
         }
@@ -90,7 +90,7 @@ namespace AnagramSolver.WebApp.Controllers
 
             var anagrams = await _wordServer.GetAnagramsUsingAnagramicaAsync(inputWordAnagramica);
 
-            _searchLogService.LogSearch(inputWordAnagramica, ipAddress);
+            await _searchLogService.LogSearchAsync(inputWordAnagramica, ipAddress);
 
             return View("../Home/WordWithAnagrams", new AnagramViewModel(inputWordAnagramica, anagrams.ToList()));
         }

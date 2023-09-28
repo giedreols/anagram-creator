@@ -22,7 +22,7 @@ namespace AnagramSolver.WebApp.Controllers
         [HttpGet]
         public async Task<IActionResult> IndexAsync()
         {
-            SearchLogDto lastSearchInfo = _logService.GetLastSearchInfo();
+            SearchLogDto lastSearchInfo = await _logService.GetLastSearchInfoAsync();
 
             var word = string.IsNullOrEmpty(lastSearchInfo.Word) ? "nėra" : lastSearchInfo.Word;
 
