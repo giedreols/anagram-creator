@@ -11,6 +11,8 @@ namespace AnagramSolver.Tests.EfDbFirstTests
     {
         private Mock<AnagramSolverDataContext> _mockDataContext;
         private ISearchLogRepository _searchLogRepo;
+        //private ITimeProvider _timeProvider;
+
 
         [SetUp]
         public void SetUp()
@@ -22,20 +24,38 @@ namespace AnagramSolver.Tests.EfDbFirstTests
         // testuoti _searchLogRepo.Add ir testuoti, kad buvo iskviesta su ta data
         // daryti interface, kuris apwrapina
 
-        //[Test]
-        //public void AddLog()
-        //{
-        //    var expectedTimeStamp = DateTime.UtcNow;
+        [Test]
+        public void AddLog()
+        {
+           // _timeProvider = new MockTimeProvider();
 
-        //    var item = new SearchLogDto("userIp", expectedTimeStamp, "word");
+            //var expectedTimeStamp = _timeProvider.UtcNow;
 
-        //    _searchLogRepo.Add(item);
+           //var item = new SearchLogDto("userIp", expectedTimeStamp, "word");
 
-        //    _timeProvider.Setup(x => x.UtcNow).Returns(expectedTimeStamp);
+            //    await _logService.LogSearchAsync("word", "ip");
 
-        //    _logService.LogSearch("word", "ip");
+            //    // Verify that the method in your service called the timeProvider
+            //    _timeProvider.Verify(x => x.UtcNow, Times.Once);
 
-        //    _mockSearchLogRepo.Verify(x => x.Add(It.Is<SearchLogDto>(x => x.TimeStamp == expectedTimeStamp)));
-        //}
+
+            //    // Verify that the log was added with the expected timestamp
+            //    _mockSearchLogRepo.Verify(x => x.AddAsync(It.Is<SearchLogDto>(x => x.TimeStamp == expectedTimeStamp)), Times.Once)
+
+            //    x => x.Add(It.Is<SearchLogDto>(x => x.TimeStamp == (DateTime?)expectedTimeStamp));
+            //    _mockSearchLogRepo.Verify(x => x.Add(It.Is<SearchLogDto>(x => x.TimeStamp == expectedTimeStamp)));
+
+
+
+
+
+            //_searchLogRepo.Add(item);
+
+            //_timeProvider.Setup(x => x.UtcNow).Returns(expectedTimeStamp);
+
+            //_logService.LogSearch("word", "ip");
+
+            //_mockSearchLogRepo.Verify(x => x.Add(It.Is<SearchLogDto>(x => x.TimeStamp == expectedTimeStamp)));
+        }
     }
 }

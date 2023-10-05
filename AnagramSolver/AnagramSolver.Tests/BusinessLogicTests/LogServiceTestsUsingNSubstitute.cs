@@ -9,18 +9,18 @@ namespace AnagramSolver.Tests.EfDbFirstTests
     [TestFixture]
     public class LogServiceTestsUsingNSubstitute
     {
-        private LogService _logService;
-        private IWordLogRepository _wordLogRepository;
-        private ISearchLogRepository _searchLogRepository;
+        //    private LogService _logService;
+        //    private IWordLogRepository _wordLogRepository;
+        //    private ISearchLogRepository _searchLogRepository;
 
-        [SetUp]
-        public void SetUp()
-        {
-            _wordLogRepository = Substitute.For<IWordLogRepository>();
-            _searchLogRepository = Substitute.For<ISearchLogRepository>();
+        //    [SetUp]
+        //    public void SetUp()
+        //    {
+        //        _wordLogRepository = Substitute.For<IWordLogRepository>();
+        //        _searchLogRepository = Substitute.For<ISearchLogRepository>();
 
-            _logService = new LogService(_searchLogRepository, _wordLogRepository);
-        }
+        //        _logService = new LogService(_searchLogRepository, _wordLogRepository);
+        //    }
 
         //[Test]
         //public void GetLastSearchInfo_ReturnsCorrectDateTime()

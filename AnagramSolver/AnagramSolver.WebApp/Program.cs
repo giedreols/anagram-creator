@@ -20,6 +20,7 @@ builder.Services.AddScoped<IWordLogRepository, WordLogRepo>();
 builder.Services.AddScoped<ISearchLogRepository, SearchLogRepo>();
 builder.Services.AddScoped<IWordRepository, WordRepo>();
 builder.Services.AddScoped<IPartOfSpeechRespository, PartOfSpeechRepo>();
+builder.Services.AddSingleton<ITimeProvider, TimeProvider>();
 
 builder.Services.AddScoped<MyConfiguration>();
 

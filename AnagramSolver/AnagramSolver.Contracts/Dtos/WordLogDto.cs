@@ -6,11 +6,15 @@
         public WordOpEnum Operation { get; set; }
         public int WordId { get; set; }
 
-        public WordLogDto(string userIp, WordOpEnum operation, int wordId)
+        public DateTime TimeStamp { get; set; }
+
+
+        public WordLogDto(string userIp, WordOpEnum operation, int wordId, DateTime timeStamp)
         {
             UserIp = userIp;
             Operation = operation;
             WordId = wordId;
+            TimeStamp = timeStamp;
         }
     }
 
