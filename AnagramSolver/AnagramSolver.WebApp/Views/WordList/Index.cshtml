@@ -29,7 +29,7 @@
         @foreach (var word in @Model.CurrentPageWords)
         {
             <li>
-                <a href="@Url.Action("Get", "Word", new { inputWord = @word.Value })">@(word.Value)</a>
+                <a href="@Url.Action("GetAsyncRazor", "Word", new { inputWord = @word.Value })">@(word.Value)</a>
             </li>
         }
     </ul>
