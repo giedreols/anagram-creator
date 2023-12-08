@@ -15,11 +15,11 @@ namespace AnagramSolver.WebApp.Controllers
 
         private readonly int pageSize;
 
-        public WordListController(IWordServer wordServer, IFileService fileService, MyConfiguration congif)
+        public WordListController(IWordServer wordServer, IFileService fileService, MyConfiguration config)
         {
             _wordServer = wordServer;
             _fileService = fileService;
-            pageSize = congif.ConfigOptions.TotalAmount;
+            pageSize = config.ConfigOptions.TotalAmount;
         }
 
         [HttpGet]

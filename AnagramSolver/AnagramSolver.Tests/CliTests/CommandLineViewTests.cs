@@ -1,5 +1,6 @@
 ﻿using AnagramSolver.Cli;
 using AnagramSolver.Contracts.Interfaces;
+using NUnit.Framework.Legacy;
 
 namespace AnagramSolver.Tests.CliTests
 {

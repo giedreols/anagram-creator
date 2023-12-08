@@ -74,5 +74,10 @@ namespace AnagramSolver.SqlActions
         {
             throw new NotImplementedException();
         }
+
+        Task<int> ISearchLogRepository.GetSearchCountAsync(string ipAddress)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

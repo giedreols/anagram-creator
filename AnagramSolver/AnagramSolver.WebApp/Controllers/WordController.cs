@@ -3,6 +3,7 @@ using AnagramSolver.Contracts.Interfaces;
 using AnagramSolver.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using System.Net;
 
 namespace AnagramSolver.WebApp.Controllers
 {
@@ -54,7 +55,7 @@ namespace AnagramSolver.WebApp.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAsync(string inputWord = "")
+        public async Task<IActionResult> GetAsyncRazor(string inputWord = "")
         {
             ViewData["IsFormVisible"] = false;
             ViewData["Word"] = inputWord;

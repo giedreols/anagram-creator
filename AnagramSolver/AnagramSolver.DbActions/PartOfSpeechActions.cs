@@ -27,5 +27,10 @@ namespace AnagramSolver.SqlActions
         {
             throw new NotImplementedException();
         }
+
+        Task<int> IPartOfSpeechRespository.InsertPartOfSpeechIfDoesNotExistAsync(string abbreviation)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

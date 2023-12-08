@@ -20,7 +20,7 @@ builder.Services.AddScoped<IWordLogRepository, WordLogRepo>();
 builder.Services.AddScoped<ISearchLogRepository, SearchLogRepo>();
 builder.Services.AddScoped<IWordRepository, WordRepo>();
 builder.Services.AddScoped<IPartOfSpeechRespository, PartOfSpeechRepo>();
-builder.Services.AddSingleton<ITimeProvider, TimeProvider>();
+builder.Services.AddSingleton<ITimeProvider, AnagramSolver.BusinessLogic.TimeProvider>();
 
 builder.Services.AddScoped<MyConfiguration>();
 
@@ -35,6 +35,17 @@ builder.Services.AddDbContext<AnagramSolverDataContext>(
 
 builder.Services.AddHttpClient();
 
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(
+        policy =>
+        {
+            policy.AllowAnyOrigin()
+                  .AllowAnyHeader()
+                  .AllowAnyMethod();
+        });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -47,15 +58,10 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
 app.UseRouting();
-
 app.UseAuthorization();
-
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapControllers();
-});
+app.UseCors();
+app.MapControllers();
 
 app.MapControllerRoute(
     name: "default",
