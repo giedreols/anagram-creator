@@ -19,7 +19,7 @@ namespace AnagramSolver.WebApp.Controllers
         private readonly int _pageSize;
 
 
-        public WordApiController(IWordServer wordServer, IWordLogService wordLogService, ISearchLogService searchLogService, MyConfiguration config, 
+        public WordApiController(IWordServer wordServer, IWordLogService wordLogService, ISearchLogService searchLogService, MyConfiguration config,
             IHttpContextAccessor httpContextAccessor)
         {
             _wordServer = wordServer;
@@ -32,23 +32,11 @@ namespace AnagramSolver.WebApp.Controllers
             _ipAddress = _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString();
         }
 
-        // reiktu padaryt ifus jeigu nera zodzio arba jis per ilgas, arba neturi paiesku
-
         [HttpGet]
         public async Task<IActionResult> GetAsyncApi(string inputWord = "")
         {
-            // galima apwrapinti AnagramViewModelį kažkuo, kas grąžina validation errorus ir tada validationą kelti į business logicą irgi
-
-            // viską kelti į business logic, ir gauti iškart AnagramViewModel ar kažką pnš
-            int wordId = await _wordServer.GetWordIdAsync(inputWord);
-
-            var anagrams = await _wordServer.GetAnagramsAsync(inputWord);
-
-            // http context accessor - business layeryje galiu injectinti leidžia išsitraukti ip adresą
-
-            await _searchLogService.LogSearchAsync(inputWord, _ipAddress);
-
-            return Ok(new AnagramViewModel(wordId, inputWord, anagrams.ToList()));
+            var result = await _wordServer.GetAnagramsNewAsync(inputWord);
+            return Ok(result);
         }
 
         [HttpGet]
@@ -107,22 +95,6 @@ namespace AnagramSolver.WebApp.Controllers
 
             // not upddated - error
             return Ok();
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> CreateAsync(string newWord = "", string newAbbreviation = "")
-        {
-            WordResultDto savedWord = await _wordServer.SaveWordAsync(new FullWordDto(newWord, newWord, newAbbreviation), _configOptions);
-
-            if (savedWord.Id > 0)
-            {
-                await _wordLogService.LogWordAsync(savedWord.Id, _ipAddress, WordOpEnum.Add);
-                var anagrams = await _wordServer.GetAnagramsAsync(newWord);
-                return Ok(anagrams);
-            }
-
-            // not saved
-            return Ok(new List<string>());
         }
     }
 }

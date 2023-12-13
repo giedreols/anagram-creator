@@ -12,6 +12,8 @@ namespace AnagramSolver.Contracts.Interfaces
 
         Task<IEnumerable<string>> GetAnagramsAsync(string word);
 
+        Task<GetAnagramsResultDto> GetAnagramsNewAsync(string word);
+
         Task<IEnumerable<string>> GetAnagramsUsingAnagramicaAsync(string word);
 
         Task<bool> DeleteWordAsync(int wordId);

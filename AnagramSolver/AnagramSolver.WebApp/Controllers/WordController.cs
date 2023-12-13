@@ -3,7 +3,7 @@ using AnagramSolver.Contracts.Interfaces;
 using AnagramSolver.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
-using System.Net;
+using ErrorMessageEnum = AnagramSolver.WebApp.Models.ErrorMessageEnum;
 
 namespace AnagramSolver.WebApp.Controllers
 {
@@ -17,7 +17,7 @@ namespace AnagramSolver.WebApp.Controllers
         private readonly ISearchLogService _searchLogService;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        private readonly string ipAddress;
+        private readonly string _ipAddress;
 
         public WordController(IWordServer wordServer, IWordLogService wordLogService, ISearchLogService searchLogService, MyConfiguration config, IHttpContextAccessor httpContextAccessor)
         {
@@ -27,31 +27,43 @@ namespace AnagramSolver.WebApp.Controllers
             _httpContextAccessor = httpContextAccessor;
             _searchLogService = searchLogService;
 
-            ipAddress = _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString();
+            _ipAddress = _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString();
         }
 
         [HttpPost]
         public async Task<ActionResult> CreateAsync([FromForm] string newWord = "", [FromForm] string newAbbreviation = "")
         {
-            ViewData["Word"] = newWord;
-            ViewData["Abbreviation"] = newAbbreviation;
-
             WordResultDto savedWord = await _wordServer.SaveWordAsync(new FullWordDto(newWord, newWord, newAbbreviation), _configOptions);
 
-            if (savedWord.Id > 0)
+            switch ((ErrorMessageEnum)savedWord.ErrorMessage)
             {
-                await _wordLogService.LogWordAsync(savedWord.Id, ipAddress, WordOpEnum.Add);
+                case ErrorMessageEnum.Ok:
 
-                ViewData["Message"] = "Žodis išsaugotas žodyne";
+                    await _wordLogService.LogWordAsync(savedWord.Id, _ipAddress, WordOpEnum.Add);
 
-                var anagrams = await _wordServer.GetAnagramsAsync(newWord);
+                    ViewData["Message"] = "Žodis išsaugotas žodyne";
 
-                return View("../Home/WordWithAnagrams", new AnagramViewModel(savedWord.Id, newWord, anagrams.ToList()));
+                    AnagramViewModel result = new()
+                    {
+                        Anagrams = await _wordServer.GetAnagramsAsync(newWord),
+                        Word = newWord,
+                        WordId = savedWord.Id
+                    };
+
+                    GetAnagramsResultModel model = new()
+                    {
+                        WordAndAnagrams = result
+                    };
+
+                    return View("../Home/WordWithAnagrams", model);
+
+                default:
+                    ViewData["Word"] = newWord;
+                    ViewData["Abbreviation"] = newAbbreviation;
+                    ViewData["Message"] = Helpers.ConvertErrorEnumToMessage((ErrorMessageEnum)savedWord.ErrorMessage);
+
+                    return View("../NewWord/Index");
             }
-
-            ViewData["Message"] = savedWord.ErrorMessage;
-
-            return View("../NewWord/Index");
         }
 
         [HttpGet]
@@ -60,21 +72,24 @@ namespace AnagramSolver.WebApp.Controllers
             ViewData["IsFormVisible"] = false;
             ViewData["Word"] = inputWord;
 
-            if (inputWord.IsNullOrEmpty())
+            GetAnagramsResultDto result = await _wordServer.GetAnagramsNewAsync(inputWord);
+
+            GetAnagramsResultModel model = new() { WordAndAnagrams = new AnagramViewModel(result.WordAndAnagrams.Word) };
+
+            foreach (var message in result.ErrorMessages) model.ErrorMessages.Add((ErrorMessageEnum)message);
+
+            if (model.ErrorMessages.Contains(ErrorMessageEnum.Empty))
                 return View("../Home/Index");
 
-            if (!await _searchLogService.HasSpareSearchAsync(ipAddress, _configOptions.SearchCount))
+            if (model.ErrorMessages.Contains(ErrorMessageEnum.SearchLimit))
             {
-                View("../Home/WordWithAnagrams");
+                return View("../Home/WordWithAnagrams", model);
             }
 
-            int wordId = await _wordServer.GetWordIdAsync(inputWord);
+            model.WordAndAnagrams.WordId = result.WordAndAnagrams.WordId;
+            model.WordAndAnagrams.Anagrams = result.WordAndAnagrams.Anagrams;
 
-            var anagrams = await _wordServer.GetAnagramsAsync(inputWord);
-
-            await _searchLogService.LogSearchAsync(inputWord, ipAddress);
-
-            return View("../Home/WordWithAnagrams", new AnagramViewModel(wordId, inputWord, anagrams.ToList()));
+            return View("../Home/WordWithAnagrams", model);
         }
 
         [HttpGet]
@@ -86,24 +101,26 @@ namespace AnagramSolver.WebApp.Controllers
             if (inputWordAnagramica.IsNullOrEmpty())
                 return View("../Home/Index");
 
-            if (!await _searchLogService.HasSpareSearchAsync(ipAddress, _configOptions.SearchCount))
+            if (!await _searchLogService.HasSpareSearchAsync(_ipAddress, _configOptions.SearchCount))
                 View("../Home/WordWithAnagrams");
 
             var anagrams = await _wordServer.GetAnagramsUsingAnagramicaAsync(inputWordAnagramica);
 
-            await _searchLogService.LogSearchAsync(inputWordAnagramica, ipAddress);
+            await _searchLogService.LogSearchAsync(inputWordAnagramica, _ipAddress);
 
-            return View("../Home/WordWithAnagrams", new AnagramViewModel(inputWordAnagramica, anagrams.ToList()));
+            GetAnagramsResultModel model = new() { WordAndAnagrams = new AnagramViewModel(inputWordAnagramica, anagrams.ToList()) };
+
+            return View("../Home/WordWithAnagrams", model);
         }
 
         [HttpGet]
-        public async Task<ActionResult> DeleteAsync(int wordId, string word)
+        public async Task<IActionResult> Delete(int wordId, string word)
         {
             bool isDeleted = await _wordServer.DeleteWordAsync(wordId);
 
             if (isDeleted)
             {
-                await _wordLogService.LogWordAsync(wordId, ipAddress, WordOpEnum.Delete);
+                await _wordLogService.LogWordAsync(wordId, _ipAddress, WordOpEnum.Delete);
                 TempData["Message"] = "Žodis ištrintas.";
                 return RedirectToAction("Index", "WordList");
             }
@@ -116,21 +133,25 @@ namespace AnagramSolver.WebApp.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> UpdateAsync([FromForm] int wordId, [FromForm] string oldForm, [FromForm] string newForm = "")
+        public async Task<IActionResult> UpdateAsync([FromForm] int wordId, [FromForm] string oldForm, [FromForm] string newForm = "")
         {
             ViewData["newForm"] = newForm;
             ViewData["oldForm"] = oldForm;
             ViewData["WordId"] = wordId;
 
-            IEnumerable<string> anagrams;
+            AnagramViewModel result = new();
+            result.WordId = wordId;
+            GetAnagramsResultModel model = new();
 
             if (newForm == oldForm)
             {
                 ViewData["IsFormVisible"] = true;
 
-                anagrams = await _wordServer.GetAnagramsAsync(oldForm);
+                result.Anagrams = await _wordServer.GetAnagramsAsync(oldForm);
+                result.Word = oldForm;
+                model.WordAndAnagrams = result;
 
-                return View("../Home/WordWithAnagrams", new AnagramViewModel(wordId, oldForm, anagrams.ToList()));
+                return View("../Home/WordWithAnagrams", model);
             }
 
             WordResultDto updatedWord = await _wordServer.UpdateWordAsync(wordId, newForm, _configOptions);
@@ -139,20 +160,26 @@ namespace AnagramSolver.WebApp.Controllers
             {
                 ViewData["Message"] = "Žodis atnaujintas.";
 
-                await _wordLogService.LogWordAsync(wordId, ipAddress, WordOpEnum.Edit);
+                await _wordLogService.LogWordAsync(wordId, _ipAddress, WordOpEnum.Edit);
                 ViewData["IsFormVisible"] = false;
 
-                anagrams = await _wordServer.GetAnagramsAsync(newForm);
-
-                return View("../Home/WordWithAnagrams", new AnagramViewModel(wordId, newForm, anagrams.ToList()));
+                result.Anagrams = await _wordServer.GetAnagramsAsync(newForm);
+                result.Word = newForm;
             }
 
-            ViewData["Message"] = updatedWord.ErrorMessage;
-            ViewData["IsFormVisible"] = true;
+            else
+            {
+                ViewData["Message"] = updatedWord.ErrorMessage;
+                ViewData["IsFormVisible"] = true;
 
-            anagrams = await _wordServer.GetAnagramsAsync(oldForm);
+                result.Anagrams = await _wordServer.GetAnagramsAsync(oldForm);
+                result.Word = oldForm;
+                model.ErrorMessages.Add((ErrorMessageEnum)updatedWord.ErrorMessage);
+            }
 
-            return View("../Home/WordWithAnagrams", new AnagramViewModel(wordId, oldForm, anagrams.ToList()));
+            model.WordAndAnagrams = result;
+
+            return View("../Home/WordWithAnagrams", model);
         }
 
         [HttpPost]

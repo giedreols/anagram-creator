@@ -20,11 +20,7 @@
 			<p>Ieškotas žodis: @Model.AnagramWords.Word</p>
 		</li>
 		<li>
-			@if (Model.AnagramWords.Anagrams == null)
-			{
-				<p> Nėra žodžio, tai nėra ir anagramų.</p>
-			}
-			else if (Model.AnagramWords.Anagrams.Count > 0)
+			@if (Model.AnagramWords?.Word != null && Model.AnagramWords?.Anagrams.Count() > 0)
 			{
 				<p>Jo anagramos:</p>
 				<ul>

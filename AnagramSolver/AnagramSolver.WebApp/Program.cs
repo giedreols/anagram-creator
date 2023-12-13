@@ -3,7 +3,6 @@ using AnagramSolver.Contracts.Interfaces;
 using AnagramSolver.EF.DbFirst;
 using AnagramSolver.EF.DbFirst.Entities;
 using Microsoft.EntityFrameworkCore;
-using System.Configuration;
 using MyConfiguration = AnagramSolver.WebApp.MyConfiguration;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,6 +20,8 @@ builder.Services.AddScoped<ISearchLogRepository, SearchLogRepo>();
 builder.Services.AddScoped<IWordRepository, WordRepo>();
 builder.Services.AddScoped<IPartOfSpeechRespository, PartOfSpeechRepo>();
 builder.Services.AddSingleton<ITimeProvider, AnagramSolver.BusinessLogic.TimeProvider>();
+builder.Services.AddScoped<IMyConfiguration, AnagramSolver.BusinessLogic.MyConfiguration>();
+
 
 builder.Services.AddScoped<MyConfiguration>();
 

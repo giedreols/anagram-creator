@@ -108,7 +108,7 @@ namespace AnagramSolver.EF.DbFirst
 
         }
 
-        public async Task<int> IsWordExistsAsync(string inputWord)
+        public async Task<int> GetWordIdAsync(string inputWord)
         {
             var word = await _context.Words.Where(w => !w.IsDeleted).FirstOrDefaultAsync(w => w.OtherForm.Equals(inputWord));
 

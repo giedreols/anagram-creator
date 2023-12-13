@@ -4,11 +4,15 @@ namespace AnagramSolver.WebApp.Models;
 
 public class AnagramViewModel : PageModel
 {
-    public string Word { get; private set; }
+    public string? Word { get; set; }
 
-    public int WordId { get; set; }
+    public int? WordId { get; set; }
 
-    public IList<string> Anagrams { get; set; }
+    public IEnumerable<string> Anagrams { get; set; } = new List<string>();
+
+    public AnagramViewModel()
+    {
+    }
 
     public AnagramViewModel(int wordId, string word, IList<string> anagrams)
     {

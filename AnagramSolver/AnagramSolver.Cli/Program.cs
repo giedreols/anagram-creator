@@ -21,7 +21,7 @@ while (repeat)
 
     if (invalidityReason != null)
     {
-        renderer.RejectWord(invalidityReason);
+        renderer.RejectWord(invalidityReason.ToString());
         continue;
     }
 

@@ -16,7 +16,7 @@ namespace AnagramSolver.Contracts.Interfaces
 
         Task<Dictionary<int, string>> GetMatchingWordsAsync(string inputWord);
 
-        Task<int> IsWordExistsAsync(string inputWord);
+        Task<int> GetWordIdAsync(string inputWord);
 
         Task<IEnumerable<string>> GetAnagramsAsync(string word);
     }

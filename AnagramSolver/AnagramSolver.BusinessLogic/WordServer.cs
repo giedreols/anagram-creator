@@ -1,9 +1,11 @@
 ﻿using AnagramSolver.BusinessLogic.Helpers;
 using AnagramSolver.Contracts.Dtos;
 using AnagramSolver.Contracts.Interfaces;
-using AnagramSolver.WebApp.Models;
+using Microsoft.AspNetCore.Http;
+using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using System.Data;
+using System.Net;
 
 namespace AnagramSolver.BusinessLogic
 {
@@ -12,13 +14,23 @@ namespace AnagramSolver.BusinessLogic
         private readonly IWordRepository _wordRepo;
         private readonly IPartOfSpeechRespository _partOfSpeechRepo;
         private readonly HttpClient _httpClient;
+        private readonly ISearchLogService _searchLogService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly ConfigOptionsDto _configOptions;
 
+        private readonly string _ipAddress;
 
-        public WordServer(IWordRepository _wordRepo, IPartOfSpeechRespository partOfSpeechRepo, HttpClient httpClient)
+        public WordServer(IWordRepository wordRepo, IPartOfSpeechRespository partOfSpeechRepo, HttpClient httpClient,
+            ISearchLogService searchLogService, IHttpContextAccessor httpContextAccessor, IMyConfiguration config)
         {
-            this._wordRepo = _wordRepo;
+            _wordRepo = wordRepo;
             _partOfSpeechRepo = partOfSpeechRepo;
             _httpClient = httpClient;
+            _searchLogService = searchLogService;
+            _httpContextAccessor = httpContextAccessor;
+
+            _ipAddress = _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString();
+            _configOptions = config.ConfigOptions;
         }
 
         public async Task<WordsPerPageDto> GetMatchingWordsAsync(string inputWord, int page = 1, int pageSize = 100)
@@ -54,6 +66,31 @@ namespace AnagramSolver.BusinessLogic
             return await _wordRepo.GetAnagramsAsync(inputWord);
         }
 
+        public async Task<GetAnagramsResultDto> GetAnagramsNewAsync(string inputWord)
+        {
+            var result = new GetAnagramsResultDto();
+
+            if (!await _searchLogService.HasSpareSearchAsync(_ipAddress, _configOptions.SearchCount))
+            {
+                result.ErrorMessages.Add(ErrorMessageEnum.SearchLimit);
+                return result;
+            }
+
+            if (inputWord.IsNullOrEmpty())
+            {
+                result.ErrorMessages.Add(ErrorMessageEnum.Empty);
+                return result;
+            }
+
+            result.WordAndAnagrams.Word = inputWord.Trim();
+            result.WordAndAnagrams.WordId = await _wordRepo.GetWordIdAsync(inputWord);
+            result.WordAndAnagrams.Anagrams = await _wordRepo.GetAnagramsAsync(inputWord);
+
+            await _searchLogService.LogSearchAsync(inputWord, _ipAddress);
+
+            return result;
+        }
+
         public async Task<IEnumerable<string>> GetAnagramsUsingAnagramicaAsync(string inputWordAnagramica)
         {
             string apiUrl = $"http://www.anagramica.com/all/{inputWordAnagramica}";
@@ -79,19 +116,20 @@ namespace AnagramSolver.BusinessLogic
             return await _wordRepo.DeleteAsync(wordId);
         }
 
+        // validacijos nesutampa su redagavimo
         public async Task<WordResultDto> SaveWordAsync(FullWordDto word, ConfigOptionsDto config)
         {
             WordResultDto newWord = new();
 
             var errorMessage = InputWordValidator.Validate(word.OtherForm, config.MinLength, config.MaxLength);
 
-            if (errorMessage != null)
+            if (errorMessage != ErrorMessageEnum.Ok)
             {
                 newWord.ErrorMessage = errorMessage;
             }
-            else if (await _wordRepo.IsWordExistsAsync(word.OtherForm) != 0)
+            else if (await _wordRepo.GetWordIdAsync(word.OtherForm) != 0)
             {
-                newWord.ErrorMessage = ErrorMessages.AlreadyExists;
+                newWord.ErrorMessage = ErrorMessageEnum.AlreadyExists;
             }
             else
             {
@@ -100,7 +138,7 @@ namespace AnagramSolver.BusinessLogic
 
                 if (newWord.Id == 0)
                 {
-                    newWord.ErrorMessage = ErrorMessages.UnknowReason;
+                    newWord.ErrorMessage = ErrorMessageEnum.UnknowReason;
                 }
             }
 
@@ -109,7 +147,7 @@ namespace AnagramSolver.BusinessLogic
 
         public async Task<int> GetWordIdAsync(string word)
         {
-            return await _wordRepo.IsWordExistsAsync(word);
+            return await _wordRepo.GetWordIdAsync(word);
         }
 
         public async Task<WordResultDto> UpdateWordAsync(int wordId, string newForm, ConfigOptionsDto config)
@@ -118,13 +156,13 @@ namespace AnagramSolver.BusinessLogic
 
             var errorMessage = InputWordValidator.Validate(newForm, config.MinLength, config.MaxLength);
 
-            if (errorMessage != null)
+            if (errorMessage != ErrorMessageEnum.Ok)
             {
                 updatedWord.ErrorMessage = errorMessage;
             }
-            else if (await _wordRepo.IsWordExistsAsync(newForm) != 0)
+            else if (await _wordRepo.GetWordIdAsync(newForm) != 0)
             {
-                updatedWord.ErrorMessage = ErrorMessages.AlreadyExists;
+                updatedWord.ErrorMessage = ErrorMessageEnum.AlreadyExists;
             }
             else
             {
@@ -133,7 +171,7 @@ namespace AnagramSolver.BusinessLogic
 
                 if (!isUpdated)
                 {
-                    updatedWord.ErrorMessage = ErrorMessages.UnknowReason;
+                    updatedWord.ErrorMessage = ErrorMessageEnum.UnknowReason;
                 }
                 else
                 {

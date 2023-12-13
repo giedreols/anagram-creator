@@ -278,7 +278,7 @@ namespace AnagramSolver.SqlActions
             throw new NotImplementedException();
         }
 
-        public Task<int> IsWordExistsAsync(string inputWord)
+        public Task<int> GetWordIdAsync(string inputWord)
         {
             throw new NotImplementedException();
         }

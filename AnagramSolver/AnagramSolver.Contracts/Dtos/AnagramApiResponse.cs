@@ -1,4 +1,4 @@
-﻿namespace AnagramSolver.WebApp.Models
+﻿namespace AnagramSolver.Contracts.Dtos
 {
     public class AnagramApiResponse
     {
