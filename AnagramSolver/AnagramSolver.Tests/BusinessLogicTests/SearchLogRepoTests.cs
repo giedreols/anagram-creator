@@ -1,11 +1,9 @@
-﻿using AnagramSolver.BusinessLogic;
-using AnagramSolver.Contracts.Dtos;
-using AnagramSolver.Contracts.Interfaces;
-using AnagramSolver.EF.DbFirst.Entities;
+﻿using AnagramSolver.Contracts.Interfaces;
 using AnagramSolver.EF.DbFirst;
+using AnagramSolver.EF.DbFirst.Entities;
 using Moq;
 
-namespace AnagramSolver.Tests.EfDbFirstTests
+namespace AnagramSolver.Tests.BusinessLogicTests
 {
     public class SearchLogRepoTests
     {
@@ -27,11 +25,11 @@ namespace AnagramSolver.Tests.EfDbFirstTests
         [Test]
         public void AddLog()
         {
-           // _timeProvider = new MockTimeProvider();
+            // _timeProvider = new MockTimeProvider();
 
             //var expectedTimeStamp = _timeProvider.UtcNow;
 
-           //var item = new SearchLogDto("userIp", expectedTimeStamp, "word");
+            //var item = new SearchLogDto("userIp", expectedTimeStamp, "word");
 
             //    await _logService.LogSearchAsync("word", "ip");
 

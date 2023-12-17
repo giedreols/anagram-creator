@@ -1,12 +1,8 @@
 ﻿using AnagramSolver.BusinessLogic;
-using AnagramSolver.Contracts.Dtos;
 using AnagramSolver.Contracts.Interfaces;
-using Microsoft.Extensions.FileProviders;
 using Moq;
-using NSubstitute;
-using NuGet.Packaging.Signing;
 
-namespace AnagramSolver.Tests.EfDbFirstTests
+namespace AnagramSolver.Tests.BusinessLogicTests
 {
 
     public class LogServiceTests
@@ -35,7 +31,7 @@ namespace AnagramSolver.Tests.EfDbFirstTests
         //    var result = Task.FromResult(1);
 
         //    _mockSearchLogRepo.Setup(x => x.AddAsync(model)).Returns(result);
-            
+
         //    await _logService.LogSearchAsync("liepa", "55");
 
         //    _mockSearchLogRepo.Verify(x => x.AddAsync(It.Is<SearchLogDto>(x => x.TimeStamp == expectedTimeStamp)), Times.Once);

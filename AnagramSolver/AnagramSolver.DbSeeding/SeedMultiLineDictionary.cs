@@ -6,6 +6,7 @@ using AnagramSolver.SqlActions;
 
 namespace AnagramSolver.DbSeeding
 {
+    [Obsolete]
     internal static class SeedMultiLineDictionary
     {
         public static void Seed()

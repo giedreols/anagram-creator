@@ -1,6 +1,4 @@
-﻿using System.Net;
-
-namespace AnagramSolver.Contracts.Dtos;
+﻿namespace AnagramSolver.Contracts.Dtos;
 
 public class AnagramViewDto()
 {

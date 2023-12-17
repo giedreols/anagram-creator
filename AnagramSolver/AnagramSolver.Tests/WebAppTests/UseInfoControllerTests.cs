@@ -1,8 +1,4 @@
-﻿using AnagramSolver.Contracts.Interfaces;
-using AnagramSolver.WebApp.Controllers;
-using Moq;
-
-namespace AnagramSolver.Tests.WebAppTests
+﻿namespace AnagramSolver.Tests.WebAppTests
 {
     [TestFixture]
     internal class UseInfoControllerTests

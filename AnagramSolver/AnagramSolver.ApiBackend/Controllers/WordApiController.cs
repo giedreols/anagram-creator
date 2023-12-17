@@ -1,9 +1,8 @@
 ﻿using AnagramSolver.Contracts.Dtos;
 using AnagramSolver.Contracts.Interfaces;
-using AnagramSolver.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace AnagramSolver.WebApp.Controllers
+namespace AnagramSolver.ApiBackend.Controllers
 {
     [Route("[Controller]/[Action]")]
     [ApiController]
@@ -11,25 +10,16 @@ namespace AnagramSolver.WebApp.Controllers
     {
         private readonly IWordServer _wordServer;
         private readonly ConfigOptionsDto _configOptions;
-        private readonly IWordLogService _wordLogService;
-        private readonly ISearchLogService _searchLogService;
-        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        private readonly string _ipAddress;
         private readonly int _pageSize;
 
 
-        public WordApiController(IWordServer wordServer, IWordLogService wordLogService, ISearchLogService searchLogService, MyConfiguration config,
-            IHttpContextAccessor httpContextAccessor)
+        public WordApiController(IWordServer wordServer, IMyConfiguration config)
         {
             _wordServer = wordServer;
-            _wordLogService = wordLogService;
             _configOptions = config.ConfigOptions;
-            _httpContextAccessor = httpContextAccessor;
-            _searchLogService = searchLogService;
 
             _pageSize = config.ConfigOptions.TotalAmount;
-            _ipAddress = _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString();
         }
 
         [HttpGet]

@@ -1,7 +1,6 @@
 ﻿using AnagramSolver.Contracts.Dtos;
-using Microsoft.Extensions.Configuration;
 
-namespace AnagramSolver.BusinessLogic
+namespace AnagramSolver.Contracts.Interfaces
 {
     public interface IMyConfiguration
     {

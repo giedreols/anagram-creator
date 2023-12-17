@@ -5,6 +5,7 @@ using AnagramSolver.Contracts.Interfaces;
 
 namespace AnagramSolver.DbSeeding
 {
+    [Obsolete]
     internal class SeedOneLineDictionary
     {
         private readonly IWordRepository _wordRepo;

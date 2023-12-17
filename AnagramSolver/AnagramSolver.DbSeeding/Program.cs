@@ -5,6 +5,8 @@ using AnagramSolver.EF.DbFirst.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
+// obsolete
+
 var serviceProvider = new ServiceCollection()
     .AddDbContext<AnagramSolverDataContext>(options =>
         options.UseSqlServer("Data Source=.\\MSSQLSERVER01;Initial Catalog=AnagramSolverData;Integrated Security=True;TrustServerCertificate=true"))

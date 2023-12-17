@@ -5,9 +5,9 @@ using AnagramSolver.EF.DbFirst.Entities;
 using Microsoft.EntityFrameworkCore;
 using MyConfiguration = AnagramSolver.WebApp.MyConfiguration;
 
-var builder = WebApplication.CreateBuilder(args);
+// WEB RAZOR
 
-// Add services to the container.
+var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddScoped<IWordServer, WordServer>();
 
@@ -71,3 +71,4 @@ app.MapControllerRoute(
 app.UseSession();
 
 app.Run();
+

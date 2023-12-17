@@ -1,8 +1,8 @@
 ﻿using AnagramSolver.Contracts.Dtos;
 using AnagramSolver.Contracts.Interfaces;
-using AnagramSolver.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using WordListViewModel = AnagramSolver.WebApp.Models.WordListViewModel;
 
 namespace AnagramSolver.WebApp.Controllers
 {
@@ -29,7 +29,7 @@ namespace AnagramSolver.WebApp.Controllers
 
             WordsPerPageDto wordsPerPage = await _wordServer.GetWordsByPageAsync(page, pageSize);
 
-            WordListViewModel viewModel = new(wordsPerPage.Words, page, wordsPerPage.TotalWordsCount, pageSize);
+            Models.WordListViewModel viewModel = new(wordsPerPage.Words, page, wordsPerPage.TotalWordsCount, pageSize);
 
             return View("Index", viewModel);
         }

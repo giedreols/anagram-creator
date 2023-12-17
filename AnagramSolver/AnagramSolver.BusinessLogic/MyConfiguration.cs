@@ -1,4 +1,5 @@
 ﻿using AnagramSolver.Contracts.Dtos;
+using AnagramSolver.Contracts.Interfaces;
 using Microsoft.Extensions.Configuration;
 using System.Configuration;
 

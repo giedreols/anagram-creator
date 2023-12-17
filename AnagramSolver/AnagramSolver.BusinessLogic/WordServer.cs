@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using System.Data;
-using System.Net;
 
 namespace AnagramSolver.BusinessLogic
 {
@@ -49,7 +48,7 @@ namespace AnagramSolver.BusinessLogic
 
         private static async Task<WordsPerPageDto> SordWordsByPageAsync(Dictionary<int, string> words, int page, int pageSize)
         {
-            var allWords = await Task.Run(() => words.OrderBy(w => w.Value).ToList());
+            var allWords = await Task.Run(() => words.OrderBy(w => w.Value.ToLower()).ToList());
 
             var totalPages = (int)Math.Ceiling(allWords.Count / (double)pageSize);
 

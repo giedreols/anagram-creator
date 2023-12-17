@@ -13,9 +13,9 @@ namespace AnagramSolver.WebApp.Controllers
     {
         private readonly ISearchLogService _logService;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly MyConfiguration _config;
+        private readonly IMyConfiguration _config;
 
-        public HomeController(ISearchLogService logService, IHttpContextAccessor httpContextAccessor, MyConfiguration config)
+        public HomeController(ISearchLogService logService, IHttpContextAccessor httpContextAccessor, IMyConfiguration config)
         {
             _logService = logService;
             _httpContextAccessor = httpContextAccessor;

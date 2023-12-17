@@ -1,6 +1,4 @@
-﻿using AnagramSolver.Contracts.Dtos.Obsolete;
-
-namespace AnagramSolver.Contracts.Dtos;
+﻿namespace AnagramSolver.Contracts.Dtos;
 
 // galima butu perdaryti, kad erroras butu atskirai
 public class WordResultDto

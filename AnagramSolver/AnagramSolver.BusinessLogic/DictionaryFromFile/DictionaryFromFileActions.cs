@@ -1,6 +1,5 @@
 ﻿using AnagramSolver.BusinessLogic.Helpers;
 using AnagramSolver.Contracts.Dtos;
-using AnagramSolver.Contracts.Dtos.Obsolete;
 using AnagramSolver.Contracts.Interfaces;
 
 namespace AnagramSolver.BusinessLogic.DictionaryFromFile

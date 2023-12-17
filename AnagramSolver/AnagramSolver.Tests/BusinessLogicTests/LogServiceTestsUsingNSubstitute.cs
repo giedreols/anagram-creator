@@ -1,10 +1,4 @@
-﻿using AnagramSolver.BusinessLogic;
-using AnagramSolver.Contracts.Dtos;
-using AnagramSolver.Contracts.Interfaces;
-using NSubstitute;
-using Shouldly;
-
-namespace AnagramSolver.Tests.EfDbFirstTests
+﻿namespace AnagramSolver.Tests.BusinessLogicTests
 {
     [TestFixture]
     public class LogServiceTestsUsingNSubstitute
