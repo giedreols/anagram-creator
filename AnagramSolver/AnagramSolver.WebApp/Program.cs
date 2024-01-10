@@ -32,7 +32,10 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddSession();
 
 builder.Services.AddDbContext<AnagramSolverDataContext>(
-        options => options.UseSqlServer("Data Source=.\\MSSQLSERVER01;Initial Catalog=AnagramSolverData;Integrated Security=True;TrustServerCertificate=true"));
+options => options
+    .UseSqlServer("Data Source=localhost;Initial Catalog=AnagramSolverData;Integrated Security=True;TrustServerCertificate=true")
+
+);
 
 builder.Services.AddHttpClient();
 
