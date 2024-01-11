@@ -16,7 +16,6 @@ namespace AnagramSolver.BusinessLogic
         private readonly ISearchLogService _searchLogService;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ConfigOptionsDto _configOptions;
-
         private readonly string _ipAddress;
 
         public WordServer(IWordRepository wordRepo, IPartOfSpeechRespository partOfSpeechRepo, HttpClient httpClient,
@@ -32,25 +31,23 @@ namespace AnagramSolver.BusinessLogic
             _configOptions = config.ConfigOptions;
         }
 
-        public async Task<WordsPerPageDto> GetMatchingWordsAsync(string inputWord, int page = 1, int pageSize = 100)
+        public async Task<WordsPerPageDto> GetMatchingWordsAsync(string inputWord, int page = 1)
         {
             Dictionary<int, string> matchingWords = await _wordRepo.GetMatchingWordsAsync(inputWord);
 
-            return await SordWordsByPageAsync(matchingWords, page, pageSize);
+            return await SortWordsByPageAsync(matchingWords, page, _configOptions.TotalAmount);
         }
 
-        public async Task<WordsPerPageDto> GetWordsByPageAsync(int page = 1, int pageSize = 100)
+        public async Task<WordsPerPageDto> GetWordsByPageAsync(int page = 1)
         {
             Dictionary<int, string> allWords = await _wordRepo.GetWordsAsync();
 
-            return await SordWordsByPageAsync(allWords, page, pageSize);
+            return await SortWordsByPageAsync(allWords, page, _configOptions.TotalAmount);
         }
 
-        private static async Task<WordsPerPageDto> SordWordsByPageAsync(Dictionary<int, string> words, int page, int pageSize)
+        private static async Task<WordsPerPageDto> SortWordsByPageAsync(Dictionary<int, string> words, int page, int pageSize)
         {
             var allWords = await Task.Run(() => words.OrderBy(w => w.Value.ToLower()).ToList());
-
-            var totalPages = (int)Math.Ceiling(allWords.Count / (double)pageSize);
 
             List<KeyValuePair<int, string>> currentPageItems = allWords
                         .Skip((page - 1) * pageSize)
@@ -69,7 +66,7 @@ namespace AnagramSolver.BusinessLogic
         {
             var result = new GetAnagramsResultDto();
 
-            if (!await _searchLogService.HasSpareSearchAsync(_ipAddress, _configOptions.SearchCount))
+            if (!await _searchLogService.HasSpareSearchAsync())
             {
                 result.ErrorMessages.Add(ErrorMessageEnum.SearchLimit);
                 return result;
@@ -85,7 +82,7 @@ namespace AnagramSolver.BusinessLogic
             result.WordAndAnagrams.WordId = await _wordRepo.GetWordIdAsync(inputWord);
             result.WordAndAnagrams.Anagrams = await _wordRepo.GetAnagramsAsync(inputWord);
 
-            await _searchLogService.LogSearchAsync(inputWord, _ipAddress);
+            await _searchLogService.LogSearchAsync(inputWord);
 
             return result;
         }
@@ -115,12 +112,11 @@ namespace AnagramSolver.BusinessLogic
             return await _wordRepo.DeleteAsync(wordId);
         }
 
-        // validacijos nesutampa su redagavimo
-        public async Task<WordResultDto> SaveWordAsync(FullWordDto word, ConfigOptionsDto config)
+        public async Task<WordResultDto> SaveWordAsync(FullWordDto word)
         {
             WordResultDto newWord = new();
 
-            var errorMessage = InputWordValidator.Validate(word.OtherForm, config.MinLength, config.MaxLength);
+            var errorMessage = InputWordValidator.Validate(word.OtherForm, _configOptions.MinLength, _configOptions.MaxLength);
 
             if (errorMessage != ErrorMessageEnum.Ok)
             {
@@ -149,11 +145,11 @@ namespace AnagramSolver.BusinessLogic
             return await _wordRepo.GetWordIdAsync(word);
         }
 
-        public async Task<WordResultDto> UpdateWordAsync(int wordId, string newForm, ConfigOptionsDto config)
+        public async Task<WordResultDto> UpdateWordAsync(int wordId, string newForm)
         {
             WordResultDto updatedWord = new();
 
-            var errorMessage = InputWordValidator.Validate(newForm, config.MinLength, config.MaxLength);
+            var errorMessage = InputWordValidator.Validate(newForm, _configOptions.MinLength, _configOptions.MaxLength);
 
             if (errorMessage != ErrorMessageEnum.Ok)
             {

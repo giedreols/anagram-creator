@@ -4,11 +4,11 @@ namespace AnagramSolver.Contracts.Interfaces
 {
     public interface IWordServer
     {
-        Task<WordResultDto> SaveWordAsync(FullWordDto word, ConfigOptionsDto config);
+        Task<WordResultDto> SaveWordAsync(FullWordDto word);
 
-        Task<WordsPerPageDto> GetWordsByPageAsync(int page, int totalAmount);
+        Task<WordsPerPageDto> GetWordsByPageAsync(int page);
 
-        Task<WordsPerPageDto> GetMatchingWordsAsync(string inputWord, int page, int pageSize);
+        Task<WordsPerPageDto> GetMatchingWordsAsync(string inputWord, int page);
 
         Task<IEnumerable<string>> GetAnagramsAsync(string word);
 
@@ -18,7 +18,7 @@ namespace AnagramSolver.Contracts.Interfaces
 
         Task<bool> DeleteWordAsync(int wordId);
 
-        Task<WordResultDto> UpdateWordAsync(int wordId, string newForm, ConfigOptionsDto config);
+        Task<WordResultDto> UpdateWordAsync(int wordId, string newForm);
 
         Task<int> GetWordIdAsync(string word);
     }

@@ -9,17 +9,10 @@ namespace AnagramSolver.ApiBackend.Controllers
     public class WordApiController : ControllerBase
     {
         private readonly IWordServer _wordServer;
-        private readonly ConfigOptionsDto _configOptions;
-
-        private readonly int _pageSize;
-
-
-        public WordApiController(IWordServer wordServer, IConfigReader config)
+        
+        public WordApiController(IWordServer wordServer)
         {
             _wordServer = wordServer;
-            _configOptions = config.ConfigOptions;
-
-            _pageSize = config.ConfigOptions.TotalAmount;
         }
 
         [HttpGet]
@@ -40,9 +33,9 @@ namespace AnagramSolver.ApiBackend.Controllers
         [HttpGet]
         public async Task<IActionResult> IndexAsyncApi(int page = 1)
         {
-            WordsPerPageDto wordsPerPage = await _wordServer.GetWordsByPageAsync(page, _pageSize);
+            WordsPerPageDto wordsPerPage = await _wordServer.GetWordsByPageAsync(page);
 
-            WordListViewModel viewModel = new(wordsPerPage.Words, page, wordsPerPage.TotalWordsCount, _pageSize);
+            WordListViewModel viewModel = new(wordsPerPage.Words, page, wordsPerPage.TotalWordsCount, wordsPerPage.PageSize);
 
             return Ok(viewModel);
         }
@@ -57,9 +50,9 @@ namespace AnagramSolver.ApiBackend.Controllers
                 //  show info message "Žodžio ištrinti nepavyko. Kažkas blogai suprogramuota, sorry."
             }
 
-            WordsPerPageDto wordsPerPage = await _wordServer.GetWordsByPageAsync(page, _pageSize);
+            WordsPerPageDto wordsPerPage = await _wordServer.GetWordsByPageAsync(page);
 
-            WordListViewModel viewModel = new(wordsPerPage.Words, page, wordsPerPage.TotalWordsCount, _pageSize);
+            WordListViewModel viewModel = new(wordsPerPage.Words, page, wordsPerPage.TotalWordsCount, wordsPerPage.PageSize);
 
             return Ok(viewModel);
         }
@@ -69,18 +62,13 @@ namespace AnagramSolver.ApiBackend.Controllers
         {
             IEnumerable<string> anagrams;
 
-            if (newForm == oldForm)
-            {
-                // do nothing
-            }
-
-            WordResultDto updatedWord = await _wordServer.UpdateWordAsync(wordId, newForm, _configOptions);
+            WordResultDto updatedWord = await _wordServer.UpdateWordAsync(wordId, newForm);
 
             if (updatedWord.Word == newForm)
             {
-                WordsPerPageDto wordsPerPage = await _wordServer.GetWordsByPageAsync(page, _pageSize);
+                WordsPerPageDto wordsPerPage = await _wordServer.GetWordsByPageAsync(page);
 
-                return Ok(new WordListViewModel(wordsPerPage.Words, page, wordsPerPage.TotalWordsCount, _pageSize));
+                return Ok(new WordListViewModel(wordsPerPage.Words, page, wordsPerPage.TotalWordsCount, wordsPerPage.PageSize));
             }
 
             // not upddated - error

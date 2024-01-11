@@ -12,14 +12,10 @@ namespace AnagramSolver.WebApp.Controllers
     public class HomeController : Controller
     {
         private readonly ISearchLogService _logService;
-        private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly IConfigReader _config;
 
-        public HomeController(ISearchLogService logService, IHttpContextAccessor httpContextAccessor, IConfigReader config)
+        public HomeController(ISearchLogService logService)
         {
             _logService = logService;
-            _httpContextAccessor = httpContextAccessor;
-            _config = config;
         }
 
         // jei neturiu ka veikt, galiu errora pataisyt cia dar
@@ -27,9 +23,7 @@ namespace AnagramSolver.WebApp.Controllers
         [HttpGet]
         public async Task<IActionResult> IndexAsync()
         {
-            string ipAddress = _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString();
-
-            if (await _logService.HasSpareSearchAsync(ipAddress, _config.ConfigOptions.SearchCount))
+            if (await _logService.HasSpareSearchAsync())
                 return View();
 
             else return View(new ErrorModel("Anagramų paieškų limitas iš šio IP adreso išnaudotas. Nori daugiau paieškų?"));

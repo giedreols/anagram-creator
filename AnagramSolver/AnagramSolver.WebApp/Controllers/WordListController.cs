@@ -13,13 +13,10 @@ namespace AnagramSolver.WebApp.Controllers
         private readonly IWordServer _wordServer;
         private readonly IFileService _fileService;
 
-        private readonly int pageSize;
-
-        public WordListController(IWordServer wordServer, IFileService fileService, IConfigReader config)
+        public WordListController(IWordServer wordServer, IFileService fileService)
         {
             _wordServer = wordServer;
             _fileService = fileService;
-            pageSize = config.ConfigOptions.TotalAmount;
         }
 
         [HttpGet]
@@ -27,9 +24,9 @@ namespace AnagramSolver.WebApp.Controllers
         {
             ViewData["Message"] = TempData["Message"];
 
-            WordsPerPageDto wordsPerPage = await _wordServer.GetWordsByPageAsync(page, pageSize);
+            WordsPerPageDto wordsPerPage = await _wordServer.GetWordsByPageAsync(page);
 
-            Models.WordListViewModel viewModel = new(wordsPerPage.Words, page, wordsPerPage.TotalWordsCount, pageSize);
+            Models.WordListViewModel viewModel = new(wordsPerPage.Words, page, wordsPerPage.TotalWordsCount, wordsPerPage.PageSize);
 
             return View("Index", viewModel);
         }
@@ -42,9 +39,9 @@ namespace AnagramSolver.WebApp.Controllers
 
             ViewData["Word"] = inputWord;
 
-            WordsPerPageDto matchingWords = await _wordServer.GetMatchingWordsAsync(inputWord, page, pageSize);
+            WordsPerPageDto matchingWords = await _wordServer.GetMatchingWordsAsync(inputWord, page);
 
-            WordListViewModel viewModel = new(matchingWords.Words, page, matchingWords.TotalWordsCount, pageSize);
+            WordListViewModel viewModel = new(matchingWords.Words, page, matchingWords.TotalWordsCount, matchingWords.PageSize);
 
             return View("Index", viewModel);
         }

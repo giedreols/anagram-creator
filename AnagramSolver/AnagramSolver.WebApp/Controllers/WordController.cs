@@ -12,34 +12,28 @@ namespace AnagramSolver.WebApp.Controllers
     public class WordController : Controller
     {
         private readonly IWordServer _wordServer;
-        private readonly ConfigOptionsDto _configOptions;
         private readonly IWordLogService _wordLogService;
         private readonly ISearchLogService _searchLogService;
-        private readonly IHttpContextAccessor _httpContextAccessor;
 
         private readonly string _ipAddress;
 
-        public WordController(IWordServer wordServer, IWordLogService wordLogService, ISearchLogService searchLogService, IConfigReader config, IHttpContextAccessor httpContextAccessor)
+        public WordController(IWordServer wordServer, IWordLogService wordLogService, ISearchLogService searchLogService)
         {
             _wordServer = wordServer;
             _wordLogService = wordLogService;
-            _configOptions = config.ConfigOptions;
-            _httpContextAccessor = httpContextAccessor;
             _searchLogService = searchLogService;
-
-            _ipAddress = _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString();
         }
 
         [HttpPost]
         public async Task<ActionResult> CreateAsync([FromForm] string newWord = "", [FromForm] string newAbbreviation = "")
         {
-            WordResultDto savedWord = await _wordServer.SaveWordAsync(new FullWordDto(newWord, newWord, newAbbreviation), _configOptions);
+            WordResultDto savedWord = await _wordServer.SaveWordAsync(new FullWordDto(newWord, newWord, newAbbreviation));
 
             switch ((ErrorMessageEnum)savedWord.ErrorMessage)
             {
                 case ErrorMessageEnum.Ok:
 
-                    await _wordLogService.LogWordAsync(savedWord.Id, _ipAddress, WordOpEnum.Add);
+                    await _wordLogService.LogWordAsync(savedWord.Id, WordOpEnum.Add);
 
                     ViewData["Message"] = "Žodis išsaugotas žodyne";
 
@@ -101,12 +95,12 @@ namespace AnagramSolver.WebApp.Controllers
             if (inputWordAnagramica.IsNullOrEmpty())
                 return View("../Home/Index");
 
-            if (!await _searchLogService.HasSpareSearchAsync(_ipAddress, _configOptions.SearchCount))
+            if (!await _searchLogService.HasSpareSearchAsync())
                 View("../Home/WordWithAnagrams");
 
             var anagrams = await _wordServer.GetAnagramsUsingAnagramicaAsync(inputWordAnagramica);
 
-            await _searchLogService.LogSearchAsync(inputWordAnagramica, _ipAddress);
+            await _searchLogService.LogSearchAsync(inputWordAnagramica);
 
             GetAnagramsResultModel model = new() { WordAndAnagrams = new AnagramViewModel(inputWordAnagramica, anagrams.ToList()) };
 
@@ -120,7 +114,7 @@ namespace AnagramSolver.WebApp.Controllers
 
             if (isDeleted)
             {
-                await _wordLogService.LogWordAsync(wordId, _ipAddress, WordOpEnum.Delete);
+                await _wordLogService.LogWordAsync(wordId, WordOpEnum.Delete);
                 TempData["Message"] = "Žodis ištrintas.";
                 return RedirectToAction("Index", "WordList");
             }
@@ -154,13 +148,13 @@ namespace AnagramSolver.WebApp.Controllers
                 return View("../Home/WordWithAnagrams", model);
             }
 
-            WordResultDto updatedWord = await _wordServer.UpdateWordAsync(wordId, newForm, _configOptions);
+            WordResultDto updatedWord = await _wordServer.UpdateWordAsync(wordId, newForm);
 
             if (updatedWord.Word == newForm)
             {
                 ViewData["Message"] = "Žodis atnaujintas.";
 
-                await _wordLogService.LogWordAsync(wordId, _ipAddress, WordOpEnum.Edit);
+                await _wordLogService.LogWordAsync(wordId, WordOpEnum.Edit);
                 ViewData["IsFormVisible"] = false;
 
                 result.Anagrams = await _wordServer.GetAnagramsAsync(newForm);

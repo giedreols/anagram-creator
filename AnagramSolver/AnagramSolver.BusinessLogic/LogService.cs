@@ -1,5 +1,6 @@
 ﻿using AnagramSolver.Contracts.Dtos;
 using AnagramSolver.Contracts.Interfaces;
+using Microsoft.AspNetCore.Http;
 
 namespace AnagramSolver.BusinessLogic
 {
@@ -8,32 +9,37 @@ namespace AnagramSolver.BusinessLogic
         private readonly ISearchLogRepository _searchLogRepo;
         private readonly IWordLogRepository _wordLogRepo;
         private readonly ITimeProvider _timeProvider;
+        private readonly IConfigReader _configReader;
 
-        public LogService(ISearchLogRepository searchLogRepo, IWordLogRepository wordLogRepo, ITimeProvider timeProvider)
+        private readonly string _ipAddress;
+
+        public LogService(ISearchLogRepository searchLogRepo, IWordLogRepository wordLogRepo, ITimeProvider timeProvider, IHttpContextAccessor httpContextAccessor, IConfigReader config)
         {
             _searchLogRepo = searchLogRepo;
             _wordLogRepo = wordLogRepo;
             _timeProvider = timeProvider;
+            _configReader = config;
+            _ipAddress = httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString();
         }
 
-        public async Task<bool> HasSpareSearchAsync(string ipAddress, int maxSearchCount)
+        public async Task<bool> HasSpareSearchAsync()
         {
-            int currentSearchCount = await _searchLogRepo.GetSearchCountAsync(ipAddress);
-            int newWordsCount = await _wordLogRepo.GetEntriesCountAsync(ipAddress, WordOpEnum.Add);
-            int deletedWordsCount = await _wordLogRepo.GetEntriesCountAsync(ipAddress, WordOpEnum.Delete);
-            int editedWordsCount = await _wordLogRepo.GetEntriesCountAsync(ipAddress, WordOpEnum.Edit);
+            int currentSearchCount = await _searchLogRepo.GetSearchCountAsync(_ipAddress);
+            int newWordsCount = await _wordLogRepo.GetEntriesCountAsync(_ipAddress, WordOpEnum.Add);
+            int deletedWordsCount = await _wordLogRepo.GetEntriesCountAsync(_ipAddress, WordOpEnum.Delete);
+            int editedWordsCount = await _wordLogRepo.GetEntriesCountAsync(_ipAddress, WordOpEnum.Edit);
 
-            return (currentSearchCount - newWordsCount + deletedWordsCount - editedWordsCount) < maxSearchCount;
+            return (currentSearchCount - newWordsCount + deletedWordsCount - editedWordsCount) < _configReader.ConfigOptions.SearchCount;
         }
 
-        public async Task<int> LogSearchAsync(string inputWord, string ipAddress)
+        public async Task<int> LogSearchAsync(string inputWord)
         {
-            return await _searchLogRepo.AddAsync(new SearchLogDto(ipAddress, _timeProvider.UtcNow, inputWord));
+            return await _searchLogRepo.AddAsync(new SearchLogDto(_ipAddress, _timeProvider.UtcNow, inputWord));
         }
 
-        public async Task<int> LogWordAsync(int wordId, string ipAddress, WordOpEnum action)
+        public async Task<int> LogWordAsync(int wordId, WordOpEnum action)
         {
-            return await _wordLogRepo.AddAsync(new WordLogDto(ipAddress, action, wordId, _timeProvider.UtcNow));
+            return await _wordLogRepo.AddAsync(new WordLogDto(_ipAddress, action, wordId, _timeProvider.UtcNow));
         }
 
         public async Task<SearchLogDto> GetLastSearchInfoAsync()
