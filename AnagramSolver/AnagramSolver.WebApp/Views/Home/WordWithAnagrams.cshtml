@@ -1,5 +1,4 @@
-﻿@model GetAnagramsResultModel
-@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+﻿@model ResultModel<AnagramViewModel>
 
 
 <head>
@@ -17,13 +16,13 @@
 
 <div class="text-left">
 
-    <h2>@Model.WordAndAnagrams.Word</h2>
+    <h2>@Model.Result.Word</h2>
 
-    @if (Model.WordAndAnagrams.WordId > 0)
+    @if (Model.Result.WordId > 0)
     {
         <i class="material-icons clickable-icon editForm" style="font-size:18px;color:grey">edit</i>
 
-        <a href="@Url.Action("Delete", "Word", new {wordId = @Model.WordAndAnagrams.WordId, word = Model.WordAndAnagrams.Word})" title="Delete">
+        <a href="@Url.Action("Delete", "Word", new {wordId = @Model.Result.WordId, word = Model.Result.Word})" title="Delete">
             <i class="material-icons" style="font-size:18px;color:grey">delete</i>
         </a>
     }
@@ -34,9 +33,9 @@
         <form asp-controller="Word" asp-action="Update" method="post">
             <div class="form-actions no-color">
                 <p>
-                    <input type="text" name="newForm" value="@((ViewData["newForm"] != null) ? ViewData["newForm"] : Model.WordAndAnagrams.Word)" />
-                    <input name="wordId" value=@Model.WordAndAnagrams.WordId type="hidden" />
-                    <input name="oldForm" value=@Model.WordAndAnagrams.Word type="hidden" />
+                    <input type="text" name="newForm" value="@((ViewData["newForm"] != null) ? ViewData["newForm"] : Model.Result.Word)" />
+                    <input name="wordId" value=@Model.Result.WordId type="hidden" />
+                    <input name="oldForm" value=@Model.Result.Word type="hidden" />
                     <input type="button" value="Atmesti" class="btn btn-default editForm" />
                     <input type="submit" value="Išsaugoti" class="btn btn-default" />
                 </p>
@@ -60,7 +59,7 @@
         });
     </script>
 
-    @if (Model.ErrorMessages.Contains(ErrorMessageEnum.SearchLimit))
+    @if (Model.ErrorMessages.Contains(ErrorMessageEnumModel.SearchLimit))
     {
         <p>
             Anagramų paieškų limitas iš šio IP adreso išnaudotas. Nori daugiau paieškų?
@@ -68,11 +67,11 @@
         </p>
     }
 
-    else if (Model.WordAndAnagrams.Anagrams.Count() > 0)
+    else if (Model.Result.Anagrams.Count() > 0)
     {
         <p>Anagramos:</p>
         <ul>
-            @foreach (var item in @Model.WordAndAnagrams.Anagrams)
+            @foreach (var item in @Model.Result.Anagrams)
             {
                 <li>@item</li>
             }

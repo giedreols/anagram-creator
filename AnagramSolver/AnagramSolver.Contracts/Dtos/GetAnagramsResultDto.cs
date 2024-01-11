@@ -4,5 +4,5 @@ public class GetAnagramsResultDto
 {
     public AnagramViewDto WordAndAnagrams { get; set; } = new AnagramViewDto();
 
-    public IList<ErrorMessageEnum> ErrorMessages { get; set; } = new List<ErrorMessageEnum>();
+    public IList<ErrorMessageEnumDto> ErrorMessages { get; set; } = new List<ErrorMessageEnumDto>();
 }

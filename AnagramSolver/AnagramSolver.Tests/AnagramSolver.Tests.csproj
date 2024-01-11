@@ -10,15 +10,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="CliTests\ConfigurationTests\**" />
-    <Compile Remove="CliTests\ProgramTests\**" />
-    <EmbeddedResource Remove="CliTests\ConfigurationTests\**" />
-    <EmbeddedResource Remove="CliTests\ProgramTests\**" />
-    <None Remove="CliTests\ConfigurationTests\**" />
-    <None Remove="CliTests\ProgramTests\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="FluentAssertions" Version="6.12.0" />
     <PackageReference Include="McMaster.Extensions.CommandLineUtils" Version="4.1.0" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
@@ -46,7 +37,6 @@
   <ItemGroup>
     <ProjectReference Include="..\AnagramSolver.WebApp\AnagramSolver.WebApp.csproj" />
     <ProjectReference Include="..\AnagramSolver.BusinessLogic\AnagramSolver.BusinessLogic.csproj" />
-    <ProjectReference Include="..\AnagramSolver.Cli\AnagramSolver.Cli.csproj" />
     <ProjectReference Include="..\AnagramSolver.Contracts\AnagramSolver.Contracts.csproj" />
   </ItemGroup>
 

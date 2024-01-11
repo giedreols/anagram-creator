@@ -14,20 +14,15 @@ namespace AnagramSolver.BusinessLogic
         private readonly IPartOfSpeechRespository _partOfSpeechRepo;
         private readonly HttpClient _httpClient;
         private readonly ISearchLogService _searchLogService;
-        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ConfigOptionsDto _configOptions;
-        private readonly string _ipAddress;
 
         public WordServer(IWordRepository wordRepo, IPartOfSpeechRespository partOfSpeechRepo, HttpClient httpClient,
-            ISearchLogService searchLogService, IHttpContextAccessor httpContextAccessor, IConfigReader config)
+            ISearchLogService searchLogService, IConfigReader config)
         {
             _wordRepo = wordRepo;
             _partOfSpeechRepo = partOfSpeechRepo;
             _httpClient = httpClient;
             _searchLogService = searchLogService;
-            _httpContextAccessor = httpContextAccessor;
-
-            _ipAddress = _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString();
             _configOptions = config.ConfigOptions;
         }
 
@@ -68,13 +63,13 @@ namespace AnagramSolver.BusinessLogic
 
             if (!await _searchLogService.HasSpareSearchAsync())
             {
-                result.ErrorMessages.Add(ErrorMessageEnum.SearchLimit);
+                result.ErrorMessages.Add(ErrorMessageEnumDto.SearchLimit);
                 return result;
             }
 
             if (inputWord.IsNullOrEmpty())
             {
-                result.ErrorMessages.Add(ErrorMessageEnum.Empty);
+                result.ErrorMessages.Add(ErrorMessageEnumDto.Empty);
                 return result;
             }
 
@@ -95,7 +90,7 @@ namespace AnagramSolver.BusinessLogic
             if (response.IsSuccessStatusCode)
             {
                 string responseBody = await response.Content.ReadAsStringAsync();
-                AnagramApiResponse apiResponse = JsonConvert.DeserializeObject<AnagramApiResponse>(responseBody);
+                AnagramApiResponseDto apiResponse = JsonConvert.DeserializeObject<AnagramApiResponseDto>(responseBody);
 
                 var result = apiResponse.All.AsEnumerable().Where(w => w != inputWordAnagramica).Distinct().ToList();
 
@@ -118,13 +113,13 @@ namespace AnagramSolver.BusinessLogic
 
             var errorMessage = InputWordValidator.Validate(word.OtherForm, _configOptions.MinLength, _configOptions.MaxLength);
 
-            if (errorMessage != ErrorMessageEnum.Ok)
+            if (errorMessage != ErrorMessageEnumDto.Ok)
             {
                 newWord.ErrorMessage = errorMessage;
             }
             else if (await _wordRepo.GetWordIdAsync(word.OtherForm) != 0)
             {
-                newWord.ErrorMessage = ErrorMessageEnum.AlreadyExists;
+                newWord.ErrorMessage = ErrorMessageEnumDto.AlreadyExists;
             }
             else
             {
@@ -133,7 +128,7 @@ namespace AnagramSolver.BusinessLogic
 
                 if (newWord.Id == 0)
                 {
-                    newWord.ErrorMessage = ErrorMessageEnum.UnknowReason;
+                    newWord.ErrorMessage = ErrorMessageEnumDto.UnknowReason;
                 }
             }
 
@@ -151,13 +146,13 @@ namespace AnagramSolver.BusinessLogic
 
             var errorMessage = InputWordValidator.Validate(newForm, _configOptions.MinLength, _configOptions.MaxLength);
 
-            if (errorMessage != ErrorMessageEnum.Ok)
+            if (errorMessage != ErrorMessageEnumDto.Ok)
             {
                 updatedWord.ErrorMessage = errorMessage;
             }
             else if (await _wordRepo.GetWordIdAsync(newForm) != 0)
             {
-                updatedWord.ErrorMessage = ErrorMessageEnum.AlreadyExists;
+                updatedWord.ErrorMessage = ErrorMessageEnumDto.AlreadyExists;
             }
             else
             {
@@ -166,7 +161,7 @@ namespace AnagramSolver.BusinessLogic
 
                 if (!isUpdated)
                 {
-                    updatedWord.ErrorMessage = ErrorMessageEnum.UnknowReason;
+                    updatedWord.ErrorMessage = ErrorMessageEnumDto.UnknowReason;
                 }
                 else
                 {

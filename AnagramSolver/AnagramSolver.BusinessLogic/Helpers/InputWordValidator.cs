@@ -5,29 +5,29 @@ namespace AnagramSolver.BusinessLogic.Helpers
 {
     public static class InputWordValidator
     {
-        public static ErrorMessageEnum Validate(this string word, int minLength, int maxLength)
+        public static ErrorMessageEnumDto Validate(this string word, int minLength, int maxLength)
         {
             if (word.IsNullOrEmpty())
             {
-                return ErrorMessageEnum.Empty;
+                return ErrorMessageEnumDto.Empty;
             }
 
             if (!IsValidChars(word))
             {
-                return ErrorMessageEnum.InvalidChars;
+                return ErrorMessageEnumDto.InvalidChars;
             }
 
             if (!(word.Length >= minLength))
             {
-                return ErrorMessageEnum.TooShort;
+                return ErrorMessageEnumDto.TooShort;
             }
 
             if (!(word.Length <= maxLength))
             {
-                return ErrorMessageEnum.TooLong;
+                return ErrorMessageEnumDto.TooLong;
             }
 
-            return ErrorMessageEnum.Ok;
+            return ErrorMessageEnumDto.Ok;
         }
 
         private static bool IsValidChars(string word)

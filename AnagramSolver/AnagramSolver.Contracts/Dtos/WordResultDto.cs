@@ -7,5 +7,5 @@ public class WordResultDto
 
     public string Word { get; set; }
 
-    public ErrorMessageEnum ErrorMessage { get; set; }
+    public ErrorMessageEnumDto ErrorMessage { get; set; }
 }

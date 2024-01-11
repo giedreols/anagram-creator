@@ -3,7 +3,7 @@ using AnagramSolver.Contracts.Interfaces;
 using AnagramSolver.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
-using ErrorMessageEnum = AnagramSolver.WebApp.Models.ErrorMessageEnum;
+using ErrorMessageEnumModel = AnagramSolver.WebApp.Models.ErrorMessageEnumModel;
 
 namespace AnagramSolver.WebApp.Controllers
 {
@@ -14,8 +14,6 @@ namespace AnagramSolver.WebApp.Controllers
         private readonly IWordServer _wordServer;
         private readonly IWordLogService _wordLogService;
         private readonly ISearchLogService _searchLogService;
-
-        private readonly string _ipAddress;
 
         public WordController(IWordServer wordServer, IWordLogService wordLogService, ISearchLogService searchLogService)
         {
@@ -29,9 +27,9 @@ namespace AnagramSolver.WebApp.Controllers
         {
             WordResultDto savedWord = await _wordServer.SaveWordAsync(new FullWordDto(newWord, newWord, newAbbreviation));
 
-            switch ((ErrorMessageEnum)savedWord.ErrorMessage)
+            switch ((ErrorMessageEnumModel)savedWord.ErrorMessage)
             {
-                case ErrorMessageEnum.Ok:
+                case ErrorMessageEnumModel.Ok:
 
                     await _wordLogService.LogWordAsync(savedWord.Id, WordOpEnum.Add);
 
@@ -44,17 +42,17 @@ namespace AnagramSolver.WebApp.Controllers
                         WordId = savedWord.Id
                     };
 
-                    GetAnagramsResultModel model = new()
+                    ResultModel<AnagramViewModel> model = new()
                     {
-                        WordAndAnagrams = result
+                        Result = result
                     };
-
+                    
                     return View("../Home/WordWithAnagrams", model);
 
                 default:
                     ViewData["Word"] = newWord;
                     ViewData["Abbreviation"] = newAbbreviation;
-                    ViewData["Message"] = Helpers.ConvertErrorEnumToMessage((ErrorMessageEnum)savedWord.ErrorMessage);
+                    ViewData["Message"] = Helpers.ConvertErrorEnumToMessage((ErrorMessageEnumModel)savedWord.ErrorMessage);
 
                     return View("../NewWord/Index");
             }
@@ -68,20 +66,20 @@ namespace AnagramSolver.WebApp.Controllers
 
             GetAnagramsResultDto result = await _wordServer.GetAnagramsNewAsync(inputWord);
 
-            GetAnagramsResultModel model = new() { WordAndAnagrams = new AnagramViewModel(result.WordAndAnagrams.Word) };
+            ResultModel<AnagramViewModel> model = new() { Result = new AnagramViewModel(result.WordAndAnagrams.Word) };
 
-            foreach (var message in result.ErrorMessages) model.ErrorMessages.Add((ErrorMessageEnum)message);
+            foreach (var message in result.ErrorMessages) model.ErrorMessages.Add((ErrorMessageEnumModel)message);
 
-            if (model.ErrorMessages.Contains(ErrorMessageEnum.Empty))
+            if (model.ErrorMessages.Contains(ErrorMessageEnumModel.Empty))
                 return View("../Home/Index");
 
-            if (model.ErrorMessages.Contains(ErrorMessageEnum.SearchLimit))
+            if (model.ErrorMessages.Contains(ErrorMessageEnumModel.SearchLimit))
             {
                 return View("../Home/WordWithAnagrams", model);
             }
 
-            model.WordAndAnagrams.WordId = result.WordAndAnagrams.WordId;
-            model.WordAndAnagrams.Anagrams = result.WordAndAnagrams.Anagrams;
+            model.Result.WordId = result.WordAndAnagrams.WordId;
+            model.Result.Anagrams = result.WordAndAnagrams.Anagrams;
 
             return View("../Home/WordWithAnagrams", model);
         }
@@ -102,7 +100,7 @@ namespace AnagramSolver.WebApp.Controllers
 
             await _searchLogService.LogSearchAsync(inputWordAnagramica);
 
-            GetAnagramsResultModel model = new() { WordAndAnagrams = new AnagramViewModel(inputWordAnagramica, anagrams.ToList()) };
+            ResultModel<AnagramViewModel> model = new() { Result = new AnagramViewModel(inputWordAnagramica, anagrams.ToList()) };
 
             return View("../Home/WordWithAnagrams", model);
         }
@@ -123,7 +121,9 @@ namespace AnagramSolver.WebApp.Controllers
 
             var anagrams = await _wordServer.GetAnagramsAsync(word);
 
-            return View("../Home/WordWithAnagrams", new AnagramViewModel(wordId, word, anagrams.ToList()));
+            AnagramViewModel model = new AnagramViewModel(wordId, word, anagrams.ToList());
+
+            return View("../Home/WordWithAnagrams", model);
         }
 
         [HttpPost]
@@ -135,7 +135,7 @@ namespace AnagramSolver.WebApp.Controllers
 
             AnagramViewModel result = new();
             result.WordId = wordId;
-            GetAnagramsResultModel model = new();
+            ResultModel<AnagramViewModel> model = new();
 
             if (newForm == oldForm)
             {
@@ -143,7 +143,7 @@ namespace AnagramSolver.WebApp.Controllers
 
                 result.Anagrams = await _wordServer.GetAnagramsAsync(oldForm);
                 result.Word = oldForm;
-                model.WordAndAnagrams = result;
+                model.Result = result;
 
                 return View("../Home/WordWithAnagrams", model);
             }
@@ -168,10 +168,10 @@ namespace AnagramSolver.WebApp.Controllers
 
                 result.Anagrams = await _wordServer.GetAnagramsAsync(oldForm);
                 result.Word = oldForm;
-                model.ErrorMessages.Add((ErrorMessageEnum)updatedWord.ErrorMessage);
+                model.ErrorMessages.Add((ErrorMessageEnumModel)updatedWord.ErrorMessage);
             }
 
-            model.WordAndAnagrams = result;
+            model.Result= result;
 
             return View("../Home/WordWithAnagrams", model);
         }

@@ -5,8 +5,6 @@ VisualStudioVersion = 17.5.33516.290
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnagramSolver.BusinessLogic", "AnagramSolver.BusinessLogic\AnagramSolver.BusinessLogic.csproj", "{D0324DF2-B098-4583-B591-3801C53CA5A4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnagramSolver.Cli", "AnagramSolver.Cli\AnagramSolver.Cli.csproj", "{7719D0F5-16A4-4F40-AE78-D80BB5A54C4A}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnagramSolver.Contracts", "AnagramSolver.Contracts\AnagramSolver.Contracts.csproj", "{51D41534-35AE-4629-A28F-AF5F9608AD07}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnagramSolver.Tests", "AnagramSolver.Tests\AnagramSolver.Tests.csproj", "{98199F17-604E-49CE-A218-89E724EFC508}"
@@ -14,13 +12,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnagramSolver.WebApp", "AnagramSolver.WebApp\AnagramSolver.WebApp.csproj", "{C8E8BB57-0FBB-4584-B582-859D50C0C5D1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnagramSolver.DbSeeding", "AnagramSolver.DbSeeding\AnagramSolver.DbSeeding.csproj", "{DF769BA2-B9A7-44FF-B171-0CCB42691169}"
-	ProjectSection(ProjectDependencies) = postProject
-		{715055F5-322C-4302-81C1-00BCF901C4D4} = {715055F5-322C-4302-81C1-00BCF901C4D4}
-	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnagramSolver.EF.DbFirst", "AnagramSolver.EF.DbFirst\AnagramSolver.EF.DbFirst.csproj", "{E81D2BE3-A5E0-4A91-9C35-DADB8066404C}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnagramSolver.SqlActions", "AnagramSolver.DbActions\AnagramSolver.SqlActions.csproj", "{715055F5-322C-4302-81C1-00BCF901C4D4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnagramSolver.ApiBackend", "AnagramSolver.ApiBackend\AnagramSolver.ApiBackend.csproj", "{6B8FC30F-FDAA-427F-B928-8CAE2CAF081E}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -39,10 +32,6 @@ Global
 		{D0324DF2-B098-4583-B591-3801C53CA5A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D0324DF2-B098-4583-B591-3801C53CA5A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D0324DF2-B098-4583-B591-3801C53CA5A4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7719D0F5-16A4-4F40-AE78-D80BB5A54C4A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7719D0F5-16A4-4F40-AE78-D80BB5A54C4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7719D0F5-16A4-4F40-AE78-D80BB5A54C4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7719D0F5-16A4-4F40-AE78-D80BB5A54C4A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{51D41534-35AE-4629-A28F-AF5F9608AD07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{51D41534-35AE-4629-A28F-AF5F9608AD07}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{51D41534-35AE-4629-A28F-AF5F9608AD07}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -63,10 +52,6 @@ Global
 		{E81D2BE3-A5E0-4A91-9C35-DADB8066404C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E81D2BE3-A5E0-4A91-9C35-DADB8066404C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E81D2BE3-A5E0-4A91-9C35-DADB8066404C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{715055F5-322C-4302-81C1-00BCF901C4D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{715055F5-322C-4302-81C1-00BCF901C4D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{715055F5-322C-4302-81C1-00BCF901C4D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{715055F5-322C-4302-81C1-00BCF901C4D4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6B8FC30F-FDAA-427F-B928-8CAE2CAF081E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6B8FC30F-FDAA-427F-B928-8CAE2CAF081E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6B8FC30F-FDAA-427F-B928-8CAE2CAF081E}.Release|Any CPU.ActiveCfg = Release|Any CPU

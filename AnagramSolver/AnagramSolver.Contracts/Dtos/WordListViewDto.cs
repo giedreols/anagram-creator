@@ -1,6 +1,6 @@
 ﻿namespace AnagramSolver.Contracts.Dtos
 {
-    public class WordListViewModel
+    public class WordListViewDto
     {
         public Dictionary<int, string> CurrentPageWords { get; private set; }
 
@@ -12,7 +12,7 @@
 
         public int TotalPages { get; private set; }
 
-        public WordListViewModel(Dictionary<int, string> currentPageWords, int currentPage, int totalWords, int pageSize)
+        public WordListViewDto(Dictionary<int, string> currentPageWords, int currentPage, int totalWords, int pageSize)
         {
             CurrentPageWords = currentPageWords;
             CurrentPage = currentPage;

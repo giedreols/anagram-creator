@@ -35,7 +35,7 @@ namespace AnagramSolver.ApiBackend.Controllers
         {
             WordsPerPageDto wordsPerPage = await _wordServer.GetWordsByPageAsync(page);
 
-            WordListViewModel viewModel = new(wordsPerPage.Words, page, wordsPerPage.TotalWordsCount, wordsPerPage.PageSize);
+            WordListViewDto viewModel = new(wordsPerPage.Words, page, wordsPerPage.TotalWordsCount, wordsPerPage.PageSize);
 
             return Ok(viewModel);
         }
@@ -52,7 +52,7 @@ namespace AnagramSolver.ApiBackend.Controllers
 
             WordsPerPageDto wordsPerPage = await _wordServer.GetWordsByPageAsync(page);
 
-            WordListViewModel viewModel = new(wordsPerPage.Words, page, wordsPerPage.TotalWordsCount, wordsPerPage.PageSize);
+            WordListViewDto viewModel = new(wordsPerPage.Words, page, wordsPerPage.TotalWordsCount, wordsPerPage.PageSize);
 
             return Ok(viewModel);
         }
@@ -68,7 +68,7 @@ namespace AnagramSolver.ApiBackend.Controllers
             {
                 WordsPerPageDto wordsPerPage = await _wordServer.GetWordsByPageAsync(page);
 
-                return Ok(new WordListViewModel(wordsPerPage.Words, page, wordsPerPage.TotalWordsCount, wordsPerPage.PageSize));
+                return Ok(new WordListViewDto(wordsPerPage.Words, page, wordsPerPage.TotalWordsCount, wordsPerPage.PageSize));
             }
 
             // not upddated - error

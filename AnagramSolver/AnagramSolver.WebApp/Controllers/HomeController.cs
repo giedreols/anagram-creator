@@ -26,7 +26,7 @@ namespace AnagramSolver.WebApp.Controllers
             if (await _logService.HasSpareSearchAsync())
                 return View();
 
-            else return View(new ErrorModel("Anagramų paieškų limitas iš šio IP adreso išnaudotas. Nori daugiau paieškų?"));
+            return View(new ErrorModel("Anagramų paieškų limitas iš šio IP adreso išnaudotas. Nori daugiau paieškų?"));
         }
     }
 }
