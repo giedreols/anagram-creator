@@ -5,14 +5,14 @@
     {
         //    private NewWordController _newWordController;
         //    private Mock<IwordServer> _mockWordRepository;
-        //    private Mock<WebApp.MyConfiguration> _mockConfig;
+        //    private Mock<WebApp.ConfigReader> _mockConfig;
         //    private Mock<ILogHelper> _mockHelpers;
 
         //    [SetUp]
         //    public void SetUp()
         //    {
         //        _mockWordRepository = new Mock<IwordServer>(MockBehavior.Strict);
-        //        _mockConfig = new Mock<WebApp.MyConfiguration>();
+        //        _mockConfig = new Mock<WebApp.ConfigReader>();
         //        _mockHelpers = new Mock<ILogHelper>();
         //        _mockHelpers.Setup(m => m.LogSearch(It.IsAny<string>()))
         //                    .Callback<string>(inputWord =>

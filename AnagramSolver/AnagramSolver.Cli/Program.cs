@@ -1,13 +1,14 @@
 ﻿using AnagramSolver.BusinessLogic.DictionaryFromFile;
 using AnagramSolver.BusinessLogic.Helpers;
 using AnagramSolver.Cli;
+using AnagramSolver.Contracts;
 using AnagramSolver.Contracts.Dtos.Obsolete;
 using AnagramSolver.Contracts.Interfaces;
 
 bool repeat = true;
 
 IRenderer renderer = new CommandLineView();
-var configOptions = new MyConfiguration().ConfigOptions;
+var configOptions = new ConfigReader().ConfigOptions;
 
 IFileReader fileReader = new FileReader();
 

@@ -5,13 +5,13 @@
     {
         //private WordListController _listPageController;
         //private Mock<IWordServer> _mockWordRepository;
-        //private Mock<WebApp.MyConfiguration> _mockConfig;
+        //private Mock<WebApp.ConfigReader> _mockConfig;
 
         //[SetUp]
         //public void SetUp()
         //{
         //    _mockWordRepository = new Mock<IWordServer>(MockBehavior.Strict);
-        //    _mockConfig = new Mock<WebApp.MyConfiguration>(MockBehavior.Strict);
+        //    _mockConfig = new Mock<WebApp.ConfigReader>(MockBehavior.Strict);
         //    _mockConfig.SetupAllProperties();
         //    _mockConfig.Object.ConfigOptions.TotalAmount = 1;
 

@@ -14,7 +14,7 @@ namespace AnagramSolver.ApiBackend.Controllers
         private readonly int _pageSize;
 
 
-        public WordApiController(IWordServer wordServer, IMyConfiguration config)
+        public WordApiController(IWordServer wordServer, IConfigReader config)
         {
             _wordServer = wordServer;
             _configOptions = config.ConfigOptions;

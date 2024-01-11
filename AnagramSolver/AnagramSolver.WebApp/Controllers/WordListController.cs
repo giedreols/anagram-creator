@@ -15,7 +15,7 @@ namespace AnagramSolver.WebApp.Controllers
 
         private readonly int pageSize;
 
-        public WordListController(IWordServer wordServer, IFileService fileService, MyConfiguration config)
+        public WordListController(IWordServer wordServer, IFileService fileService, IConfigReader config)
         {
             _wordServer = wordServer;
             _fileService = fileService;

@@ -20,7 +20,7 @@ namespace AnagramSolver.BusinessLogic
         private readonly string _ipAddress;
 
         public WordServer(IWordRepository wordRepo, IPartOfSpeechRespository partOfSpeechRepo, HttpClient httpClient,
-            ISearchLogService searchLogService, IHttpContextAccessor httpContextAccessor, IMyConfiguration config)
+            ISearchLogService searchLogService, IHttpContextAccessor httpContextAccessor, IConfigReader config)
         {
             _wordRepo = wordRepo;
             _partOfSpeechRepo = partOfSpeechRepo;

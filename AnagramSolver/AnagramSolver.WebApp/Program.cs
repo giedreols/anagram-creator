@@ -3,7 +3,6 @@ using AnagramSolver.Contracts.Interfaces;
 using AnagramSolver.EF.DbFirst;
 using AnagramSolver.EF.DbFirst.Entities;
 using Microsoft.EntityFrameworkCore;
-using MyConfiguration = AnagramSolver.WebApp.MyConfiguration;
 
 // WEB RAZOR
 
@@ -20,11 +19,7 @@ builder.Services.AddScoped<ISearchLogRepository, SearchLogRepo>();
 builder.Services.AddScoped<IWordRepository, WordRepo>();
 builder.Services.AddScoped<IPartOfSpeechRespository, PartOfSpeechRepo>();
 builder.Services.AddSingleton<ITimeProvider, AnagramSolver.BusinessLogic.TimeProvider>();
-builder.Services.AddScoped<IMyConfiguration, AnagramSolver.BusinessLogic.MyConfiguration>();
-
-
-builder.Services.AddScoped<MyConfiguration>();
-
+builder.Services.AddScoped<IConfigReader, AnagramSolver.Contracts.ConfigReader>();
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();

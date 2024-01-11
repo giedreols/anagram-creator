@@ -19,7 +19,7 @@ builder.Services.AddScoped<ISearchLogRepository, SearchLogRepo>();
 builder.Services.AddScoped<IWordRepository, WordRepo>();
 builder.Services.AddScoped<IPartOfSpeechRespository, PartOfSpeechRepo>();
 builder.Services.AddSingleton<ITimeProvider, AnagramSolver.BusinessLogic.TimeProvider>();
-builder.Services.AddScoped<IMyConfiguration, MyConfiguration>();
+builder.Services.AddScoped<IConfigReader, AnagramSolver.Contracts.ConfigReader>();
 
 
 builder.Services.AddControllersWithViews();

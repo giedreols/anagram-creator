@@ -19,7 +19,7 @@ namespace AnagramSolver.WebApp.Controllers
 
         private readonly string _ipAddress;
 
-        public WordController(IWordServer wordServer, IWordLogService wordLogService, ISearchLogService searchLogService, MyConfiguration config, IHttpContextAccessor httpContextAccessor)
+        public WordController(IWordServer wordServer, IWordLogService wordLogService, ISearchLogService searchLogService, IConfigReader config, IHttpContextAccessor httpContextAccessor)
         {
             _wordServer = wordServer;
             _wordLogService = wordLogService;
